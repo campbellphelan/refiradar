@@ -1,0 +1,193 @@
+[
+{
+"name": "Hilton Hawaiian Village",
+"sponsor": "Park Hotels & Resorts (NYSE: PK), through Park Intermediate Holdings LLC. Park was spun off from Hilton in January 2017.",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949716004243/n805_424h-x6.htm",
+"srcLabel": "WFCM 2016-C37 prospectus, loan summary",
+"sponsorNote": "Public REIT: check its latest 10-Q for refinancing plans",
+"whyNow": "The ~$1.29B interest-only loan matures Nov 1, 2026, about 5 weeks out. Cash flow held up ($127.7M NCF vs $132.6M at issue), but the 4.20% coupon resets to roughly 6.95%. At an 8.5% hotel cap rate, the balance is about 86% of today's value.",
+"pitch": "Senior CMBS or bank execution sizes to about $977M at 65% LTV, leaving a ~$335M gap. Fill it with ~$225M of mezz to 80% CLTV and ~$110M of pref, or have Park pay the loan down with balance-sheet cash. Another option is a 12 to 24 month extension while a full refinancing is marketed. Debt service roughly doubles either way, so the first call should be about how much Park wants to pay down.",
+"points": [
+"In-place DSCR is still 2.35×, so cash flow covers today's payments. The question is how much a new lender will fund.",
+"Single-asset SASB demand for trophy resorts is deep. We can run SASB and bank balance-sheet bids side by side.",
+"We'd size mezz and pref separately, so you pick the blend of cost and control."
+],
+"verify": [
+"Whether Park has already signed a refinancing or extension (check its latest 10-Q/8-K).",
+"Whole-loan balance: the $1.29B is estimated from reported debt service."
+]
+},
+{
+"name": "Olympic Tower",
+"sponsor": "OMERS (through Oxford Properties Group) and Crown Olympic Partners, an affiliate of Crown Acquisitions.",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/1004158/000153949717001324/n1008_424h-x4.htm",
+"srcLabel": "GSMS 2017-GS7 prospectus, loan summary",
+"sponsorNote": "",
+"whyNow": "The ~$620M interest-only loan on the Fifth Avenue retail and office tower matures May 2027. Occupancy is 99%, with the NBA leased to 2035, but the 3.95% coupon goes to about 6.95%. At a 7% cap rate the loan is about 74% LTV, above what a senior lender will fund today.",
+"pitch": "CMBS or bank senior sizes to about $546M (65% LTV). That leaves an ~$83M gap that mezz covers inside 80% CLTV, so no new equity is required. That's a clean mezz recap for a pension-backed sponsor that prefers not to write a check.",
+"points": [
+"DSCR is 2.4× on current cash flow, which should draw several senior bids.",
+"Split the capital: a trophy SASB senior plus a separately marketed mezz tranche.",
+"Start in Q4 to beat the mid-2027 wave of Manhattan maturities."
+],
+"verify": [
+"Whole-loan balance (estimated from debt service).",
+"Current Crown and Oxford ownership split."
+]
+},
+{
+"name": "General Motors Building",
+"sponsor": "Boston Properties (now BXP) with 767 LLC and Sungate Fifth Avenue LLC.",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949717001028/n963_424h-x6.htm",
+"srcLabel": "WFCM 2017-C38 prospectus, loan summary",
+"sponsorNote": "Public REIT: check its latest 10-Q",
+"whyNow": "The ~$2.3B interest-only loan at 3.43% matures June 2027. Leasing is strong (98% occupied, Weil Gotshal to 2034), but debt service would rise roughly 150% at today's rates.",
+"pitch": "A $1.8B senior loan at 65% LTV plus ~$414M of mezz and ~$124M of pref covers the payoff. More likely, BXP funds part of it with corporate capital. The mandate is worth pitching as a multi-tranche SASB led by a single arranger.",
+"points": [
+"At $2.3B, it's the largest loan in the set.",
+"A structured SASB with a rated mezz can keep the blended cost well under a recap.",
+"Offer to benchmark against unsecured REIT bonds."
+],
+"verify": [
+"BXP's disclosed refinancing plans.",
+"Whole-loan balance (estimated)."
+]
+},
+{
+"name": "Del Amo Fashion Center",
+"sponsor": "A 50/50 joint venture of Simon Property Group and J.P. Morgan's Strategic Property Fund.",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949717001028/n963_424h-x6.htm",
+"srcLabel": "WFCM 2017-C38 prospectus, loan summary",
+"sponsorNote": "",
+"whyNow": "The ~$369M loan matures June 2027 with a 15.9% in-place debt yield, among the strongest in the set. Occupancy has slipped from 85% to 75%, and J.C. Penney's lease runs to Dec 2028.",
+"pitch": "This is a cash-out refinance. A bank or CMBS senior sizes to about $544M, roughly $170M above the payoff. Pitch a larger loan that returns capital to both JV partners, or a lower-leverage loan at tighter pricing.",
+"points": [
+"You can take out ~$170M even at a 6.25%+ coupon.",
+"We'd give lenders a re-leasing plan for the J.C. Penney box.",
+"Both partners are institutions, so one mandate needs only two sign-offs."
+],
+"verify": [
+"J.C. Penney's lease status and dark-store risk.",
+"Whole-loan balance (estimated)."
+]
+},
+{
+"name": "Market Street - The Woodlands",
+"sponsor": "IMI (Institutional Mall Investors): 99% owned by CalPERS, managed by Miller Capital Advisory.",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949717001028/n963_424h-x6.htm",
+"srcLabel": "WFCM 2017-C38 prospectus, loan summary",
+"sponsorNote": "",
+"whyNow": "The loan matures June 2027. The trusts hold pieces in WFCM 2017-C38 and MSC 2017-H1, and the whole loan is about $175M (estimated from reported debt service). Latest cash flow is $21.9M at 92% occupancy, a 12.5% debt yield, and H-E-B anchors the center through 2029.",
+"pitch": "A bank or CMBS refinance sizes to about $204M, which covers the payoff with roughly $26M of room for cash-out. For a pension-backed owner this is a straightforward refinance, and a lower-leverage loan could price tighter.",
+"points": [
+"A grocery-anchored lifestyle center in one of Houston's strongest suburbs.",
+"Life companies and banks will quote tighter spreads than CMBS if leverage stays under 55%."
+],
+"verify": [
+"The whole-loan balance, estimated from reported debt service.",
+"That IMI still holds the asset."
+]
+},
+{
+"name": "The Summit Birmingham",
+"sponsor": "JDJ Birmingham Company (Bayer Properties principals) and Institutional Mall Investors (IMI).",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949717000526/n899_424h-x8.htm",
+"srcLabel": "BANK 2017-BNK4 prospectus, loan summary",
+"sponsorNote": "",
+"whyNow": "The ~$211M loan matures Jan 1, 2027, about 3 months out. NCF is up since issue ($19.9M vs $16.9M) at 93% occupancy, but Belk (24% of the space) expires Jan 2028.",
+"pitch": "A senior loan sizes to about $185M at 65% LTV. About $29M of mezz closes the gap inside 80% CLTV. Given the timing, run a short-fuse process with a 12-month extension as the fallback.",
+"points": [
+"Cash flow is up 18% since the loan was made.",
+"Lenders will focus on the Belk rollover, so bring a backfill plan."
+],
+"verify": [
+"Belk renewal status.",
+"Whether an extension is already being negotiated with the servicer."
+]
+},
+{
+"name": "Headquarters Plaza",
+"sponsor": "A Fisher Organization / Olnick Organization joint venture (Brian Fisher and Seth Schochet).",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/850779/000153949717002011/n1095_424h-x6.htm",
+"srcLabel": "WFCM 2017-C41 prospectus, loan summary",
+"sponsorNote": "",
+"whyNow": "The ~$152M loan matures Nov 2027 and has already been modified. Occupancy is down from 92% to 86%. The largest listed tenant's lease ran to July 2025.",
+"pitch": "Senior proceeds of about $128M plus ~$27M of mezz cover the payoff. The 14-month runway leaves time to lease up first, or to bring in a pref partner to fund TI and leasing costs.",
+"points": [
+"The loan modification suggests the sponsor is already talking to the servicer. Position as the refinance path out.",
+"Regional banks know the Morristown market and are active lenders there."
+],
+"verify": [
+"Terms of the modification.",
+"Current rent roll after the top tenant's 2025 expiration."
+]
+},
+{
+"name": "245 Park Avenue",
+"sponsor": "HNA Group at origination, with 181 West Madison Holding LLC as guarantor.",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/1654060/000153949717000971/n951_424h-x6.htm",
+"srcLabel": "CSAIL 2017-C8 prospectus, loan summary",
+"sponsorNote": "Ownership has changed since 2017. Confirm the current sponsor before outreach.",
+"whyNow": "The ~$1.08B loan at 3.67% matures June 2027. Annualized NCF ($74.8M) is 32% below underwriting, and at an 8.75% office cap rate the loan exceeds today's value.",
+"pitch": "A senior loan sizes to only about $555M at 65% LTV. Mezz and pref cover about $200M more, leaving a ~$344M equity gap. The pitch is a recap: new equity, a discounted payoff, or a structured extension with the special servicer.",
+"points": [
+"This is an equity raise with debt attached. Lead with who could provide the new equity.",
+"98% occupied with Société Générale to 2032. Lenders will credit the tenancy, not the value."
+],
+"verify": [
+"Current ownership and sponsor.",
+"Whether the loan is on the servicer watchlist."
+]
+},
+{
+"name": "Moffett Gateway",
+"sponsor": "Jay Paul Company (Joseph K. Paul).",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/1013611/000153949717000409/n889_424h-x6.htm",
+"srcLabel": "JPMDB 2017-C5 prospectus, loan summary",
+"sponsorNote": "",
+"whyNow": "The ~$431M loan at 3.32% matures Apr 2027. The property is 98% leased to Google through 2034, but at an office cap rate the balance is about 113% of value.",
+"pitch": "The credit is strong (Google), but valuation limits the proceeds. Senior sizes to ~$248M. Mezz and pref add about $88M, leaving a ~$103M equity gap. Pitch a credit-tenant-lease structure with a longer amortizing loan sized to the lease term, which can beat standard office sizing.",
+"points": [
+"Tenant credit gives a lender a basis for a CTL structure that ordinary office sizing misses.",
+"Ask whether Google has expansion or early-termination rights."
+],
+"verify": [
+"Google lease terms (termination options, dark rights).",
+"Whole-loan balance (estimated)."
+]
+},
+{
+"name": "Bass Pro & Cabela's Portfolio",
+"sponsor": "Starwood Property Trust (NYSE: STWD), an affiliate of Starwood Capital Group.",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/1005007/000153949717002152/n1117_x6-424h.htm",
+"srcLabel": "BANK 2017-BNK9 prospectus, loan summary",
+"sponsorNote": "",
+"whyNow": "The ~$198M loan across 16 net-leased stores matures Oct 2027. Cash flow is up 41% since underwriting, and DSCR is 3.84×.",
+"pitch": "A cash-out refinance. Senior proceeds of about $298M cover the payoff with roughly $97M to spare. Pitch a portfolio CTL or CMBS execution, or a partial sale-leaseback recap.",
+"points": [
+"At a 16.8% debt yield, most lenders will want to quote.",
+"Ask whether they want release provisions to sell individual stores later."
+],
+"verify": [
+"Remaining lease terms per store.",
+"STWD's current plans for the portfolio."
+]
+},
+{
+"name": "Marriott Quorum",
+"sponsor": "Deason Capital Services, LLC, the nonrecourse guarantor and an indirect owner of the borrower.",
+"srcUrl": "https://www.sec.gov/Archives/edgar/data/1004158/000153949717001324/n1008_424h-x4.htm",
+"srcLabel": "GSMS 2017-GS7 prospectus, loan summary",
+"sponsorNote": "",
+"whyNow": "The $53.7M amortizing loan matures July 2027. Amortization has paid it down, so a refinance at today's rates barely raises the payment (−9% on this stack), even at 65% occupancy.",
+"pitch": "CMBS senior at about $53M nearly covers the payoff. A small ~$1.5M mezz piece, or a modest paydown, closes it. This is a fast refinance for a family-office owner.",
+"points": [
+"The loan has been modified before. Frame this as a refinance that avoids a second modification.",
+"The in-place 12.9% debt yield clears every lender's hurdle."
+],
+"verify": [
+"Why the loan was modified.",
+"The PIP status of the Marriott franchise."
+]
+}
+]

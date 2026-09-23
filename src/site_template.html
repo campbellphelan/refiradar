@@ -1,0 +1,358 @@
+<title>The 2017 Maturity Wall</title>
+<meta name="description" content="Refi Radar: a deal-sourcing tool for CRE lenders and debt brokers, built from SEC data on CMBS loans that come due by the end of 2027, repriced every business day.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500;62..125,700;62..125,800&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  --bg:#F5F6F7; --paper:#FFFFFF; --ink:#0C1220; --ink-2:#2E384B; --muted:#5E6878; --rule:#D5DAE1; --rule-2:#E6E9EE;
+  --accent:#1D4ED8; --accent-soft:#E3EAFD; --hot:#B8690B;
+  --b-cash:#0F7B55; --b-ready:#2F7FA8; --b-mezz:#3654D1; --b-pref:#7443C2; --b-gap:#B8690B; --b-work:#BE3027; --b-na:#8791A3;
+  --display:"Archivo","Arial Narrow",ui-sans-serif,system-ui,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0A0F1B; --paper:#111829; --ink:#EAEEF5; --ink-2:#C4CCDA; --muted:#8F9AAE; --rule:#27324A; --rule-2:#1C2539;
+  --accent:#7C9BFF; --accent-soft:#1B2A52; --hot:#E6A24B;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0A0F1B; --paper:#111829; --ink:#EAEEF5; --ink-2:#C4CCDA; --muted:#8F9AAE; --rule:#27324A; --rule-2:#1C2539;
+  --accent:#7C9BFF; --accent-soft:#1B2A52; --hot:#E6A24B;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.6}
+.w{max-width:1120px;margin:0 auto;padding-inline:24px}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-stretch:72%;margin:0;text-wrap:balance;letter-spacing:-.005em}
+.eyebrow{font-family:var(--display);font-stretch:100%;font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+p{margin:0 0 14px;max-width:66ch}
+
+/* nav */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:18px;border-bottom:1px solid var(--rule)}
+.nav .me{font-family:var(--display);font-stretch:90%;font-weight:700;font-size:15px;letter-spacing:.01em}
+.nav .links{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--display);font-stretch:100%;font-size:13.5px;font-weight:500}
+.nav .links a{color:var(--ink-2);text-decoration:none}
+.nav .links a:hover{color:var(--accent)}
+
+/* hero */
+.hero{padding-block:44px 16px}
+.hero h1{font-size:clamp(40px,7.2vw,86px);line-height:.96;font-weight:800;max-width:17ch}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.deck{font-size:clamp(18px,2.1vw,21px);line-height:1.5;color:var(--ink-2);max-width:60ch;margin-top:22px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.cta{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-stretch:100%;font-weight:700;font-size:15px;padding:11px 18px;border-radius:8px;text-decoration:none;border:1.5px solid var(--ink)}
+.cta.p{background:var(--ink);color:var(--bg)}
+.cta.s{color:var(--ink)}
+.cta:hover{transform:translateY(-1px)}
+@media (prefers-reduced-motion:reduce){.cta:hover{transform:none}}
+
+/* executive summary */
+.exec{margin-top:26px;background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:22px 24px}
+.exec .lede{font-size:clamp(17px,1.9vw,19px);line-height:1.55;color:var(--ink-2);max-width:none;margin:8px 0 0}
+.aud{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 28px;margin-top:18px;padding-top:16px;border-top:1px solid var(--rule)}
+@media (max-width:720px){.aud{grid-template-columns:1fr}}
+.aud h3{font-size:21px;font-stretch:80%;font-weight:800}
+.aud .who{font-family:var(--display);font-stretch:100%;font-size:12.5px;color:var(--muted);margin:2px 0 6px}
+.aud p{font-size:15.5px;line-height:1.5;margin:0}
+.exec .bottom{margin:16px 0 0;font-size:15.5px;color:var(--ink-2);max-width:none}
+
+/* wall chart */
+.wall{margin-top:40px;background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:20px 20px 14px}
+.wall-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;align-items:baseline;margin-bottom:6px}
+.wall-h h2{font-size:22px;font-weight:700;font-stretch:85%}
+.chartbox{overflow-x:auto}
+.chartbox svg{display:block;min-width:640px;width:100%;height:auto}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--display);font-stretch:100%;font-size:13px;color:var(--ink-2);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;margin-top:26px;border-top:2px solid var(--ink)}
+.stat{padding:16px 18px 16px 0;border-bottom:1px solid var(--rule)}
+.stat .v{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:40px;line-height:1}
+.stat .v small{font-size:22px;color:var(--muted);font-weight:700}
+.stat .l{font-family:var(--display);font-stretch:100%;font-size:13.5px;color:var(--muted);margin-top:6px;max-width:26ch;line-height:1.35}
+
+/* sections */
+section.s{padding-block:64px 8px}
+.s-h{display:grid;grid-template-columns:200px 1fr;gap:10px 40px;align-items:start}
+.s-h h2{font-size:clamp(30px,4.4vw,46px);line-height:1.02;font-weight:800;max-width:20ch}
+.s-body{grid-column:2}
+@media (max-width:820px){.s-h{grid-template-columns:1fr}.s-body{grid-column:1}}
+.ctx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+@media (max-width:560px){.ctx{grid-template-columns:1fr}}
+@media (max-width:520px){.nav .links{display:none}}
+.ctx div{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:14px 16px}
+.ctx b{display:block;font-family:var(--display);font-stretch:75%;font-weight:800;font-size:30px;line-height:1.05}
+.ctx span{font-family:var(--display);font-stretch:100%;font-size:13.5px;color:var(--ink-2);line-height:1.35;display:block;margin-top:4px}
+.ctx a{font-size:12px}
+
+.panel{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px;margin-top:20px}
+.msa-row{display:grid;grid-template-columns:minmax(120px,260px) 1fr 76px;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule-2);font-family:var(--display);font-stretch:100%;font-size:14px}
+.msa-row:last-child{border-bottom:0}
+.msa-bar{display:flex;height:14px;border-radius:3px;overflow:hidden;background:var(--rule-2)}
+.msa-bar span{display:block;height:100%}
+.msa-row .v{text-align:right;font-family:var(--mono);font-size:13px}
+@media (max-width:560px){.msa-row{grid-template-columns:1fr 64px}.msa-row .msa-bar{grid-column:1/-1;order:3}}
+
+/* stress */
+.stress{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:center}
+@media (max-width:820px){.stress{grid-template-columns:1fr}}
+.slider label{font-family:var(--display);font-stretch:100%;font-weight:700;font-size:14px;display:flex;justify-content:space-between;gap:10px}
+.slider input{width:100%;margin-top:10px;accent-color:var(--accent)}
+.ticks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.out div{border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.out div.h{border-color:var(--hot)}
+.out b{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:38px;line-height:1;display:block}
+.out span{font-family:var(--display);font-stretch:100%;font-size:13px;color:var(--muted)}
+
+/* spread table */
+.tw{overflow-x:auto;margin-top:18px}
+table.sp{border-collapse:collapse;width:100%;min-width:640px;font-family:var(--display);font-stretch:100%;font-size:14.5px}
+.sp th,.sp td{padding:10px 12px;border-bottom:1px solid var(--rule);text-align:right}
+.sp th:first-child,.sp td:first-child{text-align:left}
+.sp th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.sp td.n{font-family:var(--mono);font-size:14px}
+.sp tr.old td{color:var(--muted);font-style:italic}
+.sp tr.old td.n{font-style:normal}
+.sp td small{display:block;color:var(--muted);font-size:12px}
+
+/* case */
+.case{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+@media (max-width:820px){.case{grid-template-columns:1fr}}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 18px}
+.kv div{border-top:1px solid var(--rule);padding-top:6px}
+.kv .k{font-family:var(--display);font-stretch:100%;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.kv .v{font-family:var(--mono);font-size:16px}
+.stackbar{display:flex;height:40px;border-radius:6px;overflow:hidden;margin:10px 0 8px;position:relative}
+.stackbar span{display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:12.5px;white-space:nowrap;overflow:hidden}
+.stackleg{font-family:var(--display);font-stretch:100%;font-size:13.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:3px}
+.stackleg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:7px;vertical-align:-1px}
+blockquote{margin:14px 0 0;padding:12px 16px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;font-size:15.5px}
+blockquote .by{display:block;font-family:var(--display);font-stretch:100%;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:22px;border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:var(--paper)}
+.pipe div{padding:16px;border-right:1px solid var(--rule);position:relative}
+.pipe div:last-child{border-right:0}
+.pipe .step{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.pipe h3{font-size:19px;font-stretch:85%;font-weight:700;margin:4px 0 6px}
+.pipe p{font-size:14.5px;line-height:1.45;margin:0}
+.pipe .ai{display:inline-block;font-family:var(--display);font-stretch:100%;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--accent-soft);color:var(--accent);padding:2px 6px;border-radius:4px;margin-top:8px}
+@media (max-width:900px){.pipe{grid-template-columns:1fr}.pipe div{border-right:0;border-bottom:1px solid var(--rule)}.pipe div:last-child{border-bottom:0}}
+.checks{margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.checks div{border-top:2px solid var(--ink);padding-top:10px}
+.checks h3{font-size:18px;font-stretch:85%;font-weight:700;margin-bottom:4px}
+.checks p{font-size:15.5px;margin:0}
+
+/* grid illustration */
+.grid-ill table{border-collapse:collapse;width:100%;min-width:760px;font-family:var(--display);font-stretch:100%;font-size:14px;background:var(--paper)}
+.grid-ill th,.grid-ill td{border:1px solid var(--rule);padding:9px 11px;text-align:left;vertical-align:top}
+.grid-ill thead th{background:var(--bg);font-size:12.5px;font-weight:700;color:var(--ink-2)}
+.grid-ill thead th small{display:block;font-weight:500;color:var(--muted);font-size:11.5px;margin-top:2px}
+.grid-ill td.q{color:var(--muted);font-style:italic;background:repeating-linear-gradient(135deg,transparent 0 6px,var(--rule-2) 6px 7px)}
+.grid-ill td .cite{font-family:var(--mono);font-size:11px;color:var(--accent);display:block;margin-top:3px}
+
+/* about */
+.about{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;margin-top:10px}
+@media (max-width:820px){.about{grid-template-columns:1fr}}
+.cv{list-style:none;margin:0;padding:0}
+.cv li{border-top:1px solid var(--rule);padding:10px 0;font-family:var(--display);font-stretch:100%;font-size:15px;line-height:1.4}
+.cv li b{display:block;font-weight:700}
+.cv li span{color:var(--muted);font-size:13.5px}
+.contact{background:var(--ink);color:var(--bg);border-radius:12px;padding:20px}
+.contact h3{font-size:24px;font-stretch:80%;font-weight:800;margin-bottom:10px}
+.contact .line{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid rgba(127,140,160,.35);padding:10px 0;font-family:var(--mono);font-size:14px;word-break:break-all}
+.contact a{color:inherit}
+.copy{font-family:var(--display);font-stretch:100%;font-size:12px;font-weight:700;border:1px solid rgba(127,140,160,.55);background:none;color:inherit;border-radius:6px;padding:4px 9px;cursor:pointer;flex:none}
+footer{margin-top:70px;padding-block:22px 40px;border-top:1px solid var(--rule);font-family:var(--display);font-stretch:100%;font-size:12.5px;color:var(--muted)}
+footer p{max-width:none;margin:0 0 6px}
+svg text{font-family:var(--mono)}
+</style>
+
+<div class="w">
+  <nav class="nav" aria-label="Page">
+    <span class="me">Campbell Phelan</span>
+    <span class="links"><a href="#where">Where</a><a href="#spreads">Spreads</a><a href="#case">Case</a><a href="#method">Method</a><a href="#about">About</a></span>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow">CMBS refinancing · research and tool · <span id="hMonth">September 2026</span></div>
+    <h1 style="margin-top:14px">The 2017 vintage is due, and the <em id="h10">10-year is at 4.96%.</em></h1>
+
+    <div class="exec" aria-labelledby="execH">
+      <div class="eyebrow" id="execH">Executive summary</div>
+      <p class="lede">Refi Radar is a deal-sourcing tool for commercial real estate debt. It reads the loan-level data that public CMBS trusts file with the SEC each month and finds the <b id="hN">472</b> loans from 2016 and 2017 deals that come due by the end of 2027, <b id="hBal">$22.6B</b> across <b id="hMsa">129</b> metro areas. Those loans were written at a median coupon of <span id="hCpn">4.7%</span> and would price near <span id="hNew">6.9%</span> today. The tool sizes each refinance against five lender types at current spreads and ranks the loans by how soon they mature, how large they are and whether the numbers can work.</p>
+      <div class="aud">
+        <div>
+          <h3>For originators</h3>
+          <div class="who">Banks, life companies, debt funds and CMBS lenders</div>
+          <p>Find maturing loans that fit your lending criteria before they come to market. Filter by MSA, property type, size and maturity date, then enter your own spreads and leverage limits. Each loan shows whether your program would pay off the existing debt, which test limits the loan (LTV, DSCR or debt yield), and how much mezz or preferred equity the borrower would still need.</p>
+        </div>
+        <div>
+          <h3>For brokers</h3>
+          <div class="who">Debt and equity capital advisors</div>
+          <p>Find borrowers who will need a refinance, a mezz or preferred equity recap, or a workout in the next 15 months. Each loan comes with a lender-by-lender comparison, a proposed capital stack and pitch notes for the first call. The 11 largest targets also have Claude-written briefs that name the sponsor from the deal prospectus.</p>
+        </div>
+      </div>
+      <p class="bottom">At today's rates, only <b id="hCov">13%</b> of this balance can refinance at the same size with senior debt alone. The rest will need subordinate capital, new equity or a negotiated extension, and each of those is a financing assignment.</p>
+    </div>
+
+    <div class="ctas">
+      <a class="cta p" href="__TOOL_URL__" target="_blank" rel="noopener">Open Refi Radar</a>
+      <a class="cta s" href="#method">How it's built</a>
+    </div>
+
+    <div class="wall" aria-labelledby="wallH">
+      <div class="wall-h"><h2 id="wallH">Whole-loan balance coming due each month, by refinancing outcome</h2><span class="eyebrow" id="wallRange">$ millions · Oct 2026 to Dec 2027</span></div>
+      <div class="chartbox" id="wallChart"></div>
+      <div class="legend" id="wallLegend"></div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <section class="s" id="context">
+    <div class="s-h"><div class="eyebrow">The market in September 2026</div><div>
+      <h2>Treasury yields rose while lender spreads held.</h2>
+      <div class="ctx">
+        <div><b>5.01%</b><span>The 10-year Treasury yield on Sep 14, its highest since Oct 2023. The Fed raised rates 25 bps two days later. Lender spreads held, so borrowers pay the full increase.</span> <a href="https://finance.yahoo.com/economy/policy/articles/10-yield-top-5-trading-225933063.html" target="_blank" rel="noopener">Yahoo Finance</a></div>
+        <div><b>$146B</b><span>of CMBS matures in 2026. $76.6B of that has no extension option.</span> <a href="https://www.credaily.com/briefs/cmbs-maturity-wall-tests-refinancing-in-2026/" target="_blank" rel="noopener">Trepp via CRE Daily</a></div>
+        <div><b>36%</b><span>of those 2026 maturities have debt yields of 8% or less, the group Trepp rates highest risk for refinancing.</span> <a href="https://www.credaily.com/briefs/cmbs-maturity-wall-tests-refinancing-in-2026/" target="_blank" rel="noopener">Trepp via CRE Daily</a></div>
+        <div><b>7.86%</b><span>CMBS delinquency rate in July 2026, up 51 bps from June, driven by large loans that matured without paying off.</span> <a href="https://newslink.mba.org/mba-newslinks/2026/august/mba-newslink-thursday-august-6-2026/trepp-cmbs-delinquency-rate-up-51-basis-points-in-july/" target="_blank" rel="noopener">Trepp via MBA</a></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="s" id="where">
+    <div class="s-h"><div class="eyebrow">Where it lands</div><div>
+      <h2 id="nyH">New York accounts for more than a third of the balance.</h2>
+      <p style="margin-top:14px">Grouped by Census metro area (MSA), most of the balance sits in large office and mixed-use loans in gateway cities. The model applies its highest cap rates to office, so those loans show the largest refinancing gaps. Each bar splits a metro's balance by outcome at today's rates.</p>
+      <div class="panel" id="msaList"></div>
+    </div></div>
+  </section>
+
+  <section class="s" id="stress">
+    <div class="s-h"><div class="eyebrow">What binds</div><div>
+      <h2>Property value sets how much most of these loans can borrow.</h2>
+      <p style="margin-top:14px">Each refinance is sized three ways: loan-to-value, debt service coverage and debt yield. At today's spreads the loan-to-value test is the lowest of the three for <b id="ltvShare">93%</b> of the balance, so the appraised value decides the loan amount more often than the new interest rate does. Move the cap-rate slider to see how much the results shift.</p>
+      <div class="panel stress">
+        <div class="slider">
+          <label for="capShift"><span>Cap-rate shift vs. today</span><span class="num" id="capOut">+0 bps</span></label>
+          <input type="range" id="capShift" min="-100" max="100" step="25" value="0" aria-describedby="capHelp">
+          <div class="ticks"><span>−100</span><span>−50</span><span>0</span><span>+50</span><span>+100</span></div>
+          <p class="num" id="capHelp" style="font-size:12.5px;color:var(--muted);margin-top:10px">Base: office 8.75%, hotel 8.50%, retail 7.00%, multifamily 5.50%.</p>
+        </div>
+        <div class="out">
+          <div><b id="oShare">43%</b><span>of the balance can refinance with senior debt plus mezz or pref, without new equity</span></div>
+          <div class="h"><b id="oGap">$4.4B</b><span>of new equity that owners would need to bring</span></div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="s" id="spreads">
+    <div class="s-h"><div class="eyebrow">The spread sheet</div><div>
+      <h2>What five lender types would charge today</h2>
+      <p style="margin-top:14px">Indicative all-in pricing as of <span id="spDate">Sep 22, 2026</span>, built from each lender type's spread over the latest 10-year Treasury close and SOFR, which update every business day. In the tool you can change any of these numbers, and all 472 loans are resized.</p>
+      <div class="tw"><table class="sp" id="spTable"></table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:10px">Spreads implied from Insignia Financial Services' September 2026 lender survey against the late-August 10-yr; mezz and pref from PeerSense. CBRE puts Q2 2026 average commercial spreads at 204 bps. These are indicative levels, not lender quotes.</p>
+    </div></div>
+  </section>
+
+  <section class="s" id="case">
+    <div class="s-h"><div class="eyebrow">One loan, start to finish</div><div>
+      <h2 id="caseH">Olympic Tower: 99% occupied, still $83M short.</h2>
+      <div class="case">
+        <div class="panel" style="margin-top:0">
+          <div class="kv" id="caseKv"></div>
+        </div>
+        <div class="panel" style="margin-top:0">
+          <div class="eyebrow">Proposed stack vs. payoff</div>
+          <div class="stackbar" id="caseStack"></div>
+          <div class="stackleg" id="caseLeg"></div>
+          <blockquote><span class="by">From the Claude-drafted brief, Sep 23, 2026</span>A senior loan sizes to about $546M at 65% LTV. Mezz can cover the remaining $83M within 80% combined LTV, so the owners would not need to add equity. The sponsors are OMERS (through Oxford Properties) and Crown Acquisitions, per the GSMS 2017-GS7 prospectus.</blockquote>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="s" id="method">
+    <div class="s-h"><div class="eyebrow">How it's built</div><div>
+      <h2>From SEC filings to a call list</h2>
+      <p style="margin-top:14px">I built Refi Radar in a day with Claude. The loan data is free, because every public CMBS trust files a loan-level tape with the SEC each month. Most of the work went into cleaning those tapes and sizing each loan the way a lender would.</p>
+      <div class="pipe">
+        <div><span class="step">1</span><h3>Pull the tapes</h3><p>Form ABS-EE (Ex-102) for 15 conduit deals issued between December 2016 and November 2017, refreshed whenever a trust files its monthly tape.</p></div>
+        <div><span class="step">2</span><h3>Clean and map</h3><p>Merge split notes and pari passu pieces, drop defeased loans and assign each property to its Census MSA, which leaves <span id="mN">472</span> loans.</p></div>
+        <div><span class="step">3</span><h3>Size the refinance</h3><p>Test each loan against five lender programs on LTV, DSCR and debt yield. Take the best execution, then fill any gap with mezz and pref.</p></div>
+        <div><span class="step">4</span><h3>Find the sponsor</h3><p>The tapes don't name borrowers, so Claude reads each deal's prospectus and pulls the sponsor with a citation.</p><span class="ai">Claude</span></div>
+        <div><span class="step">5</span><h3>Write the pitch</h3><p>Every loan gets pitch notes from its numbers. The 11 largest targets also have briefs written by Claude.</p><span class="ai">Claude</span></div>
+      </div>
+      <div class="checks">
+        <div><h3>Fixed: partial-year financials</h3><p>The General Motors Building first showed $48M of cash flow against $222M underwritten, because the servicer had reported a single quarter. 303 loans report partial periods, and the tool now annualizes all of them.</p></div>
+        <div><h3>Estimated: pari passu balances</h3><p>A trust often holds one piece of a larger loan, so the tool estimates the whole-loan balance from reported debt service. For the GM Building it estimates $2.30B, which matches the $2.3B loan.</p></div>
+        <div><h3>Missed: 3 of 14 sponsors</h3><p>The prospectus search found sponsors for 11 of 14 target loans. The other three weren't described in the prospectuses I pulled, so those loans are marked for a manual check and no sponsor is shown.</p></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="s" id="grid">
+    <div class="s-h"><div class="eyebrow">The next step</div><div>
+      <h2>The same workflow in a document grid</h2>
+      <p style="margin-top:14px">In a document-AI grid, each loan is a row and each column is a question asked of its prospectus, servicer reports or loan agreement, answered with a citation. I'd add the last two columns next. Answering them means reading the loan documents themselves, which is the kind of work Hebbia's product is built for.</p>
+      <div class="tw grid-ill"><table>
+        <thead><tr><th>Loan</th><th>Sponsor<small>prospectus</small></th><th>Matures<small>SEC tape</small></th><th>Outcome today<small>sizing model</small></th><th>Extension options?<small>loan agreement</small></th><th>Existing mezz?<small>prospectus</small></th></tr></thead>
+        <tbody id="gridBody"></tbody>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:10px">An illustration of the workflow. The hatched cells are open questions and hold no data yet.</p>
+    </div></div>
+  </section>
+
+  <section class="s" id="about">
+    <div class="s-h"><div class="eyebrow">About</div><div>
+      <h2>I've spent six years originating and investing in loans like these.</h2>
+      <div class="about">
+        <div>
+          <p style="margin-top:14px">I'm Cam Phelan. At New York Life Real Estate Investors I've originated debt and acquired equity across multifamily, industrial, office, medical office, self-storage and retail. The deals included senior, mezzanine, bridge and construction loans, often with more than 30 people involved in a closing. Before that I was deputy portfolio manager on a $6B+ equity portfolio and worked on a $2B+ ODCE fund.</p>
+          <p>I built Refi Radar because I wanted something like it on my own desk: a way to turn public filings into a list of deals someone can act on the same day. I built it on my own time from public data, with nothing from my employer.</p>
+          <ul class="cv">
+            <li><b>Senior Associate II, Transactions: Debt Origination & Equity Acquisition</b><span>New York Life Real Estate Investors · 2023 to present · $7B+ of debt and equity transactions</span></li>
+            <li><b>Senior Associate, Deputy Portfolio Manager</b><span>New York Life Real Estate Investors · 2022 to 2023 · $6B+ equity portfolio; $2B+ ODCE fund</span></li>
+            <li><b>Associate, Business Development</b><span>New York Life Real Estate Investors · 2019 to 2022 · capital formation for a $70B+ platform</span></li>
+            <li><b>MIT, Data Science in Real Estate · NYU, Real Estate Investment · Oberlin College, B.A.</b><span>Tools: ARGUS, Yardi, CoStar, Dealpath, R, Bloomberg</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="contact">
+            <h3>Let's talk.</h3>
+            <div class="line"><span id="em">campbell.phelan@gmail.com</span><button class="copy" type="button" data-copy="campbell.phelan@gmail.com">Copy</button></div>
+            <div class="line"><a href="https://www.linkedin.com/in/campbellphelan" target="_blank" rel="noopener">linkedin.com/in/campbellphelan</a><button class="copy" type="button" data-copy="linkedin.com/in/campbellphelan">Copy</button></div>
+            <div class="line" style="border-bottom:0"><a href="__TOOL_URL__" target="_blank" rel="noopener">Open Refi Radar</a><span></span></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <footer>
+    <p>Loan data: SEC EDGAR Form ABS-EE (Ex-102), <span id="footLoan">August 2026 remittance</span>, for WFCM 2016-C37, CGCMT 2016-P6, WFCM 2017-RC1, GSMS 2017-GS5, JPMDB 2017-C5, BANK 2017-BNK4, CGCMT 2017-P7, MSC 2017-H1, CSAIL 2017-C8, WFCM 2017-C38, BANK 2017-BNK6, GSMS 2017-GS7, CGCMT 2017-P8, WFCM 2017-C41 and BANK 2017-BNK9. Sponsors: the deal prospectuses (Form 424B2/424H). MSAs: Census CBSA delineation, July 2023. Rates: U.S. Treasury (10-year close) and the New York Fed (SOFR), updated each business day; lender spreads from Insignia Financial Services, CBRE and PeerSense.</p>
+    <p>Independent project by Campbell Phelan. Figures are model estimates from public data, not investment advice.</p>
+  </footer>
+</div>
+
+<script>
+/*__ENGINE__*/
+</script>
+<script>
+const LOANS = /*__DATA__*/;
+</script>
+<script>
+/*__SITEJS__*/
+</script>

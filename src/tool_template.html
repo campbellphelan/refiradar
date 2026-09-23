@@ -1,0 +1,341 @@
+<title>Refi Radar</title>
+<meta name="description" content="A deal-sourcing tool for CRE lenders and debt brokers: 472 CMBS loans from 2016 and 2017 deals that come due by the end of 2027, sized for refinancing at current rates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F6F8FB; --ink:#0E1626; --ink-2:#33405A; --muted:#63708A; --line:#D7DDE6; --line-2:#E6EAF0;
+  --accent:#1D4ED8; --accent-ink:#FFFFFF; --accent-soft:#E3EAFD; --focus:#1D4ED8;
+  --b-cash:#0F7B55; --b-ready:#2F7FA8; --b-mezz:#3654D1; --b-pref:#7443C2; --b-gap:#B8690B; --b-work:#BE3027; --b-na:#8791A3;
+  --b-cash-bg:#E2F3EC; --b-ready-bg:#E2EFF6; --b-mezz-bg:#E5E9FB; --b-pref-bg:#EFE7FA; --b-gap-bg:#FAEEDC; --b-work-bg:#FAE3E1; --b-na-bg:#ECEEF2;
+  --sev3:#BE3027; --sev2:#B8690B; --sev1:#63708A;
+  --shadow:0 1px 2px rgba(14,22,38,.06),0 8px 24px rgba(14,22,38,.06);
+  --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0B1020; --surface:#121A2C; --surface-2:#172136; --ink:#E8ECF4; --ink-2:#C2CAD9; --muted:#8E99B0; --line:#26314A; --line-2:#1E2840;
+  --accent:#7C9BFF; --accent-ink:#0B1020; --accent-soft:#1C2A52; --focus:#9DB4FF;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+  --b-cash-bg:#123326; --b-ready-bg:#12293A; --b-mezz-bg:#1A2550; --b-pref-bg:#2A1D45; --b-gap-bg:#3A2911; --b-work-bg:#3F1C1A; --b-na-bg:#1F283B;
+  --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B1020; --surface:#121A2C; --surface-2:#172136; --ink:#E8ECF4; --ink-2:#C2CAD9; --muted:#8E99B0; --line:#26314A; --line-2:#1E2840;
+  --accent:#7C9BFF; --accent-ink:#0B1020; --accent-soft:#1C2A52; --focus:#9DB4FF;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+  --b-cash-bg:#123326; --b-ready-bg:#12293A; --b-mezz-bg:#1A2550; --b-pref-bg:#2A1D45; --b-gap-bg:#3A2911; --b-work-bg:#3F1C1A; --b-na-bg:#1F283B;
+  --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;margin:0}
+.wrap{max-width:1360px;margin:0 auto;padding-inline:20px;padding-block:18px 60px}
+a{color:var(--accent)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:var(--cond);margin:0;text-wrap:balance}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.brand{display:flex;gap:14px;align-items:center}
+.mark{width:38px;height:38px;flex:none}
+.brand h1{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.stamp{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--muted);font-size:12px}
+.stamp b{color:var(--ink-2);font-weight:500}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px;font-size:12px}
+
+/* section labels */
+.eyebrow{font-family:var(--cond);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sec{margin-top:18px}
+.sec-h{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+
+/* rate sheet */
+.rates{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.rate{flex:1 1 150px;background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.rate.idx{background:var(--surface-2)}
+.rate .nm{font-weight:600;font-size:13px;display:flex;justify-content:space-between;gap:6px}
+.rate .nm small{font-weight:400;color:var(--muted);font-size:11px;white-space:nowrap}
+.rate .big{font-family:var(--mono);font-size:22px;font-weight:500;letter-spacing:-.02em}
+.rate .sp{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.rate .con{font-size:11.5px;color:var(--muted)}
+.shockline{margin-top:8px;font-size:13px;color:var(--ink-2)}
+.shockline b{font-family:var(--mono);font-weight:600;color:var(--ink)}
+
+/* assumptions */
+.assump{margin-top:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.assump h3{font-size:15px;margin-bottom:8px}
+.agrid{overflow-x:auto}
+.agrid table{border-collapse:collapse;width:100%;min-width:720px}
+.agrid th,.agrid td{padding:5px 8px;border-bottom:1px solid var(--line-2);text-align:right;font-size:12.5px}
+.agrid th:first-child,.agrid td:first-child{text-align:left}
+.agrid th{font-weight:600;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+.agrid input{width:74px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);text-align:right;font-family:var(--mono);font-size:12.5px}
+.arow{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:12px}
+.arow label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.arow input{width:92px;padding:4px 7px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);font-family:var(--mono)}
+.capgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px 14px;margin-top:10px}
+.capgrid label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px}
+.capgrid input{width:70px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);text-align:right;font-family:var(--mono)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn:disabled{opacity:.55;cursor:default}
+
+/* KPIs + mix */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.kpi .v{font-family:var(--mono);font-size:21px;font-weight:500;letter-spacing:-.02em}
+.kpi .l{font-size:12px;color:var(--muted)}
+.mix{margin-top:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.bar{display:flex;height:16px;border-radius:5px;overflow:hidden;background:var(--line-2)}
+.bar span{display:block;height:100%;min-width:2px;cursor:pointer;transition:opacity .15s}
+.bar span:hover{opacity:.8}
+.legend{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:10px}
+.lg{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 8px;background:var(--surface);cursor:pointer;font-size:12.5px}
+.lg[aria-pressed="true"]{border-color:var(--ink-2);background:var(--surface-2)}
+.lg i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.lg .c{font-family:var(--mono);color:var(--muted);font-size:11.5px}
+
+/* ask */
+.ask{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.askrow{display:flex;gap:8px;flex-wrap:wrap}
+.askrow input{flex:1 1 320px;min-width:0;border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:var(--surface-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{border:1px dashed var(--line);background:none;border-radius:999px;padding:3px 10px;font-size:12px;color:var(--ink-2);cursor:pointer}
+.chip:hover{border-style:solid;border-color:var(--muted)}
+.askout{margin-top:9px;font-size:13px;color:var(--ink-2)}
+.askout.err{color:var(--sev3)}
+.ai-tag{display:inline-flex;align-items:center;gap:5px;font-family:var(--cond);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:2px 6px}
+
+/* toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:14px}
+.fld{display:flex;flex-direction:column;gap:3px;min-width:0}
+.fld span{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.02em}
+.fld select,.fld input{border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:var(--surface);max-width:100%}
+.fld.grow{flex:1 1 200px}
+.fld.grow input{width:100%}
+#fMsa{max-width:260px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:7px 12px;cursor:pointer;font-weight:500;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.resultline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin:12px 2px 6px;font-size:12.5px;color:var(--muted)}
+.resultline b{color:var(--ink);font-family:var(--mono);font-weight:500}
+.clear{margin-left:6px}
+
+/* table */
+.tblwrap{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+table.loans{border-collapse:collapse;width:100%;min-width:1200px}
+.loans th{position:sticky;top:0;background:var(--surface-2);text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+.loans th.r,.loans td.r{text-align:right}
+.loans th[aria-sort] ::after{content:""}
+.loans th .ar{display:inline-block;width:10px;color:var(--accent)}
+.loans td{padding:9px 9px;border-bottom:1px solid var(--line-2);vertical-align:middle;font-size:13px}
+.loans tbody tr{cursor:pointer}
+.loans tbody tr:hover{background:var(--surface-2)}
+.loans tbody tr.sel{background:var(--accent-soft)}
+.pname{font-weight:600;line-height:1.25}
+.psub{font-size:11.5px;color:var(--muted)}
+.score{display:inline-flex;align-items:center;justify-content:center;width:34px;height:24px;border-radius:6px;font-family:var(--mono);font-weight:600;font-size:12.5px;background:var(--surface-2);border:1px solid var(--line)}
+.score.hi{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.pill i{width:7px;height:7px;border-radius:50%}
+.featured{font-family:var(--cond);font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-left:6px}
+.flagdots{display:inline-flex;gap:3px}
+.flagdots i{width:8px;height:8px;border-radius:50%}
+.delta-up{color:var(--sev3)}
+.delta-dn{color:var(--b-cash)}
+.more{display:flex;justify-content:center;padding:12px}
+.msabar{display:flex;height:10px;border-radius:3px;overflow:hidden;background:var(--line-2);min-width:140px}
+.msabar span{display:block;height:100%}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(8,12,22,.38);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);background:var(--bg);z-index:41;overflow-y:auto;box-shadow:var(--shadow);border-left:1px solid var(--line);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.dhead{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--line);padding:14px 18px;display:flex;justify-content:space-between;gap:12px;z-index:2}
+.dhead h2{font-size:22px;line-height:1.15}
+.dhead .sub{color:var(--muted);font-size:12.5px;margin-top:3px}
+.x{border:1px solid var(--line);background:var(--surface);border-radius:8px;width:34px;height:34px;cursor:pointer;flex:none;font-size:18px;line-height:1}
+.dbody{padding:16px 18px 40px;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px 16px}
+.fact .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.fact .v{font-family:var(--mono);font-size:14px}
+.fact .v small{color:var(--muted);font-size:11.5px}
+.cmp{overflow-x:auto}
+.cmp table{border-collapse:collapse;width:100%;min-width:600px}
+.cmp th,.cmp td{padding:7px 8px;border-bottom:1px solid var(--line-2);text-align:right;font-size:12.5px;white-space:nowrap}
+.cmp th:first-child,.cmp td:first-child{text-align:left}
+.cmp th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.cmp tr.best td{background:var(--accent-soft)}
+.cmp tr.ineligible td{color:var(--muted)}
+.cmp .bind{font-size:11px;color:var(--muted)}
+.cover{display:inline-block;width:64px;height:6px;background:var(--line-2);border-radius:3px;vertical-align:middle;margin-right:6px;overflow:hidden}
+.cover i{display:block;height:100%;background:var(--accent)}
+.stack{display:flex;flex-direction:column;gap:6px}
+.stackbar{position:relative;display:flex;height:30px;border-radius:6px;overflow:hidden;background:var(--line-2)}
+.stackbar span{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.payoff{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.stackleg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-2)}
+.stackleg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.flags{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.flags li{display:flex;gap:8px;align-items:flex-start;font-size:13px}
+.flags li i{width:8px;height:8px;border-radius:50%;margin-top:6px;flex:none}
+.brief{font-size:13.5px;line-height:1.55}
+.brief h4{font-family:var(--cond);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:12px 0 4px}
+.brief h4:first-child{margin-top:0}
+.brief p{margin:0 0 6px}
+.brief ul{margin:0 0 6px;padding-left:18px}
+.brief .src{font-size:12px;color:var(--muted)}
+.gen{white-space:pre-wrap;font-size:13.5px;line-height:1.55;background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:12px;margin-top:10px;max-height:520px;overflow:auto}
+.note{font-size:12px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* about */
+.about{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:10px;font-size:13px;color:var(--ink-2)}
+.about p{margin:0 0 8px;max-width:95ch}
+.about ul{margin:0 0 8px;padding-left:18px;max-width:95ch}
+.foot{margin-top:28px;font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px}
+
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .brand h1{font-size:22px}
+  .rate .big{font-size:19px}
+  #fMsa{max-width:100%}
+  .fld{flex:1 1 44%}
+  .dhead h2{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--line)" stroke-width="2"/><circle cx="20" cy="20" r="11" fill="none" stroke="var(--line)" stroke-width="2"/><path d="M20 20 L20 2 A18 18 0 0 1 36.2 12.2 Z" fill="var(--accent)" opacity=".22"/><line x1="20" y1="20" x2="36.2" y2="12.2" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/><circle cx="29" cy="9.6" r="2.6" fill="var(--b-gap)"/><circle cx="12" cy="27" r="2" fill="var(--b-mezz)"/><circle cx="20" cy="20" r="2.4" fill="var(--ink)"/></svg>
+      <div>
+        <h1>Refi Radar</h1>
+        <p>Deal sourcing for lenders and brokers: CMBS loans coming due through December 2027, sized for refinancing at current rates.</p>
+      </div>
+    </div>
+    <div class="stamp">
+      <span>Loan data: <b id="loanAsOf">SEC Form ABS-EE, Aug 2026 remittance</b></span>
+      <span>Rates: <b id="asOf">Sep 23, 2026</b></span>
+      <button class="linkbtn" id="aboutBtn" aria-expanded="false" aria-controls="about">How this works</button><a class="linkbtn" href="https://claude.ai/artifact/91qMe7uCZyfN8FPf5HwzxL" target="_blank" rel="noopener">Research write-up</a>
+    </div>
+  </header>
+
+  <section class="about" id="about" hidden>
+    <p><b>What this is.</b> Refi Radar reads the loan-level data every public CMBS trust files with the SEC each month (Form ABS-EE, Exhibit 102) for 15 conduit deals issued between December 2016 and November 2017. Ten-year loans from those deals are coming due now, so free public data covers this group of refinancings. It keeps loans maturing by Dec 2027 that aren't fully defeased, merges split notes and pari passu pieces, and puts each property in its Census MSA.</p>
+    <p><b>How it sizes a refinance.</b> For each lender program on the rate sheet, the maximum new loan is the lowest of three limits: loan-to-value (latest cash flow ÷ cap rate), DSCR at the program's rate and amortization, and minimum debt yield. The cheapest permanent lender that covers the payoff plus closing costs wins. If none does, the tool fills the gap with mezzanine debt up to the mezz CLTV and then preferred equity. Every number is editable under <i>Edit assumptions</i>.</p>
+    <ul>
+      <li><b>Outcomes:</b> Cash-out refi (a permanent lender covers the payoff with 10%+ to spare) · Refi-ready · Recap: mezz · Recap: mezz + pref · Equity gap (the stack can't reach the payoff) · Workout (delinquent or with the special servicer).</li>
+      <li><b>Opportunity score</b> (0 to 100) weights loan size at 45%, time to maturity at 25% (loans 3 to 12 months out score highest) and how likely the refinance is to work at 30%. Lenders can sort by maturity, balance or debt yield instead.</li>
+      <li><b>Limits:</b> servicer financials can be 6 to 12 months old or older; partial-year figures are annualized. For pari passu loans, the whole-loan balance is estimated from reported debt service. Borrower and sponsor names aren't in ABS-EE, so featured loans cite the deal prospectus. Market rates are indicative, not quotes.</li>
+    </ul>
+    <p class="note">Built by Campbell Phelan as an independent demo from public SEC filings. Not investment advice.</p>
+  </section>
+
+  <section class="sec" aria-labelledby="rsH">
+    <div class="sec-h">
+      <h2 class="eyebrow" id="rsH">Refinance rate sheet · indicative all-in coupons</h2>
+      <div class="row"><button class="btn" id="editBtn" aria-expanded="false" aria-controls="assump">Edit assumptions</button></div>
+    </div>
+    <div class="rates" id="rates"></div>
+    <div class="shockline" id="shockline"></div>
+    <div class="assump" id="assump" hidden>
+      <h3>Lender programs</h3>
+      <div class="agrid"><table>
+        <thead><tr><th>Program</th><th>Index</th><th>Spread (bps)</th><th>Max LTV %</th><th>Min DSCR ×</th><th>Min debt yield %</th><th>Amort (yrs, 0 = IO)</th></tr></thead>
+        <tbody id="progEdit"></tbody>
+      </table></div>
+      <div class="arow">
+        <label for="aUst">10-yr Treasury %<input id="aUst" type="number" step="0.01"></label>
+        <label for="aSofr">SOFR %<input id="aSofr" type="number" step="0.01"></label>
+        <label for="aMezzR">Mezz coupon %<input id="aMezzR" type="number" step="0.25"></label>
+        <label for="aMezzC">Mezz max CLTV %<input id="aMezzC" type="number" step="1"></label>
+        <label for="aPrefR">Pref return %<input id="aPrefR" type="number" step="0.25"></label>
+        <label for="aPrefC">Pref max CLTV %<input id="aPrefC" type="number" step="1"></label>
+        <label for="aClose">Closing costs %<input id="aClose" type="number" step="0.25"></label>
+        <label for="aFeeS">Senior fee (bps)<input id="aFeeS" type="number" step="5"></label>
+        <label for="aFeeJ">Mezz/pref fee (bps)<input id="aFeeJ" type="number" step="5"></label>
+      </div>
+      <h3 style="margin-top:14px">Cap rates for today's value</h3>
+      <div class="capgrid" id="capEdit"></div>
+      <div class="row" style="margin-top:12px"><button class="btn" id="resetBtn">Reset to defaults</button><span class="note">Changes recompute every loan instantly and stay in this browser only.</span></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-label="Summary">
+    <div class="kpis" id="kpis"></div>
+    <div class="mix">
+      <div class="sec-h" style="margin-bottom:8px"><span class="eyebrow">Outcome at today's rates · share of whole-loan balance</span><span class="note">Click a segment to filter</span></div>
+      <div class="bar" id="mixbar"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </section>
+
+  <section class="sec ask" id="askSec" aria-labelledby="askH" hidden>
+    <div class="sec-h" style="margin-bottom:8px"><h2 class="eyebrow" id="askH"><span class="ai-tag">Claude</span>&nbsp; Ask the screen in plain English</h2></div>
+    <form class="askrow" id="askForm">
+      <input id="askIn" type="text" autocomplete="off" placeholder="e.g. Office loans in the New York MSA due before mid-2027 that need mezz">
+      <button class="btn primary" id="askBtn" type="submit">Screen</button>
+    </form>
+    <div class="chips" id="askChips"></div>
+    <div class="askout" id="askOut" aria-live="polite"></div>
+  </section>
+
+  <section class="sec ask" id="quickSec" aria-labelledby="quickH" hidden>
+    <div class="sec-h" style="margin-bottom:4px"><h2 class="eyebrow" id="quickH">Quick screens</h2></div>
+    <div class="chips" id="quickChips"></div>
+    <div class="askout" id="quickOut" aria-live="polite"></div>
+  </section>
+
+  <section class="sec" aria-label="Loans">
+    <div class="toolbar">
+      <div class="fld grow"><span>Search</span><input id="fQ" type="search" placeholder="Property, city, tenant, sponsor, originator"></div>
+      <div class="fld"><span>MSA</span><select id="fMsa"></select></div>
+      <div class="fld"><span>Property type</span><select id="fType"></select></div>
+      <div class="fld"><span>Outcome</span><select id="fBucket"></select></div>
+      <div class="fld"><span>Maturity</span><select id="fMat">
+        <option value="all">All</option><option value="past">Past due</option><option value="0-6">Next 6 months</option><option value="6-12">6 to 12 months</option><option value="12+">12+ months</option></select></div>
+      <div class="fld"><span>Min balance</span><select id="fMin">
+        <option value="0">Any</option><option value="10">$10M+</option><option value="25">$25M+</option><option value="50">$50M+</option><option value="100">$100M+</option><option value="250">$250M+</option></select></div>
+      <div class="fld"><span>Sort</span><select id="fSort">
+        <option value="score">Opportunity score</option><option value="mat">Maturity (soonest)</option><option value="bal">Balance (largest)</option>
+        <option value="msa">MSA (A to Z)</option><option value="msaVol">MSA (by volume)</option><option value="gap">Refi gap (largest)</option>
+        <option value="shock">Payment shock (largest)</option><option value="dy">Debt yield (lowest)</option></select></div>
+      <div class="fld"><span>View</span><div class="seg" role="group" aria-label="View"><button type="button" id="vLoans" aria-pressed="true">Loans</button><button type="button" id="vMsa" aria-pressed="false">By MSA</button></div></div>
+    </div>
+    <div class="resultline"><span id="resCount"></span><span class="row"><button class="linkbtn" id="clearBtn">Clear filters</button><button class="btn" id="csvBtn" hidden>Export CSV</button></span></div>
+    <div class="tblwrap" id="tblLoans"><table class="loans"><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table><div class="more" id="moreWrap" hidden><button class="btn" id="moreBtn">Show more</button></div></div>
+    <div class="tblwrap" id="tblMsa" hidden><table class="loans"><thead><tr id="mhead"></tr></thead><tbody id="mbody"></tbody></table></div>
+  </section>
+
+  <footer class="foot">
+    <span>Sources: SEC EDGAR Form ABS-EE (Ex-102) for the 15 trusts listed under each loan; deal prospectuses (Form 424B2/424H); Census CBSA delineation (Jul 2023); 10-yr Treasury from the U.S. Treasury and SOFR from the New York Fed, updated each business day; lender spreads from Insignia Financial Services (Sep 2026), CBRE Q2 2026 Lending Momentum and PeerSense (mezz/pref).</span>
+    <span>Built by Campbell Phelan · independent demo, not investment advice</span>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="dTitle"></aside>
+
+<script>
+/*__ENGINE__*/
+</script>
+<script>
+const LOANS = /*__DATA__*/;
+const FEATURED = /*__BRIEFS__*/;
+</script>
+<script>
+/*__APP__*/
+</script>
