@@ -37,6 +37,12 @@
   --accent:#7C9BFF; --accent-soft:#1B2A52; --hot:#E6A24B;
   --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
 }
+:root,:root[data-theme="light"]{ /* always dark, whatever the viewer's system setting */
+  color-scheme:dark;
+  --bg:#0A0F1B; --paper:#111829; --ink:#EAEEF5; --ink-2:#C4CCDA; --muted:#8F9AAE; --rule:#27324A; --rule-2:#1C2539;
+  --accent:#7C9BFF; --accent-soft:#1B2A52; --hot:#E6A24B;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.6}
 .w{max-width:1120px;margin:0 auto;padding-inline:24px}
@@ -363,7 +369,7 @@ svg text{font-family:var(--mono)}
 </div>
 
 <script>
-const RR_RATES = {"ust10": 5.24, "ust10Date": "2026-09-28", "sofr": 3.9, "sofrDate": "2026-09-28", "today": "2026-09-29", "checkedAt": "2026-09-29T19:12Z", "loansFiled": "2026-09-29"};
+const RR_RATES = {"ust10": 5.24, "ust10Date": "2026-09-28", "sofr": 3.9, "sofrDate": "2026-09-28", "today": "2026-09-29", "checkedAt": "2026-09-29T19:20Z", "loansFiled": "2026-09-29"};
 // Refi Radar sizing engine — shared by the tool and the website build.
 const RR_R = (typeof RR_RATES !== 'undefined' && RR_RATES) ? RR_RATES : { ust10: 4.96, ust10Date: '2026-09-22', sofr: 3.87, sofrDate: '2026-09-22', today: '2026-09-23', loansFiled: '2026-08-31' };
 const RR_TODAY = new Date(RR_R.today + 'T12:00:00');

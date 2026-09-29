@@ -46,6 +46,15 @@
   --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
 }
+:root,:root[data-theme="light"]{ /* always dark, whatever the viewer's system setting */
+  color-scheme:dark;
+  --bg:#0B1020; --surface:#121A2C; --surface-2:#172136; --ink:#E8ECF4; --ink-2:#C2CAD9; --muted:#8E99B0; --line:#26314A; --line-2:#1E2840;
+  --accent:#7C9BFF; --accent-ink:#0B1020; --accent-soft:#1C2A52; --focus:#9DB4FF;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+  --b-cash-bg:#123326; --b-ready-bg:#12293A; --b-mezz-bg:#1A2550; --b-pref-bg:#2A1D45; --b-gap-bg:#3A2911; --b-work-bg:#3F1C1A; --b-na-bg:#1F283B;
+  --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;margin:0}
 .wrap{max-width:1360px;margin:0 auto;padding-inline:20px;padding-block:18px 60px}
@@ -345,7 +354,7 @@ table.loans{border-collapse:collapse;width:100%;min-width:1200px}
 <aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="dTitle"></aside>
 
 <script>
-const RR_RATES = {"ust10": 5.24, "ust10Date": "2026-09-28", "sofr": 3.9, "sofrDate": "2026-09-28", "today": "2026-09-29", "checkedAt": "2026-09-29T19:12Z", "loansFiled": "2026-09-29"};
+const RR_RATES = {"ust10": 5.24, "ust10Date": "2026-09-28", "sofr": 3.9, "sofrDate": "2026-09-28", "today": "2026-09-29", "checkedAt": "2026-09-29T19:20Z", "loansFiled": "2026-09-29"};
 // Refi Radar sizing engine — shared by the tool and the website build.
 const RR_R = (typeof RR_RATES !== 'undefined' && RR_RATES) ? RR_RATES : { ust10: 4.96, ust10Date: '2026-09-22', sofr: 3.87, sofrDate: '2026-09-22', today: '2026-09-23', loansFiled: '2026-08-31' };
 const RR_TODAY = new Date(RR_R.today + 'T12:00:00');
