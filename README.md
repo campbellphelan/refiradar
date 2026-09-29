@@ -8,8 +8,14 @@ A GitHub Actions job (`.github/workflows/daily-update.yml`) runs every weekday e
 
 1. `scripts/rates.py` pulls the 10-year Treasury close from the U.S. Treasury's daily par yield curve and SOFR from the New York Fed, and writes `data/rates.json`.
 2. `scripts/sec_loans.py` checks the SEC for new Form ABS-EE filings from the 15 tracked CMBS trusts. When a trust has filed a new monthly tape, it downloads all 15 loan tapes, cleans them and writes `data/loans.json`. Otherwise it leaves the loan data alone.
-3. `scripts/build.py` rebuilds `public/index.html` (the website) and `public/radar/index.html` (the tool).
-4. The job commits any changes. Netlify is linked to this repository and publishes `public/` within about a minute.
+3. `scripts/build.py` writes `data/live.json` with the day's rates, the loan data and the briefs.
+4. The job commits the changes to `data/`.
+
+The website and the tool load `data/live.json` from GitHub each time someone opens them, then run the sizing math in the browser. A daily update doesn't change `public/`, so Netlify doesn't redeploy (each deploy costs 15 of the free plan's 300 monthly credits). `netlify.toml` tells Netlify to skip any commit that leaves `public/` unchanged. If GitHub can't be reached, the pages fall back to the copy of the data built into them.
+
+## Design changes
+
+Edit files in `src/` (or `scripts/build.py`) and commit. The same workflow runs on that commit, rebuilds `public/index.html` (the website) and `public/radar/index.html` (the tool), and Netlify deploys them within about a minute.
 
 ## One-time settings
 
@@ -18,7 +24,7 @@ A GitHub Actions job (`.github/workflows/daily-update.yml`) runs every weekday e
 
 ## Running it by hand
 
-Actions → Daily data update → Run workflow. Tick "Rebuild loan data" to force a full loan refresh.
+Actions → Daily data update → Run workflow. Tick "Rebuild loan data" to force a full loan refresh, or "Also rebuild the website pages" to redeploy the site.
 
 ## What stays manual
 
