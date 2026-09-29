@@ -5,10 +5,18 @@ on:
     # 23:15 UTC on weekdays (7:15 PM Eastern in summer, 6:15 PM in winter),
     # after the Treasury posts the day's closing yields.
     - cron: '15 23 * * 1-5'
+  # A design change (templates, scripts, this file) rebuilds the pages in public/, which Netlify then deploys.
+  push:
+    branches: [main]
+    paths: ['src/**', 'scripts/build.py', '.github/workflows/daily-update.yml']
   workflow_dispatch:
     inputs:
       force_loans:
         description: 'Rebuild loan data even if no new SEC filings'
+        type: boolean
+        default: false
+      rebuild_site:
+        description: 'Also rebuild the website pages (uses one Netlify deploy)'
         type: boolean
         default: false
 
@@ -33,12 +41,17 @@ jobs:
       - name: Install zip-code lookup
         run: pip install zipcodes==1.2.0
 
-      - name: Refresh rates and loans, rebuild the site
+      - name: Rebuild the website pages after a design change
+        if: github.event_name == 'push'
+        run: python scripts/build.py
+
+      - name: Refresh rates and loans (the pages load them from data/live.json, so no Netlify deploy)
+        if: github.event_name != 'push'
         env:
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
-        run: python scripts/update.py ${{ inputs.force_loans && '--force-loans' || '' }}
+        run: python scripts/update.py ${{ inputs.force_loans && '--force-loans' || '' }} ${{ inputs.rebuild_site && '--site' || '' }}
 
-      - name: Commit changes (Netlify deploys automatically)
+      - name: Commit changes (Netlify deploys only if public/ changed)
         run: |
           git config user.name "refiradar-bot"
           git config user.email "refiradar-bot@users.noreply.github.com"
@@ -47,7 +60,8 @@ jobs:
             echo "Nothing changed today."
             exit 0
           fi
-          git commit -m "Daily data update $(date -u +%Y-%m-%d)"
+          if [ "${{ github.event_name }}" = "push" ]; then msg="Rebuild site pages"; else msg="Daily data update"; fi
+          git commit -m "$msg $(date -u +%Y-%m-%d)"
           # GitHub occasionally rejects a push with a temporary server error. Retry a few times.
           for attempt in 1 2 3 4 5; do
             if git push; then
