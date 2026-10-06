@@ -309,7 +309,7 @@ svg text{font-family:var(--mono)}
   <section class="s" id="method">
     <div class="s-h"><div class="eyebrow">How it's built</div><div>
       <h2>From SEC filings to a call list</h2>
-      <p style="margin-top:14px">The loan data is free, because every public CMBS trust files a loan-level tape with the SEC each month. Most of the work went into cleaning those tapes and sizing each loan the way a lender would.</p>
+      <p style="margin-top:14px">The loan data comes from the loan-level tapes that every public CMBS trust files with the SEC each month. Most of the work went into cleaning those tapes and sizing each loan the way a lender would.</p>
       <div class="pipe">
         <div><span class="step">1</span><h3>Pull the tapes</h3><p>Form ABS-EE (Ex-102) for 15 conduit deals issued between December 2016 and November 2017, refreshed whenever a trust files its monthly tape.</p></div>
         <div><span class="step">2</span><h3>Clean and map</h3><p>Merge split notes and pari passu pieces, drop defeased loans and assign each property to its Census MSA, which leaves <span id="mN">472</span> loans.</p></div>
