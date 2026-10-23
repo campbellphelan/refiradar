@@ -1,6 +1,7 @@
 # Netlify publishes public/ as is (no build command).
-# Skip the deploy unless public/ changed. The daily data update only changes data/, which the pages
-# load from GitHub, so it doesn't use a Netlify deploy (each deploy costs 15 of the free plan's 300 monthly credits).
+# Skip the deploy unless this commit changed public/ (or this file). The daily data update only changes data/,
+# which the pages load from GitHub, so it doesn't use a Netlify deploy (each deploy costs 15 of the free plan's 300 monthly credits).
+# It compares with the previous commit because Netlify's cached commit goes missing when its build cache expires.
 [build]
   publish = "public"
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- public/"
+  ignore = "git diff --quiet HEAD^ HEAD -- public/ netlify.toml"
