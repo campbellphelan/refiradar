@@ -1,0 +1,170 @@
+{
+ "UDR": {
+  "acc10K": "0000074208-26-000013",
+  "ladder": {
+   "2026": 801672000,
+   "2027": 333319000,
+   "2028": 466526000,
+   "2029": 965811000,
+   "2030": 830597000,
+   "later": 2437930000
+  },
+  "src": "Debt maturity table (total debt column), Note 6"
+ },
+ "ELME": {
+  "acc10K": "0000104894-26-000011",
+  "ladder": {
+   "2026": 125000000,
+   "2028": 50000000,
+   "2030": 350000000
+  },
+  "src": "Notes payable table (term loan, 30-year notes, green bonds)"
+ },
+ "NXRT": {
+  "acc10K": "0001193125-26-077343",
+  "ladder": {
+   "2028": 123817000,
+   "later": 1469425000
+  },
+  "src": "Debt maturity table (operating properties and credit facility)"
+ },
+ "UMH": {
+  "acc10K": "0001493152-26-008042",
+  "ladder": {
+   "2026": 51745000,
+   "2027": 43676000,
+   "2028": 50825000,
+   "2029": 40954000,
+   "2030": 100217000,
+   "later": 303142000
+  },
+  "src": "Mortgage and loans payable maturity tables; excludes revolving lines of credit"
+ },
+ "OLP": {
+  "acc10K": "0001104659-26-024579",
+  "ladder": {
+   "2026": 28875000,
+   "2027": 48676000,
+   "2028": 39671000,
+   "2029": 86839000,
+   "2030": 77898000,
+   "later": 240542000
+  },
+  "src": "Mortgage principal schedule (amortization plus amounts due at maturity)"
+ },
+ "ARE": {
+  "acc10K": "0001035443-26-000013",
+  "ladder": {
+   "2026": 650000000,
+   "2027": 350000000,
+   "2028": 425000000,
+   "2029": 700000000,
+   "2030": 1503500000,
+   "later": 8850000000
+  },
+  "src": "Secured and unsecured debt maturity table"
+ },
+ "BXP": {
+  "acc10K": "0001037540-26-000006",
+  "ladder": {
+   "2026": 2004357000,
+   "2027": 3054580000,
+   "2028": 1804815000,
+   "2029": 1034311000,
+   "2030": 700000000,
+   "later": 5550000000
+  },
+  "src": "Mortgage principal schedule plus the unsecured senior notes table (by maturity date)"
+ },
+ "ONL": {
+  "acc10K": "0001873923-26-000038",
+  "ladder": {
+   "2026": 92000000,
+   "2027": 355000000,
+   "later": 18000000
+  },
+  "src": "Debt maturity table"
+ },
+ "HPP": {
+  "acc10K": "0001482512-26-000038",
+  "ladder": {
+   "2026": 1079767000,
+   "2027": 410000000,
+   "2028": 461000000,
+   "2029": 510000000,
+   "2030": 907083000
+  },
+  "src": "Debt maturity table (unsecured and secured debt; excludes joint venture partner debt)"
+ },
+ "BFS": {
+  "acc10K": "0000907254-26-000006",
+  "ladder": {
+   "2026": 158290000,
+   "2027": 35654000,
+   "2028": 194620000,
+   "2029": 212010000,
+   "2030": 60783000,
+   "later": 964461000
+  },
+  "src": "Debt maturity table (balloon payments plus amortization)"
+ },
+ "GNL": {
+  "acc10K": "0001628280-26-011696",
+  "ladder": {
+   "2026": 94813000,
+   "2027": 130560000,
+   "2028": 315525000,
+   "2029": 646810000,
+   "later": 133184000
+  },
+  "src": "Mortgage notes future principal payments; excludes the revolving credit facility and senior notes"
+ },
+ "FVR": {
+  "acc10K": "0001193125-26-072181",
+  "ladder": {
+   "2027": 315500000
+  },
+  "src": "Revolving credit facility and term loan, both due October 3, 2027"
+ },
+ "CHCT": {
+  "acc10K": "0001631569-26-000012",
+  "ladder": {
+   "2028": 125000000,
+   "2029": 258000000,
+   "2030": 150000000
+  },
+  "src": "Credit facility table (revolver due 10/29, term loans due 3/28 and 3/30)"
+ },
+ "SHO": {
+  "acc10K": "0001104659-26-021440",
+  "ladder": {
+   "2026": 65000000,
+   "2028": 105000000,
+   "later": 760000000
+  },
+  "src": "Debt maturity table (term loans shown at extended maturity, as the company presents them)"
+ },
+ "CUBE": {
+  "acc10K": "0001298675-26-000010",
+  "ladder": {
+   "2026": 340986000,
+   "2028": 550000000,
+   "2029": 404300000,
+   "2030": 350000000,
+   "later": 1400000000
+  },
+  "src": "Unsecured senior notes table plus mortgage principal schedule; excludes any revolver balance"
+ },
+ "GOOD": {
+  "acc10K": "0001234006-26-000005",
+  "ladder": {
+   "2026": 35369000,
+   "2027": 95392000,
+   "2028": 169100000,
+   "2029": 272238000,
+   "2030": 261861000,
+   "later": 14988000
+  },
+  "src": "Mortgage principal schedule plus revolver, term loans and senior notes (by maturity date)"
+ }
+}
