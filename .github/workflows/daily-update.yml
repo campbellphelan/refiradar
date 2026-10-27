@@ -15,6 +15,10 @@ on:
         description: 'Rebuild loan data even if no new SEC filings'
         type: boolean
         default: false
+      force_reits:
+        description: 'Re-read every REIT filing even if nothing new was filed'
+        type: boolean
+        default: false
       rebuild_site:
         description: 'Also rebuild the website pages (uses one Netlify deploy)'
         type: boolean
@@ -30,7 +34,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
 
@@ -49,7 +53,7 @@ jobs:
         if: github.event_name != 'push'
         env:
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
-        run: python scripts/update.py ${{ inputs.force_loans && '--force-loans' || '' }} ${{ inputs.rebuild_site && '--site' || '' }}
+        run: python scripts/update.py ${{ inputs.force_loans && '--force-loans' || '' }} ${{ inputs.force_reits && '--force-reits' || '' }} ${{ inputs.rebuild_site && '--site' || '' }}
 
       - name: Commit changes (Netlify deploys only if public/ changed)
         run: |
