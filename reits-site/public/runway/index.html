@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en" class="rr-wait">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230C1220'/%3E%3Crect x='11' y='21' width='4' height='8' rx='1' fill='%237C9BFF'/%3E%3Crect x='16.5' y='15' width='4' height='14' rx='1' fill='%23E6A24B'/%3E%3Crect x='22' y='18' width='4' height='11' rx='1' fill='%237C9BFF'/%3E%3Crect x='27.5' y='23' width='2.5' height='6' rx='1' fill='%237C9BFF'/%3E%3C/svg%3E">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://reitrunway.netlify.app/runway/">
+<meta property="og:title" content="REIT Runway · Campbell Phelan">
+<meta property="og:description" content="Which public REITs need capital in the next 24 months, read from their SEC filings.">
+<meta name="twitter:card" content="summary">
+<title>REIT Runway</title>
+<meta name="description" content="Which public REITs need capital in the next 24 months: debt maturities, liquidity, cash flow and refinancing costs for every listed equity REIT, read from their SEC filings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F6F8FB; --ink:#0E1626; --ink-2:#33405A; --muted:#63708A; --line:#D7DDE6; --line-2:#E6EAF0;
+  --accent:#1D4ED8; --accent-ink:#FFFFFF; --accent-soft:#E3EAFD; --focus:#1D4ED8;
+  --b-cash:#0F7B55; --b-ready:#2F7FA8; --b-mezz:#3654D1; --b-pref:#7443C2; --b-gap:#B8690B; --b-work:#BE3027; --b-na:#8791A3;
+  --b-cash-bg:#E2F3EC; --b-ready-bg:#E2EFF6; --b-mezz-bg:#E5E9FB; --b-pref-bg:#EFE7FA; --b-gap-bg:#FAEEDC; --b-work-bg:#FAE3E1; --b-na-bg:#ECEEF2;
+  --sev3:#BE3027; --sev2:#B8690B; --sev1:#63708A;
+  --shadow:0 1px 2px rgba(14,22,38,.06),0 8px 24px rgba(14,22,38,.06);
+  --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0B1020; --surface:#121A2C; --surface-2:#172136; --ink:#E8ECF4; --ink-2:#C2CAD9; --muted:#8E99B0; --line:#26314A; --line-2:#1E2840;
+  --accent:#7C9BFF; --accent-ink:#0B1020; --accent-soft:#1C2A52; --focus:#9DB4FF;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+  --b-cash-bg:#123326; --b-ready-bg:#12293A; --b-mezz-bg:#1A2550; --b-pref-bg:#2A1D45; --b-gap-bg:#3A2911; --b-work-bg:#3F1C1A; --b-na-bg:#1F283B;
+  --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B1020; --surface:#121A2C; --surface-2:#172136; --ink:#E8ECF4; --ink-2:#C2CAD9; --muted:#8E99B0; --line:#26314A; --line-2:#1E2840;
+  --accent:#7C9BFF; --accent-ink:#0B1020; --accent-soft:#1C2A52; --focus:#9DB4FF;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+  --b-cash-bg:#123326; --b-ready-bg:#12293A; --b-mezz-bg:#1A2550; --b-pref-bg:#2A1D45; --b-gap-bg:#3A2911; --b-work-bg:#3F1C1A; --b-na-bg:#1F283B;
+  --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+:root,:root[data-theme="light"]{ /* always dark, whatever the viewer's system setting */
+  color-scheme:dark;
+  --bg:#0B1020; --surface:#121A2C; --surface-2:#172136; --ink:#E8ECF4; --ink-2:#C2CAD9; --muted:#8E99B0; --line:#26314A; --line-2:#1E2840;
+  --accent:#7C9BFF; --accent-ink:#0B1020; --accent-soft:#1C2A52; --focus:#9DB4FF;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+  --b-cash-bg:#123326; --b-ready-bg:#12293A; --b-mezz-bg:#1A2550; --b-pref-bg:#2A1D45; --b-gap-bg:#3A2911; --b-work-bg:#3F1C1A; --b-na-bg:#1F283B;
+  --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;margin:0}
+.wrap{max-width:1360px;margin:0 auto;padding-inline:20px;padding-block:18px 60px}
+a{color:var(--accent)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:var(--cond);margin:0;text-wrap:balance}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.brand{display:flex;gap:14px;align-items:center}
+.mark{width:38px;height:38px;flex:none}
+.brand h1{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.stamp{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--muted);font-size:12px}
+.stamp b{color:var(--ink-2);font-weight:500}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px;font-size:12px}
+
+/* section labels */
+.eyebrow{font-family:var(--cond);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sec{margin-top:18px}
+.sec-h{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+
+/* rate sheet */
+.rates{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.rate{flex:1 1 150px;background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.rate.idx{background:var(--surface-2)}
+.rate .nm{font-weight:600;font-size:13px;display:flex;justify-content:space-between;gap:6px}
+.rate .nm small{font-weight:400;color:var(--muted);font-size:11px;white-space:nowrap}
+.rate .big{font-family:var(--mono);font-size:22px;font-weight:500;letter-spacing:-.02em}
+.rate .sp{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.rate .con{font-size:11.5px;color:var(--muted)}
+.shockline{margin-top:8px;font-size:13px;color:var(--ink-2)}
+.shockline b{font-family:var(--mono);font-weight:600;color:var(--ink)}
+
+/* assumptions */
+.assump{margin-top:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.assump h3{font-size:15px;margin-bottom:8px}
+.agrid{overflow-x:auto}
+.agrid table{border-collapse:collapse;width:100%;min-width:720px}
+.agrid th,.agrid td{padding:5px 8px;border-bottom:1px solid var(--line-2);text-align:right;font-size:12.5px}
+.agrid th:first-child,.agrid td:first-child{text-align:left}
+.agrid th{font-weight:600;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+.agrid input{width:74px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);text-align:right;font-family:var(--mono);font-size:12.5px}
+.arow{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:12px}
+.arow label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.arow input{width:92px;padding:4px 7px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);font-family:var(--mono)}
+.capgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px 14px;margin-top:10px}
+.capgrid label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px}
+.capgrid input{width:70px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);text-align:right;font-family:var(--mono)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn:disabled{opacity:.55;cursor:default}
+
+/* KPIs + mix */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.kpi .v{font-family:var(--mono);font-size:21px;font-weight:500;letter-spacing:-.02em}
+.kpi .l{font-size:12px;color:var(--muted)}
+.mix{margin-top:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.bar{display:flex;height:16px;border-radius:5px;overflow:hidden;background:var(--line-2)}
+.bar span{display:block;height:100%;min-width:2px;cursor:pointer;transition:opacity .15s}
+.bar span:hover{opacity:.8}
+.legend{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:10px}
+.lg{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 8px;background:var(--surface);cursor:pointer;font-size:12.5px}
+.lg[aria-pressed="true"]{border-color:var(--ink-2);background:var(--surface-2)}
+.lg i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.lg .c{font-family:var(--mono);color:var(--muted);font-size:11.5px}
+
+/* ask */
+.ask{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.askrow{display:flex;gap:8px;flex-wrap:wrap}
+.askrow input{flex:1 1 320px;min-width:0;border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:var(--surface-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{border:1px dashed var(--line);background:none;border-radius:999px;padding:3px 10px;font-size:12px;color:var(--ink-2);cursor:pointer}
+.chip:hover{border-style:solid;border-color:var(--muted)}
+.askout{margin-top:9px;font-size:13px;color:var(--ink-2)}
+.askout.err{color:var(--sev3)}
+.ai-tag{display:inline-flex;align-items:center;gap:5px;font-family:var(--cond);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:2px 6px}
+
+/* toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:14px}
+.fld{display:flex;flex-direction:column;gap:3px;min-width:0}
+.fld span{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.02em}
+.fld select,.fld input{border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:var(--surface);max-width:100%}
+.fld.grow{flex:1 1 200px}
+.fld.grow input{width:100%}
+#fMsa{max-width:260px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:7px 12px;cursor:pointer;font-weight:500;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.resultline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin:12px 2px 6px;font-size:12.5px;color:var(--muted)}
+.resultline b{color:var(--ink);font-family:var(--mono);font-weight:500}
+.clear{margin-left:6px}
+
+/* table */
+.tblwrap{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+table.loans{border-collapse:collapse;width:100%;min-width:1200px}
+.loans th{position:sticky;top:0;background:var(--surface-2);text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+.loans th.r,.loans td.r{text-align:right}
+.loans th[aria-sort] ::after{content:""}
+.loans th .ar{display:inline-block;width:10px;color:var(--accent)}
+.loans td{padding:9px 9px;border-bottom:1px solid var(--line-2);vertical-align:middle;font-size:13px}
+.loans tbody tr{cursor:pointer}
+.loans tbody tr:hover{background:var(--surface-2)}
+.loans tbody tr.sel{background:var(--accent-soft)}
+.pname{font-weight:600;line-height:1.25}
+.psub{font-size:11.5px;color:var(--muted)}
+.score{display:inline-flex;align-items:center;justify-content:center;width:34px;height:24px;border-radius:6px;font-family:var(--mono);font-weight:600;font-size:12.5px;background:var(--surface-2);border:1px solid var(--line)}
+.score.hi{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.pill i{width:7px;height:7px;border-radius:50%}
+.featured{font-family:var(--cond);font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-left:6px}
+.flagdots{display:inline-flex;gap:3px}
+.flagdots i{width:8px;height:8px;border-radius:50%}
+.delta-up{color:var(--sev3)}
+.delta-dn{color:var(--b-cash)}
+.more{display:flex;justify-content:center;padding:12px}
+.msabar{display:flex;height:10px;border-radius:3px;overflow:hidden;background:var(--line-2);min-width:140px}
+.msabar span{display:block;height:100%}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(8,12,22,.38);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);background:var(--bg);z-index:41;overflow-y:auto;box-shadow:var(--shadow);border-left:1px solid var(--line);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.dhead{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--line);padding:14px 18px;display:flex;justify-content:space-between;gap:12px;z-index:2}
+.dhead h2{font-size:22px;line-height:1.15}
+.dhead .sub{color:var(--muted);font-size:12.5px;margin-top:3px}
+.x{border:1px solid var(--line);background:var(--surface);border-radius:8px;width:34px;height:34px;cursor:pointer;flex:none;font-size:18px;line-height:1}
+.dbody{padding:16px 18px 40px;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px 16px}
+.fact .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.fact .v{font-family:var(--mono);font-size:14px}
+.fact .v small{color:var(--muted);font-size:11.5px}
+.cmp{overflow-x:auto}
+.cmp table{border-collapse:collapse;width:100%;min-width:600px}
+.cmp th,.cmp td{padding:7px 8px;border-bottom:1px solid var(--line-2);text-align:right;font-size:12.5px;white-space:nowrap}
+.cmp th:first-child,.cmp td:first-child{text-align:left}
+.cmp th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.cmp tr.best td{background:var(--accent-soft)}
+.cmp tr.ineligible td{color:var(--muted)}
+.cmp .bind{font-size:11px;color:var(--muted)}
+.cover{display:inline-block;width:64px;height:6px;background:var(--line-2);border-radius:3px;vertical-align:middle;margin-right:6px;overflow:hidden}
+.cover i{display:block;height:100%;background:var(--accent)}
+.stack{display:flex;flex-direction:column;gap:6px}
+.stackbar{position:relative;display:flex;height:30px;border-radius:6px;overflow:hidden;background:var(--line-2)}
+.stackbar span{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.payoff{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.stackleg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-2)}
+.stackleg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.flags{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.flags li{display:flex;gap:8px;align-items:flex-start;font-size:13px}
+.flags li i{width:8px;height:8px;border-radius:50%;margin-top:6px;flex:none}
+.brief{font-size:13.5px;line-height:1.55}
+.brief h4{font-family:var(--cond);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:12px 0 4px}
+.brief h4:first-child{margin-top:0}
+.brief p{margin:0 0 6px}
+.brief ul{margin:0 0 6px;padding-left:18px}
+.brief .src{font-size:12px;color:var(--muted)}
+.gen{white-space:pre-wrap;font-size:13.5px;line-height:1.55;background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:12px;margin-top:10px;max-height:520px;overflow:auto}
+.note{font-size:12px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* about */
+.about{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:10px;font-size:13px;color:var(--ink-2)}
+.about p{margin:0 0 8px;max-width:95ch}
+.about ul{margin:0 0 8px;padding-left:18px;max-width:95ch}
+.foot{margin-top:28px;font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px}
+
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .brand h1{font-size:22px}
+  .rate .big{font-size:19px}
+  #fMsa{max-width:100%}
+  .fld{flex:1 1 44%}
+  .dhead h2{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* REIT Runway additions */
+.ladder svg{width:100%;height:auto;display:block}
+.ladder .lab{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.ladder .val{font-family:var(--mono);font-size:10.5px;fill:var(--ink-2)}
+.tk{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-left:6px;font-weight:500}
+.cmp tr.mine td{background:var(--accent-soft)}
+.srcline{font-size:12px;color:var(--muted);margin:8px 0 0}
+</style>
+<style>html{background:var(--bg)}html.rr-wait body{visibility:hidden}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--line)" stroke-width="2"/><line x1="9" y1="29" x2="31" y2="29" stroke="var(--line)" stroke-width="2" stroke-linecap="round"/><rect x="11" y="21" width="4" height="8" rx="1" fill="var(--accent)" opacity=".45"/><rect x="16.5" y="15" width="4" height="14" rx="1" fill="var(--b-gap)"/><rect x="22" y="18" width="4" height="11" rx="1" fill="var(--accent)" opacity=".7"/><rect x="27.5" y="23" width="2.5" height="6" rx="1" fill="var(--accent)" opacity=".45"/><circle cx="20" cy="9.5" r="2.2" fill="var(--b-mezz)"/></svg>
+      <div>
+        <h1>REIT Runway</h1>
+        <p>Capital sourcing for JV equity, lenders and bankers: which public REITs need capital in the next 24 months, read from their SEC filings.</p>
+      </div>
+    </div>
+    <div class="stamp">
+      <span>Filings: <b id="filAsOf">SEC 10-K and 10-Q</b></span>
+      <span>Rates: <b id="asOf">—</b></span>
+      <button class="linkbtn" id="aboutBtn" aria-expanded="false" aria-controls="about">How this works</button><a class="linkbtn" href="/">Research write-up</a>
+    </div>
+  </header>
+
+  <section class="about" id="about" hidden>
+    <p><b>What this is.</b> REIT Runway reads the latest 10-K and 10-Q of every listed U.S. equity REIT (<span id="nAbout">146</span> companies) from SEC EDGAR and asks one question: how much debt comes due in the next 24 months, and can the company pay it from cash, retained cash flow and its credit line? Whatever is left has to come from outside, through a bond deal, a secured loan, preferred or JV equity, or asset sales.</p>
+    <p><b>Where the maturity schedule comes from.</b> Companies report it three ways, so each 10-K is read in this order: the standard XBRL maturity tags, the same tags split by debt type, and finally the maturity table printed in the debt footnote. Each result is checked against the company's reported total debt, and the closest match is kept. When no table parses cleanly, the schedule was read by hand from the same 10-K. Every company shows which source was used, with a link to the filing.</p>
+    <ul>
+      <li><b>Funding sources:</b> cash on the latest balance sheet, retained cash flow (operating cash flow less dividends over the last 12 months, scaled to the window) and undrawn revolver capacity where the filing tags it.</li>
+      <li><b>Outcomes:</b> Self-funded (cash and retained cash flow cover what's due) · Revolver covers it · Routine refinance (leverage at or under 50% of book assets, or interest covered 3.5× or more) · Needs new capital · Stretched (dividend not covered by cash flow, interest covered less than 1.75×, or very high leverage) · Insufficient data.</li>
+      <li><b>Capital need score</b> (0 to 100) weights the size of what's due at 35%, the share that has to come from outside at 35%, and stress at 30% (leverage, dividend coverage and the rate increase on refinancing).</li>
+      <li><b>Limits:</b> leverage is debt over book value (real estate at cost, or total assets). For REITs that bought their properties long ago, book value is well below market value, so leverage can look higher than it is. The schedule is as of the last 10-K, so some of this year's maturities may already be refinanced. Revolver availability is often stated only in MD&A text, which isn't in the XBRL data; those companies are flagged.</li>
+    </ul>
+    <p class="note">Built by Campbell Phelan as an independent demo from public SEC filings. Not investment advice.</p>
+  </section>
+
+  <section class="sec" aria-labelledby="rsH">
+    <div class="sec-h">
+      <h2 class="eyebrow" id="rsH">Refinance rate sheet · what maturing REIT debt costs today</h2>
+      <div class="row"><button class="btn" id="editBtn" aria-expanded="false" aria-controls="assump">Edit assumptions</button></div>
+    </div>
+    <div class="rates" id="rates"></div>
+    <div class="shockline" id="shockline"></div>
+    <div class="assump" id="assump" hidden>
+      <h3>Refinance pricing by leverage</h3>
+      <div class="agrid"><table>
+        <thead><tr><th>Execution</th><th>Index</th><th>Spread (bps)</th><th>Up to leverage %</th></tr></thead>
+        <tbody id="tierEdit"></tbody>
+      </table></div>
+      <div class="arow">
+        <label for="aUst">10-yr Treasury %<input id="aUst" type="number" step="0.01"></label>
+        <label for="aSofr">SOFR %<input id="aSofr" type="number" step="0.01"></label>
+        <label for="aBank">Bank term loan spread (bps)<input id="aBank" type="number" step="5"></label>
+        <label for="aPref">Pref / JV equity return %<input id="aPref" type="number" step="0.25"></label>
+        <label for="aWin">Window (months)<input id="aWin" type="number" step="3"></label>
+        <label for="aLevR">Routine refinance up to leverage %<input id="aLevR" type="number" step="1"></label>
+        <label for="aLevH">Stretched above leverage %<input id="aLevH" type="number" step="1"></label>
+      </div>
+      <div class="row" style="margin-top:12px"><button class="btn" id="resetBtn">Reset to defaults</button><span class="note">Changes recompute every REIT instantly and stay in this browser only.</span></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-label="Summary">
+    <div class="kpis" id="kpis"></div>
+    <div class="mix">
+      <div class="sec-h" style="margin-bottom:8px"><span class="eyebrow" id="mixH">Outcome · share of debt due in the next 24 months</span><span class="note">Click a segment to filter</span></div>
+      <div class="bar" id="mixbar"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </section>
+
+  <section class="sec ask" aria-labelledby="quickH">
+    <div class="sec-h" style="margin-bottom:4px"><h2 class="eyebrow" id="quickH">Quick screens</h2></div>
+    <div class="chips" id="quickChips"></div>
+    <div class="askout" id="quickOut" aria-live="polite"></div>
+  </section>
+
+  <section class="sec" aria-label="REITs">
+    <div class="toolbar">
+      <div class="fld grow"><span>Search</span><input id="fQ" type="search" placeholder="Company or ticker"></div>
+      <div class="fld"><span>Sector</span><select id="fSector"></select></div>
+      <div class="fld"><span>Outcome</span><select id="fBucket"></select></div>
+      <div class="fld"><span>Due in window</span><select id="fMin">
+        <option value="0">Any</option><option value="100">$100M+</option><option value="250">$250M+</option><option value="500">$500M+</option><option value="1000">$1B+</option><option value="2500">$2.5B+</option></select></div>
+      <div class="fld"><span>Sort</span><select id="fSort">
+        <option value="score">Capital need score</option><option value="due">Due in window (largest)</option><option value="need">Outside capital (largest)</option>
+        <option value="dueShare">Due as % of debt</option><option value="lev">Leverage (highest)</option><option value="divc">Dividend coverage (lowest)</option>
+        <option value="shock">Rate increase (largest)</option><option value="sector">Sector (A to Z)</option></select></div>
+      <div class="fld"><span>View</span><div class="seg" role="group" aria-label="View"><button type="button" id="vCos" aria-pressed="true">Companies</button><button type="button" id="vSec" aria-pressed="false">By sector</button></div></div>
+    </div>
+    <div class="resultline"><span id="resCount"></span><span class="row"><button class="linkbtn" id="clearBtn">Clear filters</button><button class="btn" id="csvBtn">Export CSV</button></span></div>
+    <div class="tblwrap" id="tblCos"><table class="loans"><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table><div class="more" id="moreWrap" hidden><button class="btn" id="moreBtn">Show more</button></div></div>
+    <div class="tblwrap" id="tblSec" hidden><table class="loans"><thead><tr id="shead"></tr></thead><tbody id="sbody"></tbody></table></div>
+  </section>
+
+  <footer class="foot">
+    <span>Sources: SEC EDGAR 10-K and 10-Q filings (XBRL financial data and debt footnotes) for each company listed; 10-yr Treasury from the U.S. Treasury and SOFR from the New York Fed, updated each business day.</span>
+    <span>Built by Campbell Phelan · independent demo, not investment advice</span>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="dTitle"></aside>
+
+<script type="text/rr-deferred">
+const RW_RATES = (window.RR_LIVE && window.RR_LIVE.rates) || {"ust10": 5.0, "ust10Date": "2026-10-26", "sofr": 3.92, "sofrDate": "2026-10-23", "today": "2026-10-27", "checkedAt": "2026-10-27T03:14Z", "loansFiled": "2026-10-26"};
+// REIT Runway engine: sizes each REIT's next 24 months of debt maturities against what it can fund itself.
+const RW_R = (typeof RW_RATES !== 'undefined' && RW_RATES) ? RW_RATES : { ust10: 4.96, ust10Date: '2026-09-22', sofr: 3.87, sofrDate: '2026-09-22', today: '2026-09-23' };
+const RW_TODAY = new Date(RW_R.today + 'T12:00:00');
+const RW_DEFAULTS = {
+  asOf: RW_R.today,
+  ust10: RW_R.ust10, ust10Date: RW_R.ust10Date,
+  sofr: RW_R.sofr, sofrDate: RW_R.sofrDate,
+  windowMonths: 24,          // how far ahead to count maturities
+  // what a refinance costs today, by leverage (debt ÷ gross real estate at cost)
+  tiers: [
+    { id: 'ig', name: 'Investment-grade unsecured', term: '10-yr bond', maxLev: 45, index: 'ust10', spread: 135 },
+    { id: 'xo', name: 'Crossover / secured', term: '7 to 10-yr', maxLev: 60, index: 'ust10', spread: 210 },
+    { id: 'hy', name: 'High-yield or secured', term: '5 to 7-yr', maxLev: 999, index: 'ust10', spread: 340 },
+  ],
+  bank: { spread: 135 },     // bank term loan over SOFR
+  pref: { rate: 11.0 },      // pref / JV equity target return
+  levRefi: 50,               // at or below this leverage, the market refinances maturities routinely (%)
+  levHigh: 65,               // above this, leverage alone marks a REIT as stretched (%)
+};
+
+function rwOverlap(y, start, end) {
+  // share of calendar year y that falls between start and end
+  const a = new Date(y, 0, 1), b = new Date(y + 1, 0, 1);
+  const lo = Math.max(a, start), hi = Math.min(b, end);
+  return hi > lo ? (hi - lo) / (b - a) : 0;
+}
+function rwMonthsAgo(iso) { const d = new Date(iso + 'T12:00:00'); return (RW_TODAY - d) / (30.44 * 864e5); }
+
+function rwSize(r, A) {
+  A = A || RW_DEFAULTS;
+  const s = { flags: [] };
+  const end = new Date(RW_TODAY); end.setMonth(end.getMonth() + A.windowMonths);
+  const end12 = new Date(RW_TODAY); end12.setMonth(end12.getMonth() + 12);
+  const lad = r.ladder || null;
+  let due = 0, due12 = 0;
+  if (lad) for (const [y, v] of Object.entries(lad)) {
+    if (y === 'later') continue;
+    due += v * rwOverlap(+y, RW_TODAY, end);
+    due12 += v * rwOverlap(+y, RW_TODAY, end12);
+  }
+  s.due = due; s.due12 = due12;
+  s.debt = r.debt || r.ladderTotal || 0;
+  s.cash = r.cash || 0;
+  s.revolver = r.revolverLeft ?? null;
+  s.ocf = r.ocf ?? null; s.div = r.dividends ?? null; s.interest = r.interest ?? null;
+  s.rcf = s.ocf != null && s.div != null ? s.ocf - s.div : null;          // retained cash flow, trailing 12 months
+  s.rcfWin = s.rcf != null ? s.rcf * A.windowMonths / 12 : 0;
+  s.selfFund = s.cash + Math.max(s.rcfWin, 0);
+  s.need = Math.max(due - s.cash - s.rcfWin - (s.revolver || 0), 0);   // capital that has to come from outside
+  s.needNoRev = Math.max(due - s.cash - s.rcfWin, 0);
+  // leverage on book: debt over the larger of real estate at cost and total assets
+  const base = Math.max(r.realEstate || 0, r.assets || 0) || null;
+  s.lev = base ? s.debt / base : null;
+  s.levBasis = base && base === r.realEstate ? 'real estate at cost' : 'total assets';
+  s.rate = r.rate != null ? r.rate : (s.interest && s.debt ? s.interest / s.debt * 100 : null);
+  s.rateEst = r.rate == null;
+  s.divCover = s.ocf != null && s.div ? s.ocf / s.div : null;
+  s.intCover = s.ocf != null && s.interest ? (s.ocf + s.interest) / s.interest : null;
+  // book leverage overstates risk when cash flow covers interest 3.5× or more (towers, data centers): price those as investment grade
+  s.strongCover = s.intCover != null && s.intCover >= 3.5 && (s.divCover == null || s.divCover >= 1);
+  s.tier = s.strongCover ? A.tiers[0] : (A.tiers.find(t => (s.lev ?? 0.5) * 100 <= t.maxLev) || A.tiers[A.tiers.length - 1]);
+  s.newRate = A.ust10 + s.tier.spread / 100;
+  s.shockBps = s.rate != null ? Math.round((s.newRate - s.rate) * 100) : null;
+  s.addedInterest = s.rate != null ? due * (s.newRate - s.rate) / 100 : null;
+  s.dueShare = s.debt ? due / s.debt : null;
+  s.coverage = due > 0 ? (s.cash + s.rcfWin + (s.revolver || 0)) / due : null;
+
+  // outcome
+  // book leverage alone doesn't mark a REIT stretched when cash flow covers interest 3× or more (towers, data centers)
+  const strongCover = s.strongCover;
+  const stretched = (s.divCover != null && s.divCover < 1) || (s.intCover != null && s.intCover < 1.75)
+    || (s.lev != null && s.lev * 100 > A.levHigh && !(s.intCover != null && s.intCover >= 3));
+  if (!lad || !s.debt) s.bucket = 'Insufficient data';
+  else if (due <= s.selfFund) s.bucket = 'Self-funded';
+  else if (s.revolver != null && s.need <= 0) s.bucket = 'Revolver covers it';
+  else if (stretched) s.bucket = 'Stretched';
+  else if ((s.lev ?? 1) * 100 <= A.levRefi || strongCover) s.bucket = 'Routine refinance';
+  else s.bucket = 'Needs new capital';
+
+  // flags (severity 3 = high)
+  const F = (k, sev, t) => s.flags.push({ k, sev, t });
+  if (s.divCover != null && s.divCover < 1) F('div', 3, `Dividends (${rwFm(s.div)}) exceed operating cash flow (${rwFm(s.ocf)}) over the last 12 months.`);
+  else if (s.divCover != null && s.divCover < 1.15) F('div', 2, `Thin dividend coverage: operating cash flow is ${s.divCover.toFixed(2)}× dividends.`);
+  if (s.lev != null && s.lev * 100 > A.levHigh) F('lev', s.strongCover ? 1 : 3, `Leverage of ${(s.lev * 100).toFixed(0)}% of ${s.levBasis} (book).`);
+  else if (s.lev != null && s.lev * 100 > A.levRefi) F('lev', 2, `Leverage of ${(s.lev * 100).toFixed(0)}% of ${s.levBasis} (book).`);
+  if (s.intCover != null && s.intCover < 2) F('int', s.intCover < 1.5 ? 3 : 2, `Interest coverage of ${s.intCover.toFixed(2)}× (operating cash flow plus interest, over interest).`);
+  if (s.dueShare != null && s.due12 > 0.15 * s.debt) F('wall', 2, `${rwFm(s.due12)} (${Math.round(s.due12 / s.debt * 100)}% of debt) comes due in the next 12 months.`);
+  if (s.shockBps != null && s.shockBps >= 150) F('shock', 2, `Maturing debt reprices about +${s.shockBps} bps at today's ${s.tier.name.toLowerCase()} rate.`);
+  if (r.ladderCheck != null && r.ladderCheck < 0.9) F('partial', 1, `The 10-K schedule covers ${Math.round(r.ladderCheck * 100)}% of reported debt; the rest (usually the credit line or term loans) isn't broken out by year.`);
+  if (s.revolver == null) F('rev', 1, 'Undrawn revolver capacity isn’t tagged in the filing data, so it isn’t counted as a source.');
+  if (r.asOf && rwMonthsAgo(r.asOf) > 7) F('stale', 1, `Latest financials are as of ${r.asOf}.`);
+
+  // capital-need score: size of what's due, how much must come from outside, and stress
+  const lg = v => Math.max(0, Math.min(1, (Math.log10(Math.max(v, 1)) - Math.log10(5e7)) / (Math.log10(5e9) - Math.log10(5e7))));
+  const sSize = lg(due);
+  const sNeed = due > 0 ? Math.min(1, s.needNoRev / due) : 0;
+  const parts = [];
+  if (s.lev != null) parts.push(s.strongCover ? 0 : Math.max(0, Math.min(1, (s.lev - 0.30) / 0.40)));
+  if (s.divCover != null) parts.push(Math.max(0, Math.min(1, (1.5 - s.divCover) / 0.6)));
+  if (s.shockBps != null) parts.push(Math.max(0, Math.min(1, s.shockBps / 300)));
+  const sStress = parts.length ? parts.reduce((a, b) => a + b, 0) / parts.length : 0;
+  s.score = s.bucket === 'Insufficient data' ? 0 : Math.round(100 * (0.35 * sSize + 0.35 * sNeed + 0.30 * sStress));
+  return s;
+}
+function rwFm(v) { return v == null || !isFinite(v) ? '—' : Math.abs(v) >= 1e9 ? '$' + (v / 1e9).toFixed(2) + 'B' : '$' + Math.round(v / 1e6) + 'M'; }
+
+</script>
+<script type="text/rr-deferred">
+const REITS = (window.RR_LIVE && window.RR_LIVE.reits) || [{"cik":1500217,"ticker":"AAT","name":"American Assets Trust","sector":"Diversified","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-06","acc10K":"0001500217-26-000008","doc10K":"aat-20251231.htm","filed10Q":"2026-07-31","acc10Q":"0001500217-26-000046","doc10Q":"aat-20260630.htm","debt":1687956000,"ladder":{"2026":0,"2027":425000000,"2028":0,"2029":100000000,"2030":150000000,"later":1025000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1700000000,"cash":109697000,"ocf":168559000,"dividends":105427000,"interest":77263000,"realEstate":3807212000,"assets":2892533000},{"cik":917251,"ticker":"ADC","name":"Agree Realty","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-10","acc10K":"0000917251-26-000013","doc10K":"adc-20251231.htm","filed10Q":"2026-10-20","acc10Q":"0000917251-26-000076","doc10Q":"adc-20260930.htm","debt":3750000000,"ladder":{"2026":321128000,"2027":50000000,"2028":410000000,"2029":492250000,"2030":475000000,"later":1575000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.001,"ladderTotal":3323378000,"cash":80559000,"ocf":572040000,"dividends":388161000,"interest":153611000,"realEstate":9515546000,"assets":10950922000},{"cik":1632970,"ticker":"AHR","name":"American Healthcare REIT","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001193125-26-082692","doc10K":"ahr-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001193125-26-340269","doc10Q":"ahr-20260630.htm","debt":1423224000,"ladder":{"2026":159687000,"2027":56182000,"2028":139740000,"2029":16963000,"2030":44732000,"later":568261000},"ladderSrc":"XBRL maturity tags","ladderCheck":0.65,"ladderTotal":985565000,"cash":156896000,"revolverLeft":800000000,"ocf":362037000,"dividends":181010000,"interest":77620000,"realEstate":5457677000,"assets":5703918000},{"cik":1569187,"ticker":"AHRT","name":"AH Realty Trust","sector":"Diversified","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0001569187-26-000019","doc10K":"ahh-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001569187-26-000142","doc10Q":"ahh-20260630.htm","debt":955862000,"debtEst":true,"ladder":{"2026":420466000,"2027":507838000,"2028":394325000,"2029":59163000,"2030":47936000,"later":96856000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1526584000,"cash":20662000,"ocf":83140000,"dividends":79278000,"interest":85494000,"realEstate":1798576000,"assets":1927964000},{"cik":1232582,"ticker":"AHT","name":"Ashford Hospitality Trust","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-23","acc10K":"0001232582-26-000067","doc10K":"aht-20251231.htm","filed10Q":"2026-08-12","acc10Q":"0001232582-26-000183","doc10Q":"aht-20260630.htm","debt":2586884000,"debtEst":true,"ladder":{"2026":1532727000,"2027":919766000,"2028":30381000,"2029":89054000,"2030":233000,"later":14723000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2586884000,"cash":72510000,"revolverLeft":40000000,"ocf":15104000,"dividends":12343000,"interest":248862000,"realEstate":2291237000,"assets":2334450000},{"cik":922864,"ticker":"AIV","name":"Aimco","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-02","acc10K":"0001193125-26-085547","doc10K":"aiv-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001193125-26-338545","doc10Q":"aiv-20260630.htm","debt":430139000,"debtEst":true,"ladder":{"2026":116115000,"2028":282209000,"later":168650000,"2029":179646000},"ladderSrc":"XBRL maturity tags by debt type","ladderCheck":1.011,"ladderTotal":746620000,"cash":69800000,"ocf":8093000,"dividends":415557000,"interest":59429000,"realEstate":1055463000,"assets":1239582000},{"cik":899629,"ticker":"AKR","name":"Acadia Realty Trust","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-13","acc10K":"0001193125-26-051677","doc10K":"akr-20251231.htm","filed10Q":"2026-07-29","acc10Q":"0001193125-26-323776","doc10Q":"akr-20260630.htm","debt":1652324000,"ladder":{"2026":292287000,"2027":309638000,"2028":845235000,"2029":98292000,"2030":326850000,"later":1065000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1873367000,"cash":32960000,"revolverLeft":481700000,"ocf":165892000,"dividends":338998000,"interest":90655000,"realEstate":4682251000,"assets":4617507000},{"cik":3499,"ticker":"ALX","name":"Alexander's","sector":"Diversified","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-09","acc10K":"0000003499-26-000005","doc10K":"alx-20251231.htm","filed10Q":"2026-08-03","acc10Q":"0000003499-26-000038","doc10Q":"alx-20260630.htm","debt":834572000,"ladder":{"2026":0,"2027":94000000,"2028":400000000,"2029":0,"2030":175000000,"later":167691000},"ladderSrc":"XBRL maturity tags","ladderCheck":0.839,"ladderTotal":836691000,"cash":303312000,"ocf":27162000,"dividends":92447000,"interest":49554000,"realEstate":1004409000,"assets":1203064000},{"cik":1562401,"ticker":"AMH","name":"American Homes 4 Rent","sector":"Single-family rental","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0001562401-26-000010","doc10K":"amh-20251231.htm","filed10Q":"2026-07-31","acc10Q":"0001562401-26-000047","doc10Q":"amh-20260630.htm","debt":5190000000,"ladder":{"2026":0,"2027":0,"2028":500000000,"2029":760000000,"2030":650000000,"later":3250000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":5160000000,"cash":83670000,"revolverLeft":860000000,"ocf":864755000,"dividends":540202000,"interest":191218000,"realEstate":14668378000,"assets":13121098000},{"cik":1053507,"ticker":"AMT","name":"American Tower","sector":"Towers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-24","acc10K":"0001053507-26-000035","doc10K":"amt-20251231.htm","filed10Q":"2026-07-28","acc10Q":"0001053507-26-000133","doc10Q":"amt-20260630.htm","debt":31963100000,"ladder":{"2026":3387800000,"2027":4726700000,"2028":7513200000,"2029":3782000000,"2030":4925300000,"later":13099900000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.106,"ladderTotal":37434900000,"cash":1762500000,"ocf":5774900000,"dividends":3486700000,"interest":1393300000,"assets":63300100000},{"cik":1418121,"ticker":"APLE","name":"Apple Hospitality REIT","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-23","acc10K":"0001193125-26-064008","doc10K":"aple-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001193125-26-335151","doc10Q":"aple-20260630.htm","debt":1507742000,"ladder":{"2026":265649000,"2027":278602000,"2028":334066000,"2029":162294000,"2030":460016000,"later":44638000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1545265000,"cash":10154000,"revolverLeft":602000000,"ocf":386107000,"dividends":226993000,"interest":79939000,"rate":4.76,"realEstate":6790087000,"assets":4864690000},{"cik":1035443,"ticker":"ARE","name":"Alexandria Real Estate Equities","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-01-26","acc10K":"0001035443-26-000013","doc10K":"are-20251231.htm","filed10Q":"2026-10-26","acc10Q":"0001035443-26-000076","doc10Q":"are-20260930.htm","debt":12986055000,"ladder":{"2026":650000000,"2027":350000000,"2028":425000000,"2029":700000000,"2030":1503500000,"later":8850000000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Secured and unsecured debt maturity table","ladderCheck":1.006,"ladderTotal":12478500000,"cash":508855000,"revolverLeft":5000000000,"ocf":1187788000,"dividends":1534761000,"interest":274287000,"rate":4.33,"realEstate":28426999000,"assets":34051722000},{"cik":790816,"ticker":"BDN","name":"Brandywine Realty Trust","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-23","acc10K":"0000790816-26-000008","doc10K":"bdn-20251231.htm","filed10Q":"2026-07-28","acc10Q":"0000790816-26-000029","doc10Q":"bdn-20260630.htm","debt":2624934000,"ladder":{"2026":178014000,"2027":700000000,"2028":350000000,"2029":900000000,"2030":0,"later":435934000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2563948000,"cash":37870000,"revolverLeft":451000000,"ocf":121818000,"dividends":68975000,"interest":155886000,"realEstate":2520551000,"assets":3535967000},{"cik":907254,"ticker":"BFS","name":"Saul Centers","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0000907254-26-000006","doc10K":"bfs-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0000907254-26-000049","doc10Q":"bfs-20260630.htm","debt":1604142000,"ladder":{"2026":158290000,"2027":35654000,"2028":194620000,"2029":212010000,"2030":60783000,"later":964461000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Debt maturity table (balloon payments plus amortization)","ladderCheck":1.207,"ladderTotal":1625818000,"cash":5877000,"revolverLeft":158100000,"ocf":102878000,"dividends":83332000,"interest":76901000,"realEstate":2886022000,"assets":2159470000},{"cik":1903382,"ticker":"BHM","name":"Bluerock Homes Trust","sector":"Single-family rental","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001104659-26-021568","doc10K":"bhm-20251231x10k.htm","filed10Q":"2026-08-13","acc10Q":"0001104659-26-095875","doc10Q":"bhm-20260630x10q.htm","debt":433481000,"ladder":{"2026":33036000,"2027":82889000,"2028":5703000,"2029":80450000,"2030":55166000,"later":183539000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":440783000,"cash":172107000,"revolverLeft":46500000,"ocf":7072000,"dividends":18496000,"interest":23988000,"realEstate":892870000,"assets":1147491000},{"cik":1574085,"ticker":"BHR","name":"Braemar Hotels & Resorts","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-12","acc10K":"0001574085-26-000038","doc10K":"bhr-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001574085-26-000130","doc10Q":"bhr-20260630.htm","debt":956274000,"ladder":{"2026":723122000,"2027":209903000,"2028":180000000,"2029":0,"2030":0,"later":0},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1113025000,"cash":93865000,"ocf":45452000,"dividends":43816000,"interest":90059000,"realEstate":1402848000,"assets":1658741000},{"cik":1424182,"ticker":"BNL","name":"Broadstone Net Lease","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2025-12-31","filed10K":"2026-02-19","acc10K":"0001424182-26-000012","doc10K":"bnl-20251231.htm","debt":2522753000,"ladder":{"2026":16843000,"2027":351597000,"2028":763277000,"2029":566036000,"2030":100000000,"later":725000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2522753000,"cash":30540000,"revolverLeft":733964000,"ocf":299496000,"dividends":228839000,"interest":94467000,"rate":4.45,"realEstate":265812000,"assets":5717267000},{"cik":14846,"ticker":"BRT","name":"BRT Apartments","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-13","acc10K":"0000014846-26-000007","doc10K":"brt-20251231.htm","filed10Q":"2026-08-10","acc10Q":"0000014846-26-000037","doc10Q":"brt-20260630.htm","debt":469352000,"ladder":{"2026":31981000,"2027":46190000,"2028":40696000,"2029":56272000,"2030":22432000,"later":278126000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.01,"ladderTotal":475697000,"cash":22718000,"ocf":13796000,"dividends":15321000,"interest":22300000,"realEstate":733041000,"assets":691155000},{"cik":1581068,"ticker":"BRX","name":"Brixmor Property Group","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-09","acc10K":"0001581068-26-000007","doc10K":"brx-20251231.htm","filed10Q":"2026-10-26","acc10Q":"0001581068-26-000031","doc10Q":"brx-20260930.htm","debt":5348259000,"ladder":{"2026":607542000,"2027":400000000,"2028":357708000,"2029":753203000,"2030":1300000000,"later":2100000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":5518453000,"cash":164428000,"ocf":688157000,"dividends":374586000,"interest":238982000,"realEstate":11988090000,"assets":9022841000},{"cik":1037540,"ticker":"BXP","name":"BXP","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001037540-26-000006","doc10K":"bxp-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001037540-26-000034","doc10Q":"bxp-20260630.htm","debt":13092356000,"ladder":{"2026":2004357000,"2027":3054580000,"2028":1804815000,"2029":1034311000,"2030":700000000,"later":5550000000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Mortgage principal schedule plus the unsecured senior notes table (by maturity date)","ladderCheck":1.004,"ladderTotal":14148063000,"cash":493949000,"ocf":1284500000,"dividends":631015000,"interest":632429000,"realEstate":28606910000,"assets":25173869000},{"cik":910612,"ticker":"CBL","name":"CBL & Associates Properties","sector":"Malls & outlets","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-03","acc10K":"0001193125-26-087049","doc10K":"cbl-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001193125-26-339651","doc10Q":"cbl-20260630.htm","debt":2034011000,"ladder":{"2026":1281692000,"2027":11195,"2028":134781000,"2029":7939000,"2030":740144000,"later":59831000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.025,"ladderTotal":2224398195,"cash":101280000,"ocf":282921000,"dividends":66569000,"interest":170393000,"rate":6.56,"realEstate":2248413000,"assets":2637218000},{"cik":1051470,"ticker":"CCI","name":"Crown Castle","sector":"Towers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-23","acc10K":"0001051470-26-000016","doc10K":"cci-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001051470-26-000074","doc10Q":"cci-20260630.htm","debt":24467000000,"debtEst":true,"ladder":{"2026":4714000000,"2027":4199000000,"2028":2634000000,"2029":2479000000,"2030":772000000,"later":9669000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":24467000000,"cash":1042000000,"revolverLeft":4500000000,"ocf":2624000000,"dividends":2301000000,"interest":943000000,"realEstate":6165000000,"assets":21512000000},{"cik":860546,"ticker":"CDP","name":"COPT Defense Properties","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0000860546-26-000011","doc10K":"cdp-20251231.htm","filed10Q":"2026-08-03","acc10Q":"0000860546-26-000040","doc10Q":"cdp-20260630.htm","debt":2613040000,"ladder":{"2026":446300000,"2027":50000000,"2028":345000000,"2029":550000000,"2030":400000000,"later":1000000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2791300000,"cash":24157000,"ocf":337439000,"dividends":139714000,"interest":93658000,"realEstate":3813468000,"assets":4515281000},{"cik":1631569,"ticker":"CHCT","name":"Community Healthcare Trust","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-17","acc10K":"0001631569-26-000012","doc10K":"chct-20251231.htm","filed10Q":"2026-08-04","acc10Q":"0001631569-26-000038","doc10Q":"chct-20260630.htm","debt":559321000,"ladder":{"2028":125000000,"2029":258000000,"2030":150000000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Credit facility table (revolver due 10/29, term loans due 3/28 and 3/30)","ladderCheck":1.002,"ladderTotal":533000000,"cash":2673000,"revolverLeft":115000000,"ocf":59495000,"dividends":54443000,"interest":28261000,"realEstate":1200000000,"assets":1003595000},{"cik":1476045,"ticker":"CLDT","name":"Chatham Lodging Trust","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001437749-26-006103","doc10K":"cldt20251231_10k.htm","filed10Q":"2026-08-04","acc10Q":"0001437749-26-025638","doc10Q":"cldt20260630c_10q.htm","debt":418225000,"ladder":{"2026":0,"2027":0,"2028":24590000,"2029":223681000,"2030":410000,"later":94544000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":343225000,"cash":11342000,"ocf":76766000,"dividends":26766000,"interest":25496000,"assets":1234121000},{"cik":1649096,"ticker":"CLPR","name":"Clipper Realty","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0001437749-26-005856","doc10K":"clpr20251231_10k.htm","filed10Q":"2026-08-06","acc10Q":"0001437749-26-026249","doc10Q":"clpr20260630_10q.htm","debt":1287226000,"ladder":{"2026":1732000,"2027":150897000,"2028":416553000,"2029":209571000,"2030":87313000,"later":420167000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":1286233000,"cash":37702000,"ocf":25526000,"dividends":18629000,"interest":61226000,"realEstate":1421139000,"assets":1220738000},{"cik":908311,"ticker":"CMCT","name":"Creative Media & Community Trust","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-10","acc10K":"0000908311-26-000018","doc10K":"cmct-20251231.htm","filed10Q":"2026-08-14","acc10Q":"0000908311-26-000098","doc10Q":"cmct-20260630.htm","debt":502274000,"ladder":{"2026":164004000,"2027":188004000,"2028":30400000,"2029":0,"2030":105000000,"later":27070000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":514478000,"cash":12768000,"ocf":-15484000,"dividends":16586000,"interest":38427000,"realEstate":900547000,"assets":782938000},{"cik":1455863,"ticker":"COLD","name":"Americold Realty Trust","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0001628280-26-012274","doc10K":"art-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001628280-26-054283","doc10Q":"art-20260630.htm","debt":4258660000,"ladder":{"2026":1157111000,"2028":452144000,"2029":400000000,"2030":350000000,"later":1780980000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":4140235000,"cash":40470000,"ocf":349122000,"dividends":264338000,"interest":157233000,"realEstate":7910648000,"assets":7811137000},{"cik":906345,"ticker":"CPT","name":"Camden Property Trust","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0001628280-26-007697","doc10K":"cpt-20251231.htm","filed10Q":"2026-07-31","acc10Q":"0001628280-26-051327","doc10Q":"cpt-20260630.htm","debt":4848328000,"ladder":{"2026":1155500000,"2027":172500000,"2028":529900000,"2029":598200000,"2030":749100000,"later":695600000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":3900800000,"cash":44717000,"revolverLeft":842700000,"ocf":807444000,"dividends":458536000,"interest":147855000,"rate":4.1,"realEstate":8453046000,"assets":9456080000},{"cik":798359,"ticker":"CSR","name":"Centerspace","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-17","acc10K":"0000798359-26-000014","doc10K":"csr-20251231.htm","filed10Q":"2026-08-03","acc10Q":"0000798359-26-000078","doc10Q":"csr-20260630.htm","debt":1021147000,"ladder":{"2026":57432000,"2027":49679000,"2028":268224000,"2029":97237000,"2030":89159000,"later":492178000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1053909000,"cash":8560000,"revolverLeft":224000000,"ocf":91887000,"dividends":56093000,"interest":45618000,"rate":3.63,"realEstate":2261220000,"assets":1840365000},{"cik":23795,"ticker":"CTO","name":"CTO Realty Growth","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-19","acc10K":"0001104659-26-017560","doc10K":"cto-20251231x10k.htm","filed10Q":"2026-07-28","acc10Q":"0001104659-26-087549","doc10Q":"cto-20260630x10q.htm","debt":660800000,"ladder":{"2026":17800000,"2027":251000000,"2028":100000000,"2029":125000000,"2030":125000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.004,"ladderTotal":618800000,"cash":8056000,"revolverLeft":107000000,"ocf":71725000,"dividends":58592000,"interest":28987000,"rate":4.6,"realEstate":1107963000,"assets":1405729000},{"cik":1590717,"ticker":"CTRE","name":"CareTrust REIT","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0001628280-26-007664","doc10K":"ctre-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001628280-26-054284","doc10Q":"ctre-20260630.htm","debt":1210000000,"ladder":{"2026":0,"2027":0,"2028":400000000,"2029":0,"2030":500000000,"later":0},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":900000000,"cash":47591000,"ocf":446986000,"dividends":313121000,"interest":50566000,"rate":4.29,"realEstate":4685915000,"assets":5929251000},{"cik":1298675,"ticker":"CUBE","name":"CubeSmart","sector":"Self storage","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001298675-26-000010","doc10K":"cube-20251231x10k.htm","filed10Q":"2026-07-31","acc10Q":"0001298675-26-000038","doc10Q":"cube-20260630x10q.htm","debt":3045286000,"debtEst":true,"ladder":{"2026":340986000,"2028":550000000,"2029":404300000,"2030":350000000,"later":1400000000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Unsecured senior notes table plus mortgage principal schedule; excludes any revolver balance","ladderCheck":8.039,"ladderTotal":3045286000,"cash":14310000,"revolverLeft":548500000,"ocf":597884000,"dividends":486951000,"interest":117280000,"realEstate":8148814000,"assets":6584815000},{"cik":2027317,"ticker":"CURB","name":"Curbline Properties","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-10","acc10K":"0001193125-26-043647","doc10K":"curb-20251231.htm","filed10Q":"2026-10-22","acc10Q":"0001193125-26-428913","doc10Q":"curb-20260930.htm","debt":596149000,"ladder":{"2026":0,"2027":100000000,"2028":0,"2029":150000000,"2030":100000000,"later":78000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":428000000,"cash":122833000,"ocf":136104000,"dividends":73693000,"interest":30618000,"realEstate":2671435000,"assets":3033182000},{"cik":25232,"ticker":"CUZ","name":"Cousins Properties","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-05","acc10K":"0000025232-26-000014","doc10K":"cuz-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0000025232-26-000063","doc10Q":"cuz-20260630.htm","debt":3754662000,"ladder":{"2026":870127000,"2027":341000000,"2028":250000000,"2029":275000000,"2030":500000000,"later":1121000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":3357127000,"cash":6699000,"revolverLeft":1000000000,"ocf":431948000,"dividends":235622000,"interest":176118000,"realEstate":8007929000,"assets":9040873000},{"cik":1622194,"ticker":"DEA","name":"Easterly Government Properties","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-23","acc10K":"0001193125-26-064115","doc10K":"dea-20251231.htm","filed10Q":"2026-10-26","acc10Q":"0001622194-26-000035","doc10Q":"dea-20260930.htm","debt":1717508000,"ladder":{"2026":10054000,"2027":230733000,"2028":550033000,"2029":136016000,"2030":226049000,"later":522865000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1675750000,"cash":2935000,"revolverLeft":383800000,"ocf":161234000,"dividends":87607000,"interest":74451000,"realEstate":2752624000,"assets":3370793000},{"cik":1364250,"ticker":"DEI","name":"Douglas Emmett","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0001364250-26-000011","doc10K":"nysedei-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001364250-26-000041","doc10Q":"nysedei-20260630.htm","debt":5767982000,"ladder":{"2026":1181987000,"2027":381033000,"2028":1306081000,"2029":636131000,"2030":1181117000,"later":907018000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":5593367000,"cash":354962000,"ocf":386010000,"dividends":157847000,"interest":274058000,"rate":4.94,"realEstate":13188245000,"assets":9551187000},{"cik":1075415,"ticker":"DHC","name":"Diversified Healthcare Trust","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-24","acc10K":"0001075415-26-000013","doc10K":"dhc-20251231.htm","filed10Q":"2026-08-03","acc10Q":"0001075415-26-000030","doc10Q":"dhc-20260630.htm","debt":2442190000,"ladder":{"2026":1866000,"2027":2273000,"2028":640650000,"2029":1883000,"2030":435151000,"later":1362293000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2444116000,"cash":116793000,"ocf":-22671000,"dividends":9677000,"interest":169869000,"realEstate":5994658000,"assets":4238698000},{"cik":1297996,"ticker":"DLR","name":"Digital Realty Trust","sector":"Data centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-13","acc10K":"0001104659-26-015365","doc10K":"dlr-20251231x10k.htm","filed10Q":"2026-07-31","acc10Q":"0001104659-26-089296","doc10Q":"dlr-20260630x10q.htm","debt":18767604000,"ladder":{"2026":2400000000,"2027":1150000000,"2028":2050000000,"2029":2670000000,"2030":1300000000,"later":6950000000},"ladderSrc":"Loan and bond list in the 10-K debt note","ladderCheck":0.89,"ladderTotal":16520000000,"cash":1864796000,"revolverLeft":0,"ocf":2967041000,"dividends":1772338000,"interest":460427000,"rate":2.99,"realEstate":33700303000,"assets":54517914000},{"cik":765880,"ticker":"DOC","name":"Healthpeak Properties","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-03","acc10K":"0001628280-26-005044","doc10K":"peak-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001628280-26-053373","doc10Q":"peak-20260630.htm","debt":10150059000,"ladder":{"2026":994999000,"2027":1350842000,"2028":1252775000,"2029":2478850000,"2030":750000000,"later":3150000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":9977466000,"cash":1626827000,"revolverLeft":3000000000,"ocf":1231026000,"dividends":1028833000,"interest":336994000,"realEstate":16863606000,"assets":21680046000},{"cik":1298946,"ticker":"DRH","name":"DiamondRock Hospitality","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001298946-26-000013","doc10K":"drh-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001298946-26-000038","doc10Q":"drh-20260630.htm","debt":1100000000,"ladder":{"2026":0,"2027":0,"2028":0,"2029":500000000,"2030":600000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1100000000,"cash":105980000,"revolverLeft":400000000,"ocf":243989000,"dividends":81663000,"interest":61904000,"rate":4.9,"realEstate":3682016000,"assets":3066291000},{"cik":49600,"ticker":"EGP","name":"EastGroup Properties","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-11","acc10K":"0000049600-26-000010","doc10K":"egp-20251231.htm","filed10Q":"2026-10-21","acc10Q":"0000049600-26-000048","doc10Q":"egp-20260930.htm","debt":1806556000,"ladder":{"2026":140000000,"2027":175000000,"2028":160000000,"2029":155000000,"2030":300000000,"later":685000000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":1615000000,"cash":284000,"revolverLeft":625000000,"ocf":542802000,"dividends":332651000,"interest":36399000,"rate":4.9,"realEstate":7051889000,"assets":5777074000},{"cik":104894,"ticker":"ELME","name":"Elme Communities","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0000104894-26-000011","doc10K":"elme-20251231.htm","filed10Q":"2026-07-31","acc10Q":"0000104894-26-000103","doc10Q":"elme-20260630.htm","debt":525000000,"debtEst":true,"ladder":{"2026":125000000,"2028":50000000,"2030":350000000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Notes payable table (term loan, 30-year notes, green bonds)","ladderCheck":1.01,"ladderTotal":525000000,"cash":41257000,"assets":460410000},{"cik":895417,"ticker":"ELS","name":"Equity Lifestyle Properties","sector":"Manufactured housing","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-18","acc10K":"0001628280-26-008722","doc10K":"els-20251231.htm","filed10Q":"2026-07-28","acc10Q":"0001628280-26-050244","doc10Q":"els-20260630.htm","debt":3312741000,"ladder":{"2026":66784000,"2027":269482000,"2028":348977000,"2029":335060000,"2030":585423000,"later":1740140000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":3345866000,"cash":35629000,"revolverLeft":372400000,"ocf":588641000,"dividends":418151000,"interest":135138000,"realEstate":8412978000,"assets":5800675000},{"cik":1045450,"ticker":"EPR","name":"EPR Properties","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0001045450-26-000007","doc10K":"epr-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001045450-26-000042","doc10Q":"epr-20260630.htm","debt":3293013000,"ladder":{"2026":629597000,"2027":450000000,"2028":400000000,"2029":500000000,"2030":550000000,"later":424995000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.009,"ladderTotal":2954592000,"cash":16197000,"revolverLeft":1000000000,"ocf":440799000,"dividends":297216000,"interest":139850000,"realEstate":6755716000,"assets":6052113000},{"cik":1728951,"ticker":"EPRT","name":"Essential Properties Realty Trust","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-11","acc10K":"0001728951-26-000008","doc10K":"eprt-20251231.htm","filed10Q":"2026-10-21","acc10Q":"0001728951-26-000071","doc10Q":"eprt-20260930.htm","debt":2991000000,"ladder":{"2026":0,"2027":430000000,"2028":400000000,"2029":450000000,"2030":450000000,"later":800000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2530000000,"cash":25222000,"revolverLeft":809000000,"ocf":433147000,"dividends":262957000,"interest":125373000,"rate":4.55,"realEstate":8078527000,"assets":7689551000},{"cik":1101239,"ticker":"EQIX","name":"Equinix","sector":"Data centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-11","acc10K":"0001101239-26-000032","doc10K":"eqix-20251231.htm","filed10Q":"2026-07-29","acc10Q":"0001101239-26-000147","doc10Q":"eqix-20260630.htm","debt":19873000000,"ladder":{"2026":1317000000,"2027":1764000000,"2028":1433000000,"2029":2211000000,"2030":2739000000,"later":9598000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":19062000000,"cash":979000000,"revolverLeft":4000000000,"ocf":3942000000,"dividends":1957000000,"interest":569000000,"realEstate":25222000000,"assets":41076000000},{"cik":1541401,"ticker":"ESRT","name":"Empire State Realty Trust","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-02","acc10K":"0001541401-26-000008","doc10K":"esrt-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001541401-26-000033","doc10Q":"esrt-20260630.htm","debt":2240571000,"ladder":{"2026":53958000,"2027":159276000,"2028":149646000,"2029":398890000,"2030":513111000,"later":1114130000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2389011000,"cash":85605000,"ocf":227643000,"dividends":39193000,"interest":107011000,"realEstate":4476248000,"assets":4273098000},{"cik":920522,"ticker":"ESS","name":"Essex Property Trust","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0000920522-26-000003","doc10K":"ess-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0000920522-26-000022","doc10Q":"ess-20260630.htm","debt":6386526000,"ladder":{"2026":450000000,"2027":350000000,"2028":450000000,"2029":500000000,"2030":850000000,"later":3450000000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":0.89,"ladderTotal":6050000000,"cash":58327000,"revolverLeft":1500000000,"ocf":1118023000,"dividends":669842000,"interest":262809000,"rate":4.4,"realEstate":18534906000,"assets":12898302000},{"cik":1289490,"ticker":"EXR","name":"Extra Space Storage","sector":"Self storage","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0001289490-26-000011","doc10K":"exr-20251231.htm","filed10Q":"2026-07-31","acc10Q":"0001289490-26-000053","doc10Q":"exr-20260630.htm","debt":12257899000,"debtEst":true,"ladder":{"2026":1314694000,"2027":905209000,"2028":1882992000,"2029":1764798000,"2030":1691128000,"later":4699078000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":4.509,"ladderTotal":12257899000,"cash":695171000,"revolverLeft":2523000000,"ocf":1901194000,"dividends":1432411000,"interest":568124000,"rate":4.3,"realEstate":29142694000,"assets":29660493000},{"cik":1650132,"ticker":"FCPT","name":"Four Corners Property Trust","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0001193125-26-048898","doc10K":"fcpt-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001193125-26-326216","doc10Q":"fcpt-20260630.htm","debt":1265000000,"ladder":{"2026":150000000,"2027":250000000,"2028":140000000,"2029":325000000,"2030":75000000,"later":275000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1215000000,"cash":24790000,"revolverLeft":350000000,"ocf":194791000,"dividends":153078000,"interest":52995000,"realEstate":3573414000,"assets":2996363000},{"cik":1591670,"ticker":"FPI","name":"Farmland Partners","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-19","acc10K":"0001104659-26-017533","doc10K":"fpi-20251231x10k.htm","filed10Q":"2026-07-30","acc10Q":"0001104659-26-088677","doc10Q":"fpi-20260630x10q.htm","debt":224791000,"ladder":{"2026":68286000,"2027":24987000,"2028":11312000,"2030":21806000,"later":35200000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":161591000,"cash":11419000,"revolverLeft":46000000,"ocf":18422000,"dividends":23318000,"interest":10356000,"realEstate":629075000,"assets":699800000},{"cik":921825,"ticker":"FR","name":"First Industrial Realty Trust","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-11","acc10K":"0000921825-26-000012","doc10K":"fr-20251231.htm","filed10Q":"2026-10-22","acc10Q":"0000921825-26-000075","doc10Q":"fr-20260930.htm","debt":2655594000,"ladder":{"2026":300364000,"2027":556449000,"2028":390453000,"2029":408000000,"2030":250000000,"later":660600000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2565866000,"cash":42430000,"revolverLeft":850000000,"ocf":440926000,"dividends":269594000,"interest":69043000,"realEstate":5359997000,"assets":5872304000},{"cik":34903,"ticker":"FRT","name":"Federal Realty Investment Trust","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0000034903-26-000017","doc10K":"frt-20251231.htm","filed10Q":"2026-07-31","acc10Q":"0000034903-26-000042","doc10Q":"frt-20260630.htm","debt":4963602000,"debtEst":true,"ladder":{"2026":655595000,"2027":1003319000,"2028":1157511000,"2029":945434000,"2030":400684000,"later":801059000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":4963602000,"cash":107246000,"ocf":630972000,"dividends":393919000,"interest":195665000,"realEstate":11678315000,"assets":9059119000},{"cik":1031316,"ticker":"FSP","name":"Franklin Street Properties","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-09","acc10K":"0001104659-26-025284","doc10K":"fsp-20251231x10k.htm","filed10Q":"2026-07-28","acc10Q":"0001104659-26-087555","doc10Q":"fsp-20260630x10q.htm","debt":253136000,"cash":22459000,"ocf":9995000,"dividends":3111000,"interest":27487000,"realEstate":1160672000,"assets":864854000},{"cik":1988494,"ticker":"FVR","name":"FrontView REIT","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001193125-26-072181","doc10K":"fvr-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001193125-26-338354","doc10Q":"fvr-20260630.htm","debt":329104000,"ladder":{"2027":315500000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Revolving credit facility and term loan, both due October 3, 2027","ladderCheck":1.004,"ladderTotal":315500000,"cash":6001000,"ocf":43312000,"dividends":24372000,"interest":17276000,"rate":4.79,"realEstate":809342000,"assets":900362000},{"cik":1651721,"ticker":"GIPR","name":"Generation Income Properties","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-04-01","acc10K":"0001193125-26-135022","doc10K":"gipr-20251231.htm","filed10Q":"2026-08-17","acc10Q":"0001193125-26-352781","doc10Q":"gipr-20260630.htm","debt":53902964,"ladder":{"2026":12818519,"2027":1495125,"2028":18718050,"2029":13198374,"2030":1767662,"later":9438316},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":57436046,"cash":2029661,"ocf":805173,"dividends":10827361,"interest":4046660,"realEstate":66822995,"assets":86949309},{"cik":1575965,"ticker":"GLPI","name":"Gaming & Leisure Properties","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-19","acc10K":"0001575965-26-000032","doc10K":"glpi-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001575965-26-000060","doc10Q":"glpi-20260630.htm","debt":8077741000,"cash":319004000,"revolverLeft":1759600000,"ocf":1203381000,"dividends":928624000,"interest":383236000,"rate":5.02,"realEstate":12285970000,"assets":14155215000},{"cik":1526113,"ticker":"GNL","name":"Global Net Lease","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001628280-26-011696","doc10K":"gnl-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001628280-26-053396","doc10Q":"gnl-20260630.htm","debt":2399845000,"ladder":{"2026":94813000,"2027":130560000,"2028":315525000,"2029":646810000,"later":133184000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Mortgage notes future principal payments; excludes the revolving credit facility and senior notes","ladderCheck":0.525,"ladderTotal":1320892000,"cash":153640000,"revolverLeft":765400000,"ocf":218387000,"dividends":166535000,"interest":165944000,"realEstate":4598398000,"assets":4066088000},{"cik":1234006,"ticker":"GOOD","name":"Gladstone Commercial","sector":"Diversified","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-18","acc10K":"0001234006-26-000005","doc10K":"good-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001234006-26-000018","doc10Q":"good-20260630.htm","debt":852050000,"ladder":{"2026":35369000,"2027":95392000,"2028":169100000,"2029":272238000,"2030":261861000,"later":14988000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Mortgage principal schedule plus revolver, term loans and senior notes (by maturity date)","ladderCheck":1.006,"ladderTotal":848948000,"cash":10361000,"revolverLeft":70400000,"ocf":70090000,"dividends":69925000,"interest":45569000,"rate":4.2,"realEstate":1418722000,"assets":1242968000},{"cik":1052752,"ticker":"GTY","name":"Getty Realty","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-12","acc10K":"0001193125-26-048965","doc10K":"gty-20251231.htm","filed10Q":"2026-10-22","acc10Q":"0001193125-26-428988","doc10Q":"gty-20260930.htm","debt":1200000000,"ladder":{"2028":100000000,"2029":425000000,"2030":175000000,"later":300000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1000000000,"cash":8834000,"ocf":139501000,"dividends":118900000,"interest":50012000,"realEstate":2403960000,"assets":2572148000},{"cik":921082,"ticker":"HIW","name":"Highwoods Properties","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-10","acc10K":"0000921082-26-000005","doc10K":"hiw-20251231.htm","filed10Q":"2026-07-28","acc10Q":"0000921082-26-000045","doc10Q":"hiw-20260630.htm","debt":3570154000,"debtEst":true,"ladder":{"2026":6682000,"2027":458736000,"2028":723928000,"2029":717027000,"2030":404662000,"later":1259119000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":3570154000,"cash":145377000,"revolverLeft":749900000,"ocf":384428000,"dividends":225517000,"interest":161516000,"realEstate":7021895000,"assets":6471651000},{"cik":1482512,"ticker":"HPP","name":"Hudson Pacific Properties","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001482512-26-000038","doc10K":"hpp-20251231.htm","filed10Q":"2026-08-10","acc10Q":"0001482512-26-000069","doc10Q":"hpp-20260630.htm","debt":3367850000,"debtEst":true,"ladder":{"2026":1079767000,"2027":410000000,"2028":461000000,"2029":510000000,"2030":907083000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Debt maturity table (unsecured and secured debt; excludes joint venture partner debt)","ladderCheck":1.0,"ladderTotal":3367850000,"cash":80760000,"revolverLeft":795300000,"ocf":128767000,"dividends":45313000,"interest":157046000,"realEstate":7786264000,"assets":7170406000},{"cik":1360604,"ticker":"HR","name":"Healthcare Realty Trust","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-13","acc10K":"0001360604-26-000018","doc10K":"hr-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001360604-26-000064","doc10Q":"hr-20260630.htm","debt":4166944000,"ladder":{"2026":585348000,"2027":662200000,"2028":564117000,"2029":82301000,"2030":922967000,"later":1094490000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":3911423000,"cash":18987000,"revolverLeft":1200000000,"ocf":441155000,"dividends":339698000,"interest":189868000,"realEstate":10304236000,"assets":9001151000},{"cik":1070750,"ticker":"HST","name":"Host Hotels & Resorts","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001070750-26-000054","doc10K":"hst-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001070750-26-000126","doc10Q":"hst-20260630.htm","debt":5082000000,"ladder":{"2026":2000000,"2027":592000000,"2028":900000000,"2029":650000000,"2030":750000000,"later":2250000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":5144000000,"cash":1953000000,"ocf":1606000000,"dividends":652000000,"interest":237000000,"realEstate":20306000000,"assets":13253000000},{"cik":82473,"ticker":"IHT","name":"InnSuites Hospitality Trust","sector":"Hotels","fyEnd":"2026-01-31","asOf":"2026-07-31","filed10K":"2026-05-19","acc10K":"0001493152-26-024361","doc10K":"form10-k.htm","filed10Q":"2026-09-16","acc10Q":"0001493152-26-042806","doc10Q":"form10-q.htm","debt":12151639,"ladder":{"2026":1790719,"2027":2850447,"2028":214027,"2029":227807,"later":6602921},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":11685921,"cash":246555,"ocf":-284855,"dividends":181761,"interest":489478,"rate":6.0,"realEstate":6521088,"assets":13722446},{"cik":1677576,"ticker":"IIPR","name":"Innovative Industrial Properties","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-24","acc10K":"0001677576-26-000001","doc10K":"iipr-20251231.htm","filed10Q":"2026-08-04","acc10Q":"0001677576-26-000004","doc10Q":"iipr-20260630.htm","debt":609033000,"ladder":{"2026":318715000,"2027":0,"2028":75000000,"2029":0,"2030":0,"later":0},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":393715000,"cash":204734000,"ocf":196446000,"dividends":221467000,"interest":26030000,"realEstate":2365943000,"assets":2581641000},{"cik":1717307,"ticker":"ILPT","name":"Industrial Logistics Properties Trust","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-18","acc10K":"0001717307-26-000012","doc10K":"ilpt-20251231.htm","filed10Q":"2026-07-29","acc10Q":"0001717307-26-000041","doc10Q":"ilpt-20260630.htm","debt":4221000000,"ladder":{"2026":1419499000,"2027":20224000,"2028":20989000,"2029":671778000,"2030":1273597000,"later":807949000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":4214036000,"cash":135326000,"ocf":68819000,"dividends":28316000,"interest":249646000,"rate":5.48,"realEstate":5184711000,"assets":5122838000},{"cik":1497645,"ticker":"INN","name":"Summit Hotel Properties","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001497645-26-000015","doc10K":"inn-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001497645-26-000064","doc10Q":"inn-20260630.htm","debt":1389084000,"ladder":{"2026":288032000,"2027":562000,"2028":461938000,"2029":200293000,"2030":449042000,"later":4276000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1404143000,"cash":36933000,"revolverLeft":400000000,"ocf":157782000,"dividends":57194000,"interest":82626000,"rate":5.52,"assets":2728194000},{"cik":1687229,"ticker":"INVH","name":"Invitation Homes","sector":"Single-family rental","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-19","acc10K":"0001687229-26-000016","doc10K":"invh-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001687229-26-000045","doc10Q":"invh-20260630.htm","debt":8593238000,"ladder":{"2026":0,"2027":988013000,"2028":3370000000,"2029":0,"2030":450000000,"later":3650386000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":8458399000,"cash":75786000,"ocf":1199915000,"dividends":722834000,"interest":370959000,"realEstate":22649491000,"assets":18448310000},{"cik":1020569,"ticker":"IRM","name":"Iron Mountain","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0001020569-26-000013","doc10K":"irm-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001020569-26-000071","doc10Q":"irm-20260630.htm","debt":17482105000,"ladder":{"2026":216074000,"2027":2330763000,"2028":1663693000,"2029":2137476000,"2030":3035690000,"later":7173071000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.001,"ladderTotal":16556767000,"cash":204793000,"revolverLeft":2707574000,"ocf":1655387000,"dividends":1017761000,"interest":876801000,"assets":21955442000},{"cik":1466085,"ticker":"IRT","name":"Independence Realty Trust","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-17","acc10K":"0001437749-26-004376","doc10K":"irt20251231_10k.htm","filed10Q":"2026-08-04","acc10Q":"0001437749-26-025677","doc10Q":"irt20260630_10q.htm","debt":2443383000,"ladder":{"2026":335874000,"2027":21362000,"2028":979955000,"2029":617593000,"2030":106737000,"later":209502000},"ladderSrc":"XBRL maturity tags","ladderCheck":0.995,"ladderTotal":2271023000,"cash":22513000,"revolverLeft":1500000000,"ocf":275770000,"dividends":164921000,"interest":83192000,"realEstate":6798220000,"assets":6091687000},{"cik":1307748,"ticker":"IVT","name":"InvenTrust Properties","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0001307748-26-000045","doc10K":"ivtp-20251231.htm","filed10Q":"2026-08-03","acc10Q":"0001307748-26-000194","doc10Q":"ivt-20260630.htm","debt":1094796000,"ladder":{"2026":773000,"2027":26810000,"2028":21816000,"2029":267199000,"2030":206007000,"later":300000000},"ladderSrc":"XBRL maturity tags","ladderCheck":0.996,"ladderTotal":822605000,"cash":74904000,"revolverLeft":425000000,"ocf":160694000,"dividends":74831000,"interest":39264000,"rate":4.36,"realEstate":3230610000,"assets":3034455000},{"cik":1689796,"ticker":"JBGS","name":"JBG SMITH Properties","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-17","acc10K":"0001104659-26-016450","doc10K":"jbgs-20251231x10k.htm","filed10Q":"2026-08-10","acc10Q":"0001104659-26-092965","doc10Q":"jbgs-20260630x10q.htm","debt":2530450000,"ladder":{"2026":170820000,"2027":676303000,"2028":610147000,"2029":278987000,"2030":810332000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2546589000,"cash":74803000,"revolverLeft":1290000000,"ocf":60749000,"dividends":56070000,"interest":142843000,"realEstate":5115478000,"assets":4260835000},{"cik":879101,"ticker":"KIM","name":"Kimco Realty","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0001193125-26-060760","doc10K":"kim-20251231.htm","filed10Q":"2026-08-04","acc10Q":"0001193125-26-331817","doc10Q":"kim-20260630.htm","debt":8739649000,"ladder":{"2026":881700000,"2027":626500000,"2028":636800000,"2029":788600000,"2030":500300000,"later":4811500000},"ladderSrc":"XBRL maturity tags by debt type","ladderCheck":1.068,"ladderTotal":8245400000,"cash":699242000,"ocf":1179106000,"dividends":733848000,"interest":335645000,"realEstate":16616377000,"assets":20030952000},{"cik":1025996,"ticker":"KRC","name":"Kilroy Realty","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-11","acc10K":"0001628280-26-007051","doc10K":"krc-20251231.htm","filed10Q":"2026-10-23","acc10Q":"0001628280-26-067051","doc10Q":"krc-20260930.htm","debt":4410595000,"ladder":{"2026":601317000,"2027":249125000,"2028":400000000,"2029":475000000,"2030":500000000,"later":2400000000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":4625442000,"cash":94301000,"revolverLeft":1210000000,"ocf":494128000,"dividends":280543000,"interest":151669000,"realEstate":12461103000,"assets":10475772000},{"cik":1286043,"ticker":"KRG","name":"Kite Realty Group Trust","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-17","acc10K":"0001286043-26-000009","doc10K":"krg-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001286043-26-000048","doc10Q":"krg-20260630.htm","debt":2845169000,"ladder":{"2026":415181000,"2027":522568000,"2028":187943000,"2029":403474000,"2030":403036000,"later":1095735000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":3027937000,"cash":144578000,"revolverLeft":1100000000,"ocf":399308000,"dividends":243334000,"interest":129010000,"rate":4.29,"realEstate":6849310000,"assets":6266212000},{"cik":1090425,"ticker":"LAMR","name":"Lamar Advertising","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0001090425-26-000008","doc10K":"lamr-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001090425-26-000024","doc10Q":"lamr-20260630.htm","debt":3540741000,"ladder":{"2027":250346000,"2028":600000000,"2029":400000000,"2030":549674000,"later":1648361000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":3448381000,"cash":67950000,"revolverLeft":652214000,"ocf":906624000,"dividends":665512000,"interest":163054000,"realEstate":4843717000,"assets":6991597000},{"cik":1495240,"ticker":"LAND","name":"Gladstone Land","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-24","acc10K":"0001495240-26-000007","doc10K":"land-20251231.htm","filed10Q":"2026-08-11","acc10Q":"0001495240-26-000021","doc10Q":"land-20260630.htm","debt":486034000,"ladder":{"2026":17200000,"2027":50338000,"2028":76678000,"2029":152092000,"2030":93729000,"later":85315000},"ladderSrc":"XBRL maturity tags by debt type","ladderCheck":1.004,"ladderTotal":475352000,"cash":22551000,"revolverLeft":193904000,"ocf":27803000,"dividends":45976000,"interest":19260000,"realEstate":1287071000,"assets":1192196000},{"cik":1868159,"ticker":"LINE","name":"Lineage","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001868159-26-000012","doc10K":"line-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001868159-26-000039","doc10Q":"line-20260630.htm","debt":6249000000,"ladder":{"2026":809000000,"2027":96000000,"2028":779000000,"2029":2776000000,"2030":501000000,"later":1179000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":6140000000,"cash":58000000,"ocf":987000000,"dividends":538000000,"interest":268000000,"realEstate":11209000000,"assets":18900000000},{"cik":887905,"ticker":"LTC","name":"LTC Properties","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-24","acc10K":"0001104659-26-019178","doc10K":"ltc-20251231x10k.htm","filed10Q":"2026-08-05","acc10Q":"0001104659-26-091183","doc10Q":"ltc-20260630x10q.htm","debt":777090000,"ladder":{"2026":51500000,"2027":54500000,"2028":105000000,"2029":370863000,"2030":122000000,"later":141000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":844863000,"cash":40435000,"revolverLeft":700000000,"ocf":141521000,"dividends":112790000,"interest":39645000,"rate":4.31,"realEstate":1783842000,"assets":2176858000},{"cik":910108,"ticker":"LXP","name":"LXP Industrial Trust","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0000910108-26-000009","doc10K":"lxp-20251231.htm","filed10Q":"2026-07-29","acc10Q":"0000910108-26-000045","doc10Q":"lxp-20260630.htm","debt":1363186000,"ladder":{"2026":5773000,"2027":255984000,"2028":162223000,"2029":960000,"2030":401002000,"later":534999000},"ladderSrc":"XBRL maturity tags by debt type","ladderCheck":1.007,"ladderTotal":1360941000,"cash":17990000,"revolverLeft":585000,"ocf":191610000,"dividends":184656000,"interest":56643000,"realEstate":3962106000,"assets":3463934000},{"cik":912595,"ticker":"MAA","name":"Mid-America Apartment Communities","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-06","acc10K":"0001193125-26-041208","doc10K":"maa-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001193125-26-326153","doc10Q":"maa-20260630.htm","debt":5691901000,"ladder":{"2026":975516000,"2027":598907000,"2028":398519000,"2029":554833000,"2030":298573000,"later":2579024000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":5405372000,"cash":51836000,"revolverLeft":1500000000,"ocf":1010657000,"dividends":733259000,"interest":199526000,"rate":3.9,"realEstate":17801824000,"assets":11994584000},{"cik":912242,"ticker":"MAC","name":"Macerich","sector":"Malls & outlets","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0000912242-26-000016","doc10K":"mac-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0000912242-26-000037","doc10Q":"mac-20260630.htm","debt":4848075000,"ladder":{"2026":1145700000,"2027":490009000,"2028":744265000,"2029":1308949000,"2030":489025000,"later":944696000},"ladderSrc":"XBRL maturity tags by debt type","ladderCheck":1.011,"ladderTotal":5122644000,"cash":227028000,"revolverLeft":899487000,"ocf":306842000,"dividends":193706000,"interest":215765000,"assets":8523895000},{"cik":1654595,"ticker":"MDRR","name":"Medalist Diversified","sector":"Diversified","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-02","acc10K":"0001104659-26-022253","doc10K":"mdrr-20251231x10k.htm","filed10Q":"2026-08-13","acc10Q":"0001104659-26-095898","doc10Q":"mdrr-20260630x10q.htm","debt":19183417,"debtEst":true,"ladder":{"2026":1408050,"2027":11864246,"2028":742341,"2029":13881404,"2030":8110018,"later":15935910},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":51941969,"cash":6382359,"revolverLeft":16500000,"ocf":639257,"dividends":1244046,"interest":2242367,"realEstate":16337637,"assets":57816856},{"cik":1550913,"ticker":"MKZR","name":"MacKenzie Realty Capital","sector":"Diversified","fyEnd":"2026-06-30","asOf":"2026-06-30","filed10K":"2026-09-28","acc10K":"0001140361-26-037858","doc10K":"ef20075467_10k.htm","debt":148469186,"ladder":{"2026":26859993,"2027":33497988,"2028":4726550,"2029":27435197,"2030":26508005,"later":29441453},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":148469186,"cash":3517313,"revolverLeft":0,"ocf":-3309228,"dividends":1527214,"interest":9917547,"realEstate":231621139,"assets":235289800},{"cik":1287865,"ticker":"MPT","name":"Medical Properties Trust","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0001193125-26-073587","doc10K":"mpt-20251231.htm","filed10Q":"2026-08-10","acc10Q":"0001193125-26-342583","doc10Q":"mpt-20260630.htm","debt":9829069000,"ladder":{"2026":1225363000,"2027":1600000000,"2028":808500000,"2029":900000000,"2030":471625000,"later":4825384000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":9830872000,"cash":396558000,"revolverLeft":1280000000,"ocf":226821000,"dividends":206317000,"interest":533444000,"assets":14747740000},{"cik":2017206,"ticker":"MRP","name":"Millrose Properties","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-02","acc10K":"0002017206-26-000002","doc10K":"ck0002017206-20251231.htm","filed10Q":"2026-08-04","acc10Q":"0001193125-26-332732","doc10Q":"ck0002017206-20260630.htm","debt":2478732000,"ladder":{"2026":29000000,"2027":4000000,"2028":110000000,"2030":1250000000,"later":750000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.015,"ladderTotal":2143000000,"cash":34171000,"revolverLeft":0,"ocf":3746119000,"dividends":486390000,"interest":158197000,"assets":9707302000},{"cik":877860,"ticker":"NHI","name":"National Health Investors","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0000877860-26-000053","doc10K":"nhi-20251231.htm","filed10Q":"2026-08-10","acc10Q":"0000877860-26-000199","doc10Q":"nhi-20260630.htm","debt":1288000000,"ladder":{"2026":125000000,"2027":100000000,"2028":204000000,"later":750000000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":1179000000,"cash":30388000,"revolverLeft":262000000,"ocf":248681000,"dividends":176266000,"interest":58884000,"realEstate":2425060000,"assets":2964202000},{"cik":1561032,"ticker":"NHP","name":"National Healthcare Properties","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0001561032-26-000009","doc10K":"hct-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001561032-26-000055","doc10Q":"hct-20260630.htm","debt":856892000,"ladder":{"2026":335632000,"2027":922000,"2028":422722000,"2029":982000,"2030":1013000,"later":284948000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1046219000,"cash":245695000,"ocf":50748000,"interest":58310000,"realEstate":2298530000,"assets":1976269000},{"cik":1952976,"ticker":"NLOP","name":"Net Lease Office Properties","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001952976-26-000012","doc10K":"nlop-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001952976-26-000057","doc10Q":"nlop-20260630.htm","debt":21900000,"ladder":{"2026":21900000,"2027":0,"2028":0,"2029":0,"2030":0},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":21900000,"cash":23663000,"ocf":48210000,"dividends":331380000,"interest":3369000,"realEstate":267694000,"assets":200903000},{"cik":751364,"ticker":"NNN","name":"NNN REIT","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-11","acc10K":"0001193125-26-045617","doc10K":"nnn-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001193125-26-333967","doc10Q":"nnn-20260630.htm","debt":5001273000,"ladder":{"2026":350000000,"2027":400000000,"2028":400000000,"2030":400000000,"later":3000000000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":0.944,"ladderTotal":4550000000,"cash":4223000,"revolverLeft":1143000000,"ocf":673008000,"dividends":453423000,"interest":213163000,"rate":4.44,"realEstate":11742580000,"assets":9606523000},{"cik":1798100,"ticker":"NTST","name":"NETSTREIT","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-10","acc10K":"0001628280-26-006901","doc10K":"ntst-20251231.htm","filed10Q":"2026-10-21","acc10Q":"0001628280-26-066726","doc10Q":"ntst-20260930.htm","debt":1207915000,"ladder":{"2026":250178000,"2027":7864000,"2028":200000000,"2029":350000000,"2030":0,"later":300000000},"ladderSrc":"XBRL maturity tags by debt type","ladderCheck":1.0,"ladderTotal":1108042000,"cash":42305000,"revolverLeft":500000000,"ocf":133628000,"dividends":84054000,"interest":62093000,"realEstate":2741522000,"assets":3279742000},{"cik":1356115,"ticker":"NXDT","name":"NexPoint Diversified Real Estate Trust","sector":"Diversified","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-31","acc10K":"0001193125-26-133271","doc10K":"nxdt-20251231.htm","filed10Q":"2026-08-14","acc10Q":"0001193125-26-350420","doc10Q":"nxdt-20260630.htm","debt":284029000,"ladder":{"2026":239484000,"2027":21317000,"2028":0,"2029":10000000,"2030":0,"later":42747000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":313548000,"cash":11666000,"ocf":-3116000,"dividends":6910000,"interest":23691000,"realEstate":395774000,"assets":1039169000},{"cik":1620393,"ticker":"NXRT","name":"NexPoint Residential Trust","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0001193125-26-077343","doc10K":"nxrt-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001193125-26-333942","doc10Q":"nxrt-20260630.htm","debt":1622674000,"ladder":{"2028":123817000,"later":1469425000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Debt maturity table (operating properties and credit facility)","ladderCheck":1.0,"ladderTotal":1593242000,"cash":14626000,"revolverLeft":118900000,"ocf":83143000,"dividends":54829000,"interest":62463000,"rate":3.63,"realEstate":2435870000,"assets":1878351000},{"cik":1595527,"ticker":"NYC","name":"American Strategic Investment","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-04-15","acc10K":"0001628280-26-025292","doc10K":"nycr-20251231.htm","filed10Q":"2026-08-12","acc10Q":"0001628280-26-056274","doc10Q":"nycr-20260630.htm","debt":251000000,"ladder":{"2026":50000000,"2027":140000000,"2028":10000000,"2029":51000000,"2030":0,"later":0},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":251000000,"cash":2422000,"ocf":-2044000,"interest":11482000,"realEstate":388458000,"assets":444751000},{"cik":726728,"ticker":"O","name":"Realty Income","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0000726728-26-000011","doc10K":"o-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0000726728-26-000048","doc10Q":"o-20260630.htm","debt":27889068000,"ladder":{"2026":2375000000,"2027":2374500000,"2028":2499800000,"2029":2820300000,"2030":2472300000,"later":12801900000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":0.947,"ladderTotal":25343800000,"cash":552648000,"revolverLeft":3000000000,"ocf":4166154000,"dividends":3020230000,"interest":1186704000,"realEstate":64578700000,"assets":76441475000},{"cik":888491,"ticker":"OHI","name":"Omega Healthcare Investors","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-09","acc10K":"0000888491-26-000008","doc10K":"ohi-20251231x10k.htm","filed10Q":"2026-07-30","acc10Q":"0000888491-26-000024","doc10Q":"ohi-20260630x10q.htm","debt":4292000000,"debtEst":true,"ladder":{"2027":700000000,"2028":850000000,"2029":742000000,"2030":600000000,"later":1400000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.008,"ladderTotal":4292000000,"cash":39036000,"ocf":890558000,"dividends":795047000,"interest":207729000,"realEstate":9460347000,"assets":10014761000},{"cik":712770,"ticker":"OLP","name":"One Liberty Properties","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-06","acc10K":"0001104659-26-024579","doc10K":"olp-20251231x10k.htm","filed10Q":"2026-08-05","acc10Q":"0001104659-26-091179","doc10Q":"olp-20260630x10q.htm","debt":528318000,"ladder":{"2026":28875000,"2027":48676000,"2028":39671000,"2029":86839000,"2030":77898000,"later":240542000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Mortgage principal schedule (amortization plus amounts due at maturity)","ladderCheck":1.01,"ladderTotal":522501000,"cash":13085000,"revolverLeft":100000000,"ocf":38561000,"dividends":30439000,"interest":25337000,"realEstate":991907000,"assets":872114000},{"cik":1873923,"ticker":"ONL","name":"Orion Properties","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-05","acc10K":"0001873923-26-000038","doc10K":"onl-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001873923-26-000107","doc10Q":"onl-20260630.htm","debt":436598000,"ladder":{"2026":92000000,"2027":355000000,"later":18000000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Debt maturity table","ladderCheck":1.0,"ladderTotal":465000000,"cash":16870000,"ocf":22615000,"dividends":4516000,"interest":26464000,"rate":5.37,"realEstate":1124136000,"assets":1140075000},{"cik":1456772,"ticker":"OPI","name":"Office Properties Income Trust","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-05-22","acc10K":"0001456772-26-000022","doc10K":"opi-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001456772-26-000038","doc10Q":"opi-20260630.htm","debt":1707320000,"debtEst":true,"ladder":{"2026":144154000,"2027":921300000,"2028":123487000,"2029":910278000,"2030":14739000,"later":317656000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2431614000,"cash":50751000,"ocf":-6569000,"dividends":1407000,"interest":203454000,"realEstate":1107215000,"assets":2374530000},{"cik":1579877,"ticker":"OUT","name":"OUTFRONT Media","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0001579877-26-000008","doc10K":"out-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001579877-26-000043","doc10Q":"out-20260630.htm","debt":2529400000,"ladder":{"2026":0,"2027":650000000,"2028":0,"2029":500000000,"2030":500000000,"later":950000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2600000000,"cash":31200000,"revolverLeft":50000000,"ocf":390600000,"dividends":211300000,"interest":153200000,"rate":5.5,"realEstate":2150300000,"assets":5270300000},{"cik":1042776,"ticker":"PDM","name":"Piedmont Realty Trust","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-17","acc10K":"0001042776-26-000012","doc10K":"pdm-20251231.htm","filed10Q":"2026-10-26","acc10Q":"0001042776-26-000071","doc10Q":"pdm-20260930.htm","debt":2340841000,"ladder":{"2026":3433000,"2027":328894000,"2028":515753000,"2029":400000000,"2030":300000000,"later":700000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2248080000,"cash":3903000,"ocf":167814000,"dividends":156000,"interest":128235000,"rate":4.78,"realEstate":3462009000,"assets":4091613000},{"cik":1474098,"ticker":"PEB","name":"Pebblebrook Hotel Trust","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001474098-26-000015","doc10K":"peb-20251231.htm","filed10Q":"2026-07-29","acc10Q":"0001474098-26-000055","doc10Q":"peb-20260630.htm","debt":2103925000,"ladder":{"2026":392308000,"2027":362429000,"2028":405310000,"2029":585217000,"2030":400000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2145264000,"cash":261010000,"revolverLeft":641200000,"ocf":279216000,"dividends":51399000,"interest":101288000,"realEstate":6679040000,"assets":5281626000},{"cik":1476204,"ticker":"PECO","name":"Phillips Edison & Company","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-10","acc10K":"0001476204-26-000005","doc10K":"cik0001476204-20251231.htm","filed10Q":"2026-07-24","acc10Q":"0001476204-26-000032","doc10Q":"peco-20260630.htm","debt":2478111000,"ladder":{"2026":163654000,"2027":523595000,"2028":17367000,"2029":92805000,"2030":200844000,"later":1403400000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2401665000,"cash":7132000,"ocf":365069000,"dividends":179606000,"interest":102057000,"rate":4.4,"realEstate":7063499000,"assets":5444913000},{"cik":1786117,"ticker":"PINE","name":"Alpine Income Property Trust","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-05","acc10K":"0001104659-26-010910","doc10K":"pine-20251231x10k.htm","filed10Q":"2026-10-22","acc10Q":"0001104659-26-118164","doc10Q":"pine-20260930x10q.htm","debt":398500000,"ladder":{"2027":278000000,"2026":100000000},"ladderSrc":"Loan and bond list in the 10-K debt note","ladderCheck":1.0,"ladderTotal":378000000,"cash":11722000,"revolverLeft":51500000,"ocf":17918000,"dividends":22079000,"interest":18203000,"rate":4.48,"realEstate":548281000,"assets":821106000},{"cik":1617406,"ticker":"PK","name":"Park Hotels & Resorts","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-20","acc10K":"0001617406-26-000006","doc10K":"pk-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001617406-26-000042","doc10Q":"pk-20260630.htm","debt":3932000000,"ladder":{"2026":1601000000,"2027":230000000,"2028":725000000,"2029":750000000,"2030":550000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":3856000000,"cash":264000000,"revolverLeft":1000000000,"ocf":404000000,"dividends":207000000,"interest":209000000,"realEstate":9645000000,"assets":7702000000},{"cik":1045609,"ticker":"PLD","name":"Prologis","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-13","acc10K":"0001193125-26-051453","doc10K":"pld-20251231.htm","filed10Q":"2026-07-29","acc10Q":"0001193125-26-323746","doc10Q":"pld-20260630.htm","debt":36975843000,"ladder":{"2026":1914530000,"2027":2087227000,"2028":2708088000,"2029":3430192000,"2030":2883220000,"later":22554789000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":35578046000,"cash":1765043000,"revolverLeft":5828000000,"ocf":5240975000,"dividends":3885475000,"interest":1002344000,"rate":3.3,"realEstate":97013785000,"assets":101011872000},{"cik":1393311,"ticker":"PSA","name":"Public Storage","sector":"Self storage","fyEnd":"2025-12-31","asOf":"2026-09-30","filed10K":"2026-02-12","acc10K":"0001628280-26-007696","doc10K":"psa-20251231.htm","filed10Q":"2026-10-26","acc10Q":"0001628280-26-067286","doc10Q":"psa-20260930.htm","debt":12094254000,"ladder":{"2026":1150138000,"2027":1200146000,"2028":1200129000,"2029":1000088000,"2030":1297819000,"later":4462000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":10310320000,"cash":560379000,"revolverLeft":0,"ocf":3005678000,"dividends":1801552000,"interest":348518000,"rate":3.6,"realEstate":37125503000,"assets":28997613000},{"cik":1759774,"ticker":"PSTL","name":"Postal Realty Trust","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-24","acc10K":"0001628280-26-011212","doc10K":"pstl-20251231.htm","filed10Q":"2026-08-04","acc10Q":"0001628280-26-052551","doc10Q":"pstl-20260630.htm","debt":383879000,"ladder":{"2026":637000,"2027":778000,"2028":175804000,"2029":39832000,"2030":115861000,"later":30246000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":363158000,"cash":1835000,"ocf":47301000,"dividends":33245000,"interest":16687000,"realEstate":857031000,"assets":836570000},{"cik":1532619,"ticker":"PW","name":"Power REIT","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-31","acc10K":"0001493152-26-014062","doc10K":"form10-k.htm","filed10Q":"2026-08-12","acc10Q":"0001493152-26-037387","doc10Q":"form10-q.htm","debt":19653659,"ladder":{"2026":791212,"2027":835036,"2028":880909,"2029":928923,"2030":979173,"later":16005899},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":20421152,"cash":3147494,"ocf":1519911,"interest":969428,"assets":26164271},{"cik":910606,"ticker":"REG","name":"Regency Centers","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-13","acc10K":"0001193125-26-051668","doc10K":"reg-20251231.htm","filed10Q":"2026-08-03","acc10Q":"0001193125-26-330021","doc10Q":"reg-20260630.htm","debt":4903182000,"ladder":{"2026":360684000,"2027":757609000,"2028":480304000,"2029":527739000,"2030":607608000,"later":2064887000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.013,"ladderTotal":4798831000,"cash":191614000,"revolverLeft":1470000000,"ocf":856643000,"dividends":554952000,"interest":188066000,"realEstate":14767372000,"assets":13122942000},{"cik":1571283,"ticker":"REXR","name":"Rexford Industrial Realty","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-11","acc10K":"0001571283-26-000006","doc10K":"rexr-20251231.htm","filed10Q":"2026-07-28","acc10Q":"0001571283-26-000040","doc10Q":"rexr-20260630.htm","debt":3285503000,"ladder":{"2026":67587000,"2027":1019078000,"2028":314218000,"2029":600427000,"2030":800448000,"later":476891000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":3278649000,"cash":32226000,"revolverLeft":1231000000,"ocf":509329000,"dividends":424582000,"interest":106085000,"realEstate":12176516000,"assets":11634676000},{"cik":1040829,"ticker":"RHP","name":"Ryman Hospitality Properties","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-24","acc10K":"0001104659-26-019035","doc10K":"rhp-20251231x10k.htm","filed10Q":"2026-08-07","acc10Q":"0001104659-26-092580","doc10Q":"rhp-20260630x10q.htm","debt":3969453000,"ladder":{"2026":7242000,"2027":707242000,"2028":407242000,"2029":607242000,"2030":282423000,"later":2028735000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":4040126000,"cash":366125000,"revolverLeft":850000000,"ocf":691851000,"dividends":299586000,"interest":256447000,"realEstate":7943187000,"assets":6191836000},{"cik":1511337,"ticker":"RLJ","name":"RLJ Lodging Trust","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001511337-26-000007","doc10K":"rlj-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001511337-26-000023","doc10Q":"rlj-20260630.htm","debt":2695154000,"ladder":{"2026":879750000,"2027":500000000,"2028":300000000,"2029":525000000,"2030":0,"later":0},"ladderSrc":"XBRL maturity tags","ladderCheck":1.003,"ladderTotal":2204750000,"cash":937599000,"revolverLeft":600000000,"ocf":266990000,"dividends":116447000,"interest":112663000,"realEstate":6213981000,"assets":5233686000},{"cik":52827,"ticker":"RYN","name":"Rayonier","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-23","acc10K":"0000052827-26-000036","doc10K":"ryn-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0000052827-26-000099","doc10Q":"ryn-20260630.htm","debt":1859500000,"ladder":{"2026":200000000,"2027":0,"2028":200000000,"2029":200000000,"2030":0,"later":450000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1050000000,"cash":411760000,"revolverLeft":199000000,"ocf":313143000,"dividends":300221000,"interest":44626000,"realEstate":611694000,"assets":7463663000},{"cik":1095651,"ticker":"SAFE","name":"Safehold","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0001095651-26-000010","doc10K":"safe-20251231x10k.htm","filed10Q":"2026-07-31","acc10Q":"0001095651-26-000025","doc10Q":"safe-20260630x10q.htm","debt":4708770000,"ladder":{"2026":0,"2027":10000000,"2028":79193000,"2029":780000000,"2030":400000000,"later":3371398000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":4640591000,"cash":15922000,"revolverLeft":1400000000,"ocf":36947000,"dividends":51175000,"interest":213698000,"realEstate":743822000,"assets":7520024000},{"cik":1034054,"ticker":"SBAC","name":"SBA Communications","sector":"Towers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001034054-26-000002","doc10K":"sbac-20251231x10k.htm","filed10Q":"2026-08-06","acc10Q":"0001034054-26-000011","doc10Q":"sbac-20260630x10q.htm","debt":12729222000,"ladder":{"2029":3425000000,"later":3154750000,"2026":3080000000,"2028":1450000000,"2027":3015000000},"ladderSrc":"Loan and bond list in the 10-K debt note","ladderCheck":1.095,"ladderTotal":14124750000,"cash":327051000,"ocf":1284318000,"dividends":505218000,"interest":511417000,"realEstate":7879760000,"assets":11742320000},{"cik":1492298,"ticker":"SBRA","name":"Sabra Health Care REIT","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0001492298-26-000008","doc10K":"sbra-20251231.htm","filed10Q":"2026-08-03","acc10Q":"0001492298-26-000028","doc10Q":"sbra-20260630.htm","debt":2645925000,"ladder":{"2026":2147000,"2027":319790000,"2028":541691000,"2029":352328000,"2030":502392000,"later":832682000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":2551030000,"cash":231584000,"ocf":371573000,"dividends":298057000,"interest":116029000,"realEstate":6129812000,"assets":5512610000},{"cik":1031235,"ticker":"SELF","name":"Global Self Storage","sector":"Self storage","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-25","acc10K":"0001193125-26-124051","doc10K":"self-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001193125-26-340205","doc10Q":"self-20260630.htm","debt":15746431,"ladder":{"2026":633449,"2027":660519,"2028":688746,"2029":718180,"2030":748871,"later":12608987},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":16058752,"cash":7513637,"ocf":4255972,"dividends":3290435,"interest":822807,"rate":6.6,"realEstate":67600021,"assets":63697250},{"cik":1295810,"ticker":"SHO","name":"Sunstone Hotel Investors","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001104659-26-021440","doc10K":"sho-20251231x10k.htm","filed10Q":"2026-08-06","acc10Q":"0001104659-26-091907","doc10Q":"sho-20260630x10q.htm","debt":980000000,"ladder":{"2026":65000000,"2028":105000000,"later":760000000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Debt maturity table (term loans shown at extended maturity, as the company presents them)","ladderCheck":1.0,"ladderTotal":930000000,"cash":94431000,"revolverLeft":475000000,"ocf":198438000,"dividends":84634000,"interest":50178000,"realEstate":3752746000,"assets":3034721000},{"cik":894315,"ticker":"SITC","name":"SITE Centers","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0001193125-26-076905","doc10K":"sitc-20251231.htm","filed10Q":"2026-08-03","acc10Q":"0001193125-26-330598","doc10Q":"sitc-20260630.htm","cash":238926000,"ocf":-17775000,"dividends":355741000,"interest":4544000,"realEstate":79464000,"assets":365294000},{"cik":899715,"ticker":"SKT","name":"Tanger","sector":"Malls & outlets","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-26","acc10K":"0001628280-26-012252","doc10K":"skt-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001628280-26-053864","doc10Q":"skt-20260630.htm","debt":1876700000,"ladder":{"2026":355705000,"2027":740000000,"2028":44000000,"2030":61700000,"later":400000000},"ladderSrc":"Maturity table in the 10-K debt note","ladderCheck":1.0,"ladderTotal":1601405000,"cash":176878000,"revolverLeft":620000000,"ocf":301722000,"dividends":143465000,"interest":72292000,"realEstate":3816358000,"assets":2859693000},{"cik":1040971,"ticker":"SLG","name":"SL Green Realty","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-17","acc10K":"0001628280-26-008669","doc10K":"slg-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001628280-26-054436","doc10Q":"slg-20260630.htm","debt":4212419000,"ladder":{"2026":655148000,"2027":2569277000,"2028":284550000,"2029":177000000,"2030":0,"later":358524000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.029,"ladderTotal":4044499000,"cash":180788000,"revolverLeft":393000000,"ocf":92152000,"dividends":174966000,"interest":215620000,"realEstate":7331106000,"assets":11809001000},{"cik":1585389,"ticker":"SMA","name":"SmartStop Self Storage REIT","sector":"Self storage","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-27","acc10K":"0001193125-26-082573","doc10K":"ck0001585389-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001585389-26-000014","doc10Q":"ck0001585389-20260630.htm","debt":1124597000,"ladder":{"2026":93049000,"2027":104003000,"2028":459005000,"2029":104289000,"2030":186684000,"later":157338000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1104368000,"cash":38185000,"ocf":110325000,"dividends":88796000,"interest":52319000,"rate":4.4,"realEstate":2443716000,"assets":2437872000},{"cik":1063761,"ticker":"SPG","name":"Simon Property Group","sector":"Malls & outlets","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001104659-26-019419","doc10K":"spg-20251231x10k.htm","filed10Q":"2026-08-10","acc10Q":"0001104659-26-093360","doc10Q":"spg-20260630x10q.htm","debt":28699607000,"ladder":{"2026":5905606000,"2027":3936773000,"2028":2296651000,"2029":2940031000,"2030":1657864000,"later":11858614000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":28595539000,"cash":1019091000,"revolverLeft":5000000000,"ocf":4122942000,"dividends":3340000000,"interest":1071941000,"realEstate":51094995000,"assets":39709266000},{"cik":1080657,"ticker":"SQFT","name":"Presidio Property Trust","sector":"Diversified","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-27","acc10K":"0001437749-26-010114","doc10K":"sqft20251231_10k.htm","filed10Q":"2026-08-13","acc10Q":"0001437749-26-027591","doc10Q":"sqft20260630_10q.htm","debt":80858050,"ladder":{"2026":29973191,"2027":1715086,"2028":8624623,"2029":29367490,"2030":11656692,"later":11584601},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":92921683,"cash":5902592,"ocf":1454936,"assets":106658756},{"cik":1479094,"ticker":"STAG","name":"STAG Industrial","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-11","acc10K":"0001479094-26-000009","doc10K":"stag-20251231.htm","filed10Q":"2026-07-28","acc10Q":"0001479094-26-000026","doc10Q":"stag-20260630.htm","debt":3452985000,"ladder":{"2026":130231000,"2027":370240000,"2028":737249000,"2029":175258000,"2030":650268000,"later":1202853000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":3266099000,"cash":65886000,"revolverLeft":547800000,"ocf":476356000,"dividends":242012000,"interest":139393000,"rate":4.42,"realEstate":7069359000,"assets":7476995000},{"cik":1782430,"ticker":"STRW","name":"Strawberry Fields REIT","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-19","acc10K":"0001493152-26-011682","doc10K":"form10-k.htm","filed10Q":"2026-08-06","acc10Q":"0001493152-26-036400","doc10Q":"form10-q.htm","debt":810243000,"ladder":{"2026":258877000,"2027":83288000,"2028":63414000,"2029":169993000,"2030":9483000,"later":209597000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":794652000,"cash":42153000,"ocf":82986000,"dividends":36146000,"interest":50848000,"realEstate":964814000,"assets":878455000},{"cik":912593,"ticker":"SUI","name":"Sun Communities","sector":"Manufactured housing","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0000912593-26-000086","doc10K":"sui-20251231.htm","filed10Q":"2026-07-28","acc10Q":"0000912593-26-000234","doc10Q":"sui-20260630.htm","debt":4278000000,"ladder":{"2026":534800000,"2027":37300000,"2028":667000000,"2029":351600000,"2030":47900000,"later":2639400000},"ladderSrc":"XBRL maturity tags","ladderCheck":0.64,"ladderTotal":4278000000,"cash":165200000,"ocf":899500000,"dividends":548800000,"interest":164600000,"rate":3.349,"realEstate":12213200000,"assets":10867600000},{"cik":945394,"ticker":"SVC","name":"Service Properties Trust","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0000945394-26-000012","doc10K":"svc-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0000945394-26-000049","doc10Q":"svc-20260630.htm","debt":4579037000,"ladder":{"2026":1958000,"2027":1477114000,"2028":1000737000,"2029":1125000000,"2030":400000000,"later":1500000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":5504809000,"cash":5511000,"revolverLeft":625000000,"ocf":123457000,"dividends":11502000,"interest":393620000,"realEstate":7591984000,"assets":5838485000},{"cik":1476150,"ticker":"TRNO","name":"Terreno Realty","sector":"Industrial","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-04","acc10K":"0001476150-26-000011","doc10K":"trno-20251231.htm","filed10Q":"2026-08-05","acc10Q":"0001476150-26-000035","doc10Q":"trno-20260630.htm","debt":947879000,"ladder":{"2026":50000000,"2027":150000000,"2028":272879000,"2029":300000000,"2030":125000000,"later":50000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":947879000,"cash":51208000,"revolverLeft":2000000000,"ocf":286645000,"dividends":213821000,"interest":35217000,"rate":3.8,"realEstate":6099701000,"assets":5711884000},{"cik":74208,"ticker":"UDR","name":"UDR","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-17","acc10K":"0000074208-26-000013","doc10K":"udr-20251231x10k.htm","filed10Q":"2026-07-28","acc10Q":"0000074208-26-000073","doc10Q":"udr-20260630x10q.htm","debt":5827122000,"ladder":{"2026":801672000,"2027":333319000,"2028":466526000,"2029":965811000,"2030":830597000,"later":2437930000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Debt maturity table (total debt column), Note 6","ladderCheck":1.0,"ladderTotal":5835855000,"cash":1193000,"revolverLeft":1300000000,"ocf":887260000,"dividends":612171000,"interest":196469000,"rate":3.38,"realEstate":16114220000,"assets":10265348000},{"cik":1611547,"ticker":"UE","name":"Urban Edge Properties","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-11","acc10K":"0001611547-26-000022","doc10K":"ue-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001611547-26-000059","doc10Q":"ue-20260630.htm","debt":1619388000,"debtEst":true,"ladder":{"2026":126998000,"2027":272360000,"2028":135165000,"2029":360269000,"2030":378147000,"later":346449000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1619388000,"cash":58264000,"revolverLeft":624500000,"ocf":212513000,"dividends":100709000,"interest":72200000,"realEstate":3927152000,"assets":3384388000},{"cik":798783,"ticker":"UHT","name":"Universal Health Realty Income Trust","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001193125-26-071594","doc10K":"uht-20251231.htm","filed10Q":"2026-08-07","acc10Q":"0001193125-26-340281","doc10Q":"uht-20260630.htm","debt":383700000,"ladder":{"2026":600000,"2027":626000,"2028":356853000,"2029":680000,"2030":6393000,"later":9620000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":374772000,"cash":6819000,"revolverLeft":109400000,"ocf":48151000,"dividends":41370000,"interest":17613000,"rate":5.0,"realEstate":682918000,"assets":567118000},{"cik":752642,"ticker":"UMH","name":"UMH Properties","sector":"Manufactured housing","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001493152-26-008042","doc10K":"form10-k.htm","filed10Q":"2026-08-05","acc10Q":"0001493152-26-036177","doc10Q":"form10-q.htm","debt":590559000,"ladder":{"2026":51745000,"2027":43676000,"2028":50825000,"2029":40954000,"2030":100217000,"later":303142000},"ladderSrc":"Read from the 10-K debt note","ladderNote":"Mortgage and loans payable maturity tables; excludes revolving lines of credit","ladderCheck":0.502,"ladderTotal":590559000,"cash":28622000,"ocf":90410000,"dividends":93208000,"interest":37500000,"rate":4.8,"realEstate":1958372000,"assets":1712923000},{"cik":1705696,"ticker":"VICI","name":"VICI Properties","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-25","acc10K":"0001705696-26-000034","doc10K":"vici-20251231.htm","filed10Q":"2026-07-29","acc10Q":"0001705696-26-000090","doc10Q":"vici-20260630.htm","debt":17218422000,"ladder":{"2026":1750000000,"2027":1500000000,"2028":2000000000,"2029":1892453000,"2030":2000000000,"later":7950000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":17092453000,"cash":288063000,"ocf":2638275000,"dividends":1920786000,"interest":839855000,"rate":4.454,"realEstate":66874000,"assets":48271220000},{"cik":906107,"ticker":"VMRK","name":"Vivmark Residential","sector":"Multifamily","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-13","acc10K":"0001193125-26-051433","doc10K":"eqr-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001193125-26-326170","doc10Q":"eqr-20260630.htm","debt":7593823000,"ladder":{"2026":1186850000,"2027":408200000,"2028":909000000,"2029":897820000,"2030":1159262000,"later":3680110000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":8241242000,"cash":36405000,"revolverLeft":1828536000,"ocf":1566091000,"dividends":1056265000,"interest":319199000,"realEstate":30440821000,"assets":20275577000},{"cik":899689,"ticker":"VNO","name":"Vornado Realty Trust","sector":"Office","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-09","acc10K":"0000899689-26-000009","doc10K":"vno-20251231.htm","filed10Q":"2026-08-03","acc10Q":"0000899689-26-000046","doc10Q":"vno-20260630.htm","debt":6602760000,"ladder":{"2026":925000000,"2027":2400420000,"2028":2300000000,"2029":0,"2030":450000000,"later":820000000},"ladderSrc":"XBRL maturity tags by debt type","ladderCheck":1.071,"ladderTotal":6895420000,"cash":675353000,"ocf":390889000,"dividends":227076000,"interest":348911000,"realEstate":14561814000,"assets":15611168000},{"cik":740260,"ticker":"VTR","name":"Ventas","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-06","acc10K":"0000740260-26-000006","doc10K":"vtr-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0000740260-26-000024","doc10Q":"vtr-20260630.htm","debt":12768110000,"ladder":{"2026":2173664000,"2027":1631586000,"2028":1563747000,"2029":1694165000,"2030":1407778000,"later":4632687000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":13103627000,"cash":198956000,"revolverLeft":3500000000,"ocf":1801400000,"dividends":946079000,"interest":628768000,"assets":29655896000},{"cik":766704,"ticker":"WELL","name":"Welltower","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-12","acc10K":"0000766704-26-000010","doc10K":"well-20251231.htm","filed10Q":"2026-07-28","acc10Q":"0000766704-26-000030","doc10Q":"well-20260630.htm","debt":17878386000,"ladder":{"2026":2951483000,"2027":2258355000,"2028":2732867000,"2029":2582648000,"2030":1910587000,"later":6923412000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":19359352000,"cash":1965164000,"revolverLeft":6250000000,"ocf":3186324000,"dividends":2610447000,"interest":669482000,"realEstate":58053634000,"assets":69875180000},{"cik":1527541,"ticker":"WHLR","name":"Wheeler Real Estate Investment Trust","sector":"Shopping centers","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-05","acc10K":"0001527541-26-000050","doc10K":"whlr-20251231.htm","filed10Q":"2026-08-06","acc10Q":"0001527541-26-000251","doc10Q":"whlr-20260630.htm","debt":471697000,"ladder":{"2026":6450000,"2027":2811000,"2028":22824000,"2029":25216000,"2030":6387000,"later":419153000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":482841000,"cash":31873000,"ocf":20273000,"dividends":15422000,"interest":3639000,"realEstate":593030000,"assets":593376000},{"cik":1025378,"ticker":"WPC","name":"W. P. Carey","sector":"Net lease","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-11","acc10K":"0001025378-26-000036","doc10K":"wpc-20251231.htm","filed10Q":"2026-07-29","acc10Q":"0001025378-26-000119","doc10Q":"wpc-20260630.htm","debt":8851851000,"ladder":{"2026":979753000,"2027":597920000,"2028":1279593000,"2029":1535867000,"2030":1017519000,"later":3381294000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.008,"ladderTotal":8791946000,"cash":163538000,"revolverLeft":1900000000,"ocf":1221493000,"dividends":820269000,"interest":308096000,"rate":4.6,"realEstate":19813458000,"assets":18634633000},{"cik":106535,"ticker":"WY","name":"Weyerhaeuser","sector":"Specialty","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-13","acc10K":"0001193125-26-051422","doc10K":"wy-20251231.htm","filed10Q":"2026-07-31","acc10Q":"0001193125-26-328606","doc10Q":"wy-20260630.htm","debt":5303000000,"ladder":{"2026":522000000,"2027":300000000,"2028":1050000000,"2029":750000000,"2030":1050000000,"later":1935000000},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":5607000000,"cash":527000000,"revolverLeft":1750000000,"ocf":547000000,"dividends":605000000,"interest":273000000,"rate":3.875,"realEstate":2405000000,"assets":16513000000},{"cik":1616000,"ticker":"XHR","name":"Xenia Hotels & Resorts","sector":"Hotels","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-02-24","acc10K":"0001628280-26-011060","doc10K":"xhr-20251231.htm","filed10Q":"2026-07-30","acc10Q":"0001628280-26-051092","doc10Q":"xhr-20260630.htm","debt":1369572000,"ladder":{"2026":55381000,"2027":102388000,"2028":377078000,"2029":500000000,"2030":400000000,"later":0},"ladderSrc":"XBRL maturity tags","ladderCheck":1.0,"ladderTotal":1434847000,"cash":112357000,"ocf":181886000,"dividends":762000,"interest":85156000,"rate":5.49,"realEstate":3559655000,"assets":2718697000},{"cik":1533615,"ticker":"XRN","name":"Chiron Real Estate (formerly Global Medical REIT)","sector":"Healthcare","fyEnd":"2025-12-31","asOf":"2026-06-30","filed10K":"2026-03-02","acc10K":"0001104659-26-021956","doc10K":"xrn-20251231x10k.htm","filed10Q":"2026-08-10","acc10Q":"0001104659-26-093347","doc10Q":"xrn-20260630x10q.htm","debt":636141000,"cash":10658000,"ocf":75108000,"dividends":52307000,"interest":32617000,"rate":3.74,"realEstate":1565653000,"assets":1371778000}];
+</script>
+<script type="text/rr-deferred">
+(function(){
+'use strict';
+const $ = s => document.querySelector(s);
+const el = (tag, attrs, ...kids) => { const e = document.createElement(tag); if (attrs) for (const k in attrs) { if (k === 'class') e.className = attrs[k]; else if (k === 'html') e.innerHTML = attrs[k]; else if (k.startsWith('on')) e.addEventListener(k.slice(2), attrs[k]); else if (attrs[k] != null) e.setAttribute(k, attrs[k]); } for (const c of kids.flat()) if (c != null && c !== false) e.append(c.nodeType ? c : document.createTextNode(c)); return e; };
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+// ---------- formatting ----------
+const fm = v => v == null || !isFinite(v) ? '—' : Math.abs(v) >= 1e9 ? '$' + (v / 1e9).toFixed(2) + 'B' : Math.abs(v) >= 1e6 ? '$' + (v / 1e6).toFixed(Math.abs(v) >= 1e8 ? 0 : 1) + 'M' : v === 0 ? '$0' : '$' + Math.round(v / 1e3) + 'K';
+const fp = (v, d = 0) => v == null || !isFinite(v) ? '—' : (v * 100).toFixed(d) + '%';
+const fr = (v, d = 2) => v == null || !isFinite(v) ? '—' : Number(v).toFixed(d) + '%';
+const fx = v => v == null || !isFinite(v) ? '—' : Number(v).toFixed(2) + '×';
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fd = iso => { if (!iso) return '—'; const [y, m, d] = iso.split('-'); return MON[+m - 1] + ' ' + (+d) + ', ' + y; };
+const fmy = d => MON[d.getMonth()] + ' ' + d.getFullYear();
+const edgar = (cik, acc, doc) => `https://www.sec.gov/Archives/edgar/data/${cik}/${String(acc).replace(/-/g, '')}/${doc}`;
+
+const BUCKETS = [
+  { k: 'Self-funded', c: 'cash' }, { k: 'Revolver covers it', c: 'ready' }, { k: 'Routine refinance', c: 'mezz' },
+  { k: 'Needs new capital', c: 'gap' }, { k: 'Stretched', c: 'work' }, { k: 'Insufficient data', c: 'na' },
+];
+const BC = Object.fromEntries(BUCKETS.map(b => [b.k, b.c]));
+const pill = b => el('span', { class: 'pill', style: `background:var(--b-${BC[b]}-bg);color:var(--b-${BC[b]})` }, el('i', { style: `background:var(--b-${BC[b]})` }), b);
+const SEVC = ['var(--line)', 'var(--sev1)', 'var(--sev2)', 'var(--sev3)'];
+
+// ---------- assumptions ----------
+const clone = o => JSON.parse(JSON.stringify(o));
+let A = clone(RW_DEFAULTS);
+try { const s = localStorage.getItem('rw-assump-v1'); if (s) { const p = JSON.parse(s); if (p && p.tiers && p.tiers.length === A.tiers.length) A = Object.assign(A, p); } } catch (e) {}
+// index rates always come from the latest daily update, never from a saved copy
+Object.assign(A, { ust10: RW_DEFAULTS.ust10, sofr: RW_DEFAULTS.sofr, ust10Date: RW_DEFAULTS.ust10Date, sofrDate: RW_DEFAULTS.sofrDate, asOf: RW_DEFAULTS.asOf });
+const saveA = () => { try { localStorage.setItem('rw-assump-v1', JSON.stringify(A)); } catch (e) {} };
+
+// ---------- state ----------
+const F = { q: '', sector: '', bucket: '', min: 0, flag: '', levMin: null, dueShareMin: null };
+let view = 'cos', limit = 80, sortKey = 'score', sortDir = -1, secSortKey = 'due', secSortDir = -1, selected = null;
+const DATA = REITS.filter(r => !r.error);
+let R = [];
+function compute() { R = DATA.map(r => ({ r, s: rwSize(r, A) })); }
+const winEnd = () => { const d = new Date(RW_TODAY); d.setMonth(d.getMonth() + A.windowMonths); return d; };
+
+// ---------- header + rate sheet ----------
+function renderStamp() {
+  $('#asOf').textContent = fd(RW_DEFAULTS.ust10Date) + ' close';
+  const q = DATA.map(r => r.asOf).filter(Boolean).sort();
+  const latest = q[q.length - 1];
+  $('#filAsOf').textContent = `10-K and 10-Q, financials through ${latest ? fd(latest) : '—'}`;
+  $('#nAbout').textContent = DATA.length;
+}
+function renderRates() {
+  const box = $('#rates'); box.textContent = '';
+  box.append(
+    el('div', { class: 'rate idx' }, el('div', { class: 'nm' }, '10-yr Treasury', el('small', null, 'index')), el('div', { class: 'big' }, fr(A.ust10)), el('div', { class: 'con' }, 'U.S. Treasury close, ' + fd(RW_DEFAULTS.ust10Date))),
+    el('div', { class: 'rate idx' }, el('div', { class: 'nm' }, 'SOFR', el('small', null, 'index')), el('div', { class: 'big' }, fr(A.sofr)), el('div', { class: 'con' }, 'New York Fed, ' + fd(RW_DEFAULTS.sofrDate))));
+  let lo = 0;
+  for (const t of A.tiers) {
+    box.append(el('div', { class: 'rate' }, el('div', { class: 'nm' }, t.name, el('small', null, t.term)), el('div', { class: 'big' }, fr(A.ust10 + t.spread / 100)),
+      el('div', { class: 'sp' }, `+${t.spread} bps over 10-yr`), el('div', { class: 'con' }, t.maxLev >= 999 ? `Leverage over ${lo}%` : `Leverage ${lo ? lo + '% to ' : 'up to '}${t.maxLev}%`)));
+    lo = t.maxLev;
+  }
+  box.append(el('div', { class: 'rate' }, el('div', { class: 'nm' }, 'Bank term loan', el('small', null, '3 to 5-yr')), el('div', { class: 'big' }, fr(A.sofr + A.bank.spread / 100)),
+    el('div', { class: 'sp' }, `+${A.bank.spread} bps over SOFR`), el('div', { class: 'con' }, 'Unsecured, floating')));
+  box.append(el('div', { class: 'rate' }, el('div', { class: 'nm' }, 'Pref / JV equity', el('small', null, 'rescue capital')), el('div', { class: 'big' }, fr(A.pref.rate, 1)),
+    el('div', { class: 'sp' }, 'target return'), el('div', { class: 'con' }, 'For REITs that can’t borrow more')));
+  const rates = R.map(x => x.s.rate).filter(v => v != null && v > 0.5 && v < 15).sort((a, b) => a - b);
+  const med = rates[Math.floor(rates.length / 2)];
+  const ig = A.ust10 + A.tiers[0].spread / 100;
+  const added = R.reduce((a, x) => a + (x.s.addedInterest > 0 ? x.s.addedInterest : 0), 0);
+  $('#shockline').innerHTML = `These REITs pay a median <b>${med.toFixed(2)}%</b> on their debt today. A 10-year investment-grade REIT bond prices near <b>${ig.toFixed(2)}%</b>, <b>${ig >= med ? '+' : ''}${Math.round((ig - med) * 100)} bps</b>. Refinancing everything due by ${fmy(winEnd())} at today’s rates adds about <b>${fm(added)}</b> a year in interest across the group.`;
+}
+function renderAssumpEditor() {
+  const tb = $('#tierEdit'); tb.textContent = '';
+  A.tiers.forEach((t, i) => {
+    const inp = (key, step) => el('input', { type: 'number', step, value: t[key], 'aria-label': `${t.name} ${key}`, oninput: e => { const v = parseFloat(e.target.value); if (isFinite(v)) { t[key] = v; changed(); } } });
+    tb.append(el('tr', null, el('td', null, t.name + ' ', el('span', { class: 'note' }, t.term)), el('td', null, '10-yr UST'), el('td', null, inp('spread', 5)), el('td', null, t.maxLev >= 999 ? el('span', { class: 'note' }, 'above') : inp('maxLev', 1))));
+  });
+  const bind = (id, get, set) => { const e = $(id); e.value = get(); e.oninput = () => { const v = parseFloat(e.value); if (isFinite(v)) { set(v); changed(); } }; };
+  bind('#aUst', () => A.ust10, v => A.ust10 = v); bind('#aSofr', () => A.sofr, v => A.sofr = v);
+  bind('#aBank', () => A.bank.spread, v => A.bank.spread = v); bind('#aPref', () => A.pref.rate, v => A.pref.rate = v);
+  bind('#aWin', () => A.windowMonths, v => A.windowMonths = Math.max(3, Math.min(60, Math.round(v))));
+  bind('#aLevR', () => A.levRefi, v => A.levRefi = v); bind('#aLevH', () => A.levHigh, v => A.levHigh = v);
+}
+let chT; function changed() { clearTimeout(chT); chT = setTimeout(() => { saveA(); compute(); renderRates(); renderSummary(); renderList(); if (selected) openCo(selected, true); }, 120); }
+
+// ---------- summary ----------
+function renderSummary() {
+  const due = R.reduce((a, x) => a + x.s.due, 0);
+  const due12 = R.reduce((a, x) => a + x.s.due12, 0);
+  const need = R.reduce((a, x) => a + x.s.need, 0);
+  const str = R.filter(x => x.s.bucket === 'Stretched');
+  const k = $('#kpis'); k.textContent = '';
+  const add = (v, l) => k.append(el('div', { class: 'kpi' }, el('div', { class: 'v' }, v), el('div', { class: 'l' }, l)));
+  add(DATA.length.toLocaleString(), 'listed equity REITs tracked');
+  add(fm(due), `debt due by ${fmy(winEnd())}`);
+  add(fm(due12), 'due in the next 12 months');
+  add(fm(need), 'that cash, cash flow and revolvers don’t cover');
+  add(String(str.length), `stretched REITs with ${fm(str.reduce((a, x) => a + x.s.due, 0))} due`);
+  const bySec = {}; R.forEach(x => bySec[x.r.sector] = (bySec[x.r.sector] || 0) + x.s.need);
+  const top = Object.entries(bySec).sort((a, b) => b[1] - a[1])[0];
+  add(top ? top[0] : '—', `sector needing the most outside capital (${fm(top ? top[1] : 0)})`);
+  $('#mixH').textContent = `Outcome · share of debt due by ${fmy(winEnd())}`;
+  const bar = $('#mixbar'), lg = $('#legend'); bar.textContent = ''; lg.textContent = '';
+  for (const b of BUCKETS) {
+    const rs = R.filter(x => x.s.bucket === b.k); if (!rs.length) continue;
+    const v = rs.reduce((a, x) => a + x.s.due, 0);
+    if (v > 0) bar.append(el('span', { style: `width:${v / due * 100}%;background:var(--b-${b.c})`, title: `${b.k}: ${fm(v)} (${rs.length} REITs)`, onclick: () => setBucket(b.k) }));
+    lg.append(el('button', { class: 'lg', type: 'button', 'aria-pressed': String(F.bucket === b.k), onclick: () => setBucket(b.k) }, el('i', { style: `background:var(--b-${b.c})` }), b.k, el('span', { class: 'c' }, `${rs.length} · ${fm(v)}`)));
+  }
+}
+function setBucket(k) { F.bucket = F.bucket === k ? '' : k; $('#fBucket').value = F.bucket; view = 'cos'; setView(); renderSummary(); renderList(); }
+
+// ---------- quick screens ----------
+const QUICK = [
+  { t: 'Office REITs that need outside capital', f: { sector: 'Office' }, sort: 'need', test: x => x.s.need > 0 },
+  { t: 'Dividend not covered, or barely', f: { flag: 'div' }, sort: 'divc' },
+  { t: 'Biggest walls in the next 12 months', f: {}, sort: 'due12', test: x => x.s.due12 > 0.15 * x.s.debt },
+  { t: 'Leverage over 55% of book', f: { levMin: 55 }, sort: 'lev' },
+  { t: 'Stretched hotel and healthcare REITs', f: { bucket: 'Stretched' }, sort: 'score', test: x => /Hotels|Healthcare/.test(x.r.sector) },
+  { t: 'Investment-grade names to pitch a bond deal', f: { bucket: 'Routine refinance' }, sort: 'due' },
+];
+let quickTest = null;
+function renderQuick() {
+  const c = $('#quickChips'); c.textContent = '';
+  QUICK.forEach(q => c.append(el('button', { class: 'chip', type: 'button', onclick: () => applyQuick(q) }, q.t)));
+}
+function applyQuick(q) {
+  clearFilters(false);
+  Object.assign(F, q.f); quickTest = q.test || null;
+  sortKey = q.sort; sortDir = (SORTS[q.sort] || [0, -1])[1];
+  if (F.sector) $('#fSector').value = F.sector; if (F.bucket) $('#fBucket').value = F.bucket;
+  const o = [...$('#fSort').options].find(o => o.value === q.sort); if (o) $('#fSort').value = q.sort;
+  view = 'cos'; setView(); renderSummary(); renderList();
+  const n = R.filter(passes).length;
+  $('#quickOut').textContent = `${q.t}: ${n} REIT${n === 1 ? '' : 's'}.`;
+  window.scrollTo({ top: $('#tblCos').getBoundingClientRect().top + scrollY - 120, behavior: 'smooth' });
+}
+
+// ---------- filters ----------
+function fillSelects() {
+  const secs = [...new Set(DATA.map(r => r.sector))].sort();
+  const ss = $('#fSector'); ss.textContent = ''; ss.append(el('option', { value: '' }, `All sectors (${secs.length})`));
+  secs.forEach(s => ss.append(el('option', { value: s }, `${s} · ${DATA.filter(r => r.sector === s).length}`)));
+  const bs = $('#fBucket'); bs.textContent = ''; bs.append(el('option', { value: '' }, 'All outcomes')); BUCKETS.forEach(b => bs.append(el('option', { value: b.k }, b.k)));
+}
+function passes(x) {
+  const { r, s } = x;
+  if (F.sector && r.sector !== F.sector) return false;
+  if (F.bucket && s.bucket !== F.bucket) return false;
+  if (F.min && s.due < F.min * 1e6) return false;
+  if (F.flag && !s.flags.some(f => f.k === F.flag && f.sev >= 2)) return false;
+  if (F.levMin != null && !(s.lev != null && s.lev * 100 >= F.levMin)) return false;
+  if (quickTest && !quickTest(x)) return false;
+  if (F.q) { const q = F.q.toLowerCase(); const hay = (r.name + ' ' + r.ticker + ' ' + r.sector).toLowerCase(); if (!q.split(/\s+/).every(t => hay.includes(t))) return false; }
+  return true;
+}
+const SORTS = {
+  score: [x => x.s.score, -1], due: [x => x.s.due, -1], due12: [x => x.s.due12, -1], need: [x => x.s.need, -1], dueShare: [x => x.s.dueShare ?? -1, -1],
+  lev: [x => x.s.lev ?? -1, -1], divc: [x => x.s.divCover ?? 99, 1], shock: [x => x.s.shockBps ?? -999, -1], sector: [x => x.r.sector + '|' + String(9e12 - x.s.due).padStart(14, '0'), 1],
+  name: [x => x.r.name.toLowerCase(), 1], debt: [x => x.s.debt, -1], fund: [x => x.s.cash + Math.max(x.s.rcfWin, 0) + (x.s.revolver || 0), -1],
+  rate: [x => x.s.rate ?? 99, 1], bucket: [x => BUCKETS.findIndex(b => b.k === x.s.bucket), 1], flags: [x => x.s.flags.reduce((a, f) => a + f.sev, 0), -1],
+};
+function sorted(rows) { const [fn] = SORTS[sortKey] || SORTS.score; return rows.slice().sort((a, b) => { const x = fn(a), y = fn(b); return (x < y ? -1 : x > y ? 1 : 0) * sortDir; }); }
+
+// ---------- companies table ----------
+const COLS = [
+  ['score', 'Score', ''], ['name', 'Company', ''], ['sector', 'Sector', ''], ['debt', 'Total debt', 'r'], ['due', 'Due in window', 'r'],
+  ['fund', 'Cash + cash flow + revolver', 'r'], ['need', 'Outside capital', 'r'], ['lev', 'Leverage', 'r'], ['divc', 'Dividend cover', 'r'],
+  ['rate', 'Rate → today', 'r'], ['bucket', 'Outcome', ''], ['flags', 'Flags', ''],
+];
+function renderHead() {
+  const h = $('#thead'); h.textContent = '';
+  for (const [k, lab, cls] of COLS) {
+    const on = sortKey === k;
+    h.append(el('th', { class: cls, scope: 'col', tabindex: '0', 'aria-sort': on ? (sortDir > 0 ? 'ascending' : 'descending') : 'none',
+      onclick: () => headSort(k), onkeydown: e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); headSort(k); } } },
+      k === 'due' ? `Due by ${fmy(winEnd())}` : lab, el('span', { class: 'ar' }, on ? (sortDir > 0 ? '↑' : '↓') : '')));
+  }
+}
+function headSort(k) {
+  if (sortKey === k) sortDir *= -1; else { sortKey = k; sortDir = (SORTS[k] || [0, -1])[1]; }
+  const opt = [...$('#fSort').options].find(o => o.value === k); if (opt) $('#fSort').value = k;
+  renderList();
+}
+function renderList() {
+  const rows = R.filter(passes);
+  const due = rows.reduce((a, x) => a + x.s.due, 0), need = rows.reduce((a, x) => a + x.s.need, 0);
+  $('#resCount').innerHTML = `<b>${rows.length}</b> REITs · <b>${fm(due)}</b> due by ${fmy(winEnd())} · <b>${fm(need)}</b> from outside` + extraNote();
+  renderHead();
+  if (view === 'sec') return renderSectors(rows);
+  const body = $('#tbody'); body.textContent = '';
+  const S = sorted(rows);
+  let last = null;
+  for (const x of S.slice(0, limit)) {
+    const { r, s } = x;
+    if (sortKey === 'sector' && r.sector !== last) {
+      last = r.sector; const g = rows.filter(y => y.r.sector === r.sector);
+      body.append(el('tr', { class: 'grp', style: 'cursor:default' }, el('td', { colspan: COLS.length, style: 'background:var(--surface-2);font-family:var(--cond);font-weight:600;font-size:12.5px;letter-spacing:.02em;padding:7px 10px' }, r.sector,
+        el('span', { class: 'note', style: 'font-family:var(--sans);font-weight:400;margin-left:8px' }, `${g.length} REITs · ${fm(g.reduce((a, y) => a + y.s.due, 0))} due · ${fm(g.reduce((a, y) => a + y.s.need, 0))} from outside`))));
+    }
+    const sev = s.flags.filter(f => f.sev >= 2).sort((a, b) => b.sev - a.sev);
+    const fund = s.cash + Math.max(s.rcfWin, 0) + (s.revolver || 0);
+    body.append(el('tr', { tabindex: '0', class: selected === r.ticker ? 'sel' : '', onclick: () => openCo(r.ticker), onkeydown: e => { if (e.key === 'Enter') openCo(r.ticker); } },
+      el('td', null, el('span', { class: 'score' + (s.score >= 70 ? ' hi' : '') }, s.score)),
+      el('td', { style: 'min-width:200px' }, el('div', { class: 'pname' }, r.name, el('span', { class: 'tk' }, r.ticker))),
+      el('td', null, r.sector),
+      el('td', { class: 'r num' }, fm(s.debt)),
+      el('td', { class: 'r num' }, fm(s.due), el('div', { class: 'psub' }, s.dueShare != null ? fp(s.dueShare) + ' of debt' : '')),
+      el('td', { class: 'r num' }, fm(fund), el('div', { class: 'psub' }, s.revolver == null ? 'revolver not tagged' : '')),
+      el('td', { class: 'r num ' + (s.need > 0 ? 'delta-up' : 'delta-dn') }, s.need > 0 ? fm(s.need) : '—'),
+      el('td', { class: 'r num' }, fp(s.lev)),
+      el('td', { class: 'r num' }, fx(s.divCover)),
+      el('td', { class: 'r num' }, s.rate != null ? fr(s.rate) + ' → ' + fr(s.newRate) : '—', el('div', { class: 'psub' }, s.shockBps != null ? `${s.shockBps >= 0 ? '+' : ''}${s.shockBps} bps` : '')),
+      el('td', null, pill(s.bucket)),
+      el('td', { title: sev.map(f => f.t).join('\n') }, el('span', { class: 'flagdots' }, sev.slice(0, 4).map(f => el('i', { style: `background:${SEVC[f.sev]}` }))), sev.length ? '' : el('span', { class: 'note' }, '—'))));
+  }
+  $('#moreWrap').hidden = S.length <= limit;
+  $('#moreBtn').textContent = `Show ${Math.min(80, S.length - limit)} more of ${S.length - limit}`;
+}
+function extraNote() {
+  const p = [];
+  if (F.flag === 'div') p.push('dividend not covered or thin');
+  if (F.levMin != null) p.push(`leverage ≥ ${F.levMin}%`);
+  if (quickTest) p.push('quick screen');
+  return p.length ? ` · also: ${esc(p.join(', '))}` : '';
+}
+
+// ---------- sector view ----------
+function renderSectors(rows) {
+  const g = {}; rows.forEach(x => (g[x.r.sector] = g[x.r.sector] || []).push(x));
+  const list = Object.entries(g).map(([sec, xs]) => {
+    const levs = xs.map(x => x.s.lev).filter(v => v != null).sort((a, b) => a - b);
+    return { sec, xs, n: xs.length, debt: xs.reduce((a, x) => a + x.s.debt, 0), due: xs.reduce((a, x) => a + x.s.due, 0), need: xs.reduce((a, x) => a + x.s.need, 0),
+      lev: levs.length ? levs[Math.floor(levs.length / 2)] : null, top: xs.slice().sort((a, b) => b.s.need - a.s.need || b.s.due - a.s.due)[0] };
+  });
+  const keyf = { sec: x => x.sec, n: x => x.n, debt: x => x.debt, due: x => x.due, need: x => x.need, lev: x => x.lev ?? -1 }[secSortKey] || (x => x.due);
+  list.sort((a, b) => { const x = keyf(a), y = keyf(b); return (x < y ? -1 : x > y ? 1 : 0) * secSortDir; });
+  const h = $('#shead'); h.textContent = '';
+  const SC = [['sec', 'Sector', ''], ['n', 'REITs', 'r'], ['debt', 'Total debt', 'r'], ['due', `Due by ${fmy(winEnd())}`, 'r'], ['need', 'Outside capital', 'r'], ['lev', 'Median leverage', 'r'], ['mix', 'Outcome mix', ''], ['top', 'Biggest need', '']];
+  for (const [k, lab, cls] of SC) {
+    const on = secSortKey === k, fixed = k === 'mix' || k === 'top';
+    h.append(el('th', { class: cls, scope: 'col', tabindex: fixed ? null : '0', 'aria-sort': on ? (secSortDir > 0 ? 'ascending' : 'descending') : 'none',
+      onclick: () => { if (fixed) return; if (secSortKey === k) secSortDir *= -1; else { secSortKey = k; secSortDir = k === 'sec' ? 1 : -1; } renderList(); } },
+      lab, el('span', { class: 'ar' }, on ? (secSortDir > 0 ? '↑' : '↓') : '')));
+  }
+  const b = $('#sbody'); b.textContent = '';
+  for (const x of list) {
+    const mix = el('div', { class: 'msabar' });
+    for (const bk of BUCKETS) { const v = x.xs.filter(y => y.s.bucket === bk.k).reduce((a, y) => a + y.s.due, 0); if (v) mix.append(el('span', { style: `width:${v / (x.due || 1) * 100}%;background:var(--b-${bk.c})`, title: `${bk.k}: ${fm(v)}` })); }
+    b.append(el('tr', { tabindex: '0', onclick: () => pickSector(x.sec), onkeydown: e => { if (e.key === 'Enter') pickSector(x.sec); } },
+      el('td', null, el('div', { class: 'pname' }, x.sec)), el('td', { class: 'r num' }, x.n), el('td', { class: 'r num' }, fm(x.debt)), el('td', { class: 'r num' }, fm(x.due)),
+      el('td', { class: 'r num delta-up' }, x.need ? fm(x.need) : '—'), el('td', { class: 'r num' }, fp(x.lev)), el('td', null, mix),
+      el('td', null, el('div', { style: 'font-size:12.5px' }, x.top.r.name, el('span', { class: 'tk' }, x.top.r.ticker)), el('div', { class: 'psub num' }, x.top.s.need ? fm(x.top.s.need) + ' from outside' : fm(x.top.s.due) + ' due'))));
+  }
+  $('#moreWrap').hidden = true;
+}
+function pickSector(sec) { F.sector = sec; $('#fSector').value = sec; view = 'cos'; setView(); renderList(); window.scrollTo({ top: $('#tblCos').getBoundingClientRect().top + scrollY - 90, behavior: 'smooth' }); }
+function setView() { $('#vCos').setAttribute('aria-pressed', String(view === 'cos')); $('#vSec').setAttribute('aria-pressed', String(view === 'sec')); $('#tblCos').hidden = view !== 'cos'; $('#tblSec').hidden = view !== 'sec'; }
+
+// ---------- drawer ----------
+function ladderSvg(r, s) {
+  const lad = r.ladder || {};
+  const years = Object.keys(lad).filter(y => y !== 'later').map(Number).sort((a, b) => a - b);
+  const cols = years.map(y => ({ lab: String(y), v: lad[y], inWin: rwOverlap(y, RW_TODAY, winEnd()) > 0 }));
+  if (lad.later) cols.push({ lab: 'Later', v: lad.later, inWin: false });
+  const W = 640, H = 190, pl = 8, pr = 8, pt = 22, pb = 26;
+  const max = Math.max(...cols.map(c => c.v), 1);
+  const bw = (W - pl - pr) / Math.max(cols.length, 1);
+  const NS = 'http://www.w3.org/2000/svg';
+  const sv = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Debt maturities by year' });
+  svg.append(sv('line', { x1: pl, x2: W - pr, y1: H - pb, y2: H - pb, stroke: 'var(--line)', 'stroke-width': 1 }));
+  cols.forEach((c, i) => {
+    const h = (H - pt - pb) * c.v / max, x = pl + i * bw + bw * 0.18, w = bw * 0.64;
+    const rect = sv('rect', { x, y: H - pb - h, width: w, height: Math.max(h, c.v > 0 ? 1.5 : 0), rx: 3, fill: c.inWin ? 'var(--b-gap)' : 'var(--accent)', opacity: c.inWin ? 1 : 0.55 });
+    const tt = sv('title', {}); tt.textContent = `${c.lab}: ${fm(c.v)}${c.inWin ? ' (in the window)' : ''}`; rect.append(tt); svg.append(rect);
+    const l = sv('text', { x: x + w / 2, y: H - 8, 'text-anchor': 'middle', class: 'lab' }); l.textContent = c.lab; svg.append(l);
+    if (c.v > 0) { const v = sv('text', { x: x + w / 2, y: H - pb - h - 6, 'text-anchor': 'middle', class: 'val' }); v.textContent = fm(c.v).replace('$', ''); svg.append(v); }
+  });
+  return el('div', { class: 'ladder' }, svg);
+}
+function srcText(r) {
+  const m = { 'XBRL maturity tags': 'the company’s XBRL maturity tags', 'XBRL maturity tags by debt type': 'the company’s XBRL maturity tags, summed across debt types',
+    'Maturity table in the 10-K debt note': 'the maturity table in the 10-K debt footnote', 'Loan and bond list in the 10-K debt note': 'the list of loans and bonds in the 10-K debt footnote, grouped by maturity year',
+    'Read from the 10-K debt note': 'the 10-K debt footnote, read by hand because no table in it parses cleanly' };
+  return m[r.ladderSrc] || r.ladderSrc;
+}
+let lastFocus = null;
+function openCo(tk, keep) {
+  const x = R.find(y => y.r.ticker === tk); if (!x) return;
+  const { r, s } = x; selected = tk;
+  if (!keep) lastFocus = document.activeElement;
+  const d = $('#drawer'); const prev = keep ? d.scrollTop : 0; d.textContent = '';
+  d.append(el('div', { class: 'dhead' },
+    el('div', null, el('h2', { id: 'dTitle' }, r.name), el('div', { class: 'sub' }, [r.ticker, r.sector, r.asOf ? 'financials as of ' + fd(r.asOf) : null].filter(Boolean).join(' · ')),
+      el('div', { class: 'row', style: 'margin-top:8px' }, pill(s.bucket), el('span', { class: 'score' + (s.score >= 70 ? ' hi' : '') }, s.score), el('span', { class: 'note' }, 'capital need score'))),
+    el('button', { class: 'x', 'aria-label': 'Close', onclick: closeCo }, '×')));
+  const body = el('div', { class: 'dbody' }); d.append(body);
+  const fact = (k, v, sub) => el('div', { class: 'fact' }, el('div', { class: 'k' }, k), el('div', { class: 'v' }, v, sub ? el('small', null, ' ' + sub) : null));
+
+  body.append(el('section', { class: 'card' }, el('h3', null, 'The balance sheet today'), el('div', { class: 'facts' },
+    fact('Total debt', fm(s.debt), r.debtEst ? 'from the 10-K schedule' : ''),
+    fact(`Due by ${fmy(winEnd())}`, fm(s.due), s.dueShare != null ? fp(s.dueShare) + ' of debt' : ''),
+    fact('Due in 12 months', fm(s.due12)),
+    fact('Cash', fm(s.cash)),
+    fact('Undrawn revolver', s.revolver == null ? 'not tagged' : fm(s.revolver)),
+    fact('Operating cash flow', fm(s.ocf), 'last 12 mo'),
+    fact('Dividends paid', fm(s.div), 'last 12 mo'),
+    fact('Retained cash flow', fm(s.rcf), 'last 12 mo'),
+    fact('Interest expense', fm(s.interest), 'last 12 mo'),
+    fact('Average rate', fr(s.rate), s.rateEst ? 'interest ÷ debt' : 'reported'),
+    fact('Leverage', fp(s.lev), s.levBasis + ', book'),
+    fact('Dividend coverage', fx(s.divCover), 'cash flow ÷ dividends'),
+    fact('Interest coverage', fx(s.intCover)),
+  )));
+
+  body.append(el('section', { class: 'card' }, el('h3', null, 'Debt maturities by year'), ladderSvg(r, s),
+    el('p', { class: 'srcline' }, `Amber bars fall inside the window (today to ${fmy(winEnd())}); the current year is prorated for the months left. Source: ${srcText(r)}, as of ${fd(r.fyEnd)}.`, r.ladderNote ? ' ' + r.ladderNote + '.' : '',
+      r.ladderCheck != null ? ` The schedule adds up to ${fp(r.ladderCheck)} of reported debt.` : '')));
+
+  // sources and uses
+  const segs = [
+    { v: Math.min(s.cash, s.due), c: 'var(--b-cash)', lab: 'Cash' },
+    { v: Math.max(Math.min(Math.max(s.rcfWin, 0), s.due - Math.min(s.cash, s.due)), 0), c: 'var(--b-ready)', lab: 'Retained cash flow' },
+  ];
+  const used = segs.reduce((a, y) => a + y.v, 0);
+  segs.push({ v: Math.max(Math.min(s.revolver || 0, s.due - used), 0), c: 'var(--accent)', lab: 'Revolver' });
+  segs.push({ v: s.need, c: s.bucket === 'Stretched' ? 'var(--b-work)' : 'var(--b-gap)', lab: 'Outside capital needed' });
+  const shown = segs.filter(y => y.v > 1); const scale = shown.reduce((a, y) => a + y.v, 0) || 1;
+  const sb = el('div', { class: 'stackbar' });
+  shown.forEach(y => sb.append(el('span', { style: `width:${y.v / scale * 100}%;background:${y.c}`, title: `${y.lab}: ${fm(y.v)}` }, y.v / scale > 0.14 ? fm(y.v) : '')));
+  body.append(el('section', { class: 'card' }, el('h3', null, `How the ${fm(s.due)} due by ${fmy(winEnd())} gets paid`),
+    s.due > 0 ? el('div', { class: 'stack' }, sb, el('div', { class: 'stackleg' }, shown.map(y => el('span', null, el('i', { style: `background:${y.c}` }), `${y.lab}: `, el('b', { class: 'num' }, fm(y.v)))))) : el('p', { class: 'note', style: 'margin:0' }, 'Nothing in the schedule falls due in the window.'),
+    el('p', { class: 'note', style: 'margin:10px 0 0' }, `Retained cash flow is the last 12 months of operating cash flow less dividends (${fm(s.rcf)}), scaled to ${A.windowMonths} months.${s.rcf != null && s.rcf < 0 ? ' It is negative, so dividends are draining cash.' : ''}${s.revolver == null ? ' The revolver isn’t counted because its undrawn amount isn’t tagged in the filing data; check the MD&A.' : ''}`)));
+
+  // refinance cost by execution
+  const cmp = el('div', { class: 'cmp' }); const t = el('table');
+  t.append(el('thead', null, el('tr', null, ['Execution', 'All-in rate', 'vs today’s average', `Added interest on ${fm(s.due)}`, 'As % of cash flow'].map(h => el('th', { scope: 'col' }, h)))));
+  const tb = el('tbody');
+  const rows = A.tiers.map(ti => ({ name: ti.name, term: ti.term, rate: A.ust10 + ti.spread / 100, mine: ti.id === s.tier.id }))
+    .concat([{ name: 'Bank term loan', term: `SOFR + ${A.bank.spread} bps`, rate: A.sofr + A.bank.spread / 100 }, { name: 'Pref / JV equity', term: 'target return', rate: A.pref.rate }]);
+  for (const q of rows) {
+    const add = s.rate != null ? s.due * (q.rate - s.rate) / 100 : null;
+    tb.append(el('tr', { class: q.mine ? 'mine' : '' }, el('td', null, el('b', null, q.name), el('div', { class: 'bind' }, q.term + (q.mine ? (s.strongCover ? ' · its coverage points here' : ' · matches its leverage') : ''))),
+      el('td', { class: 'num' }, fr(q.rate)), el('td', { class: 'num' }, s.rate != null ? `${q.rate >= s.rate ? '+' : ''}${Math.round((q.rate - s.rate) * 100)} bps` : '—'),
+      el('td', { class: 'num' }, add != null ? (add >= 0 ? '+' : '−') + fm(Math.abs(add)) + ' / yr' : '—'), el('td', { class: 'num' }, add != null && s.ocf > 0 ? fp(add / s.ocf, 1) : '—')));
+  }
+  t.append(tb); cmp.append(t);
+  body.append(el('section', { class: 'card' }, el('h3', null, 'What refinancing costs at today’s rates'), cmp,
+    el('p', { class: 'note', style: 'margin:8px 0 0' }, s.strongCover ? `The highlighted row is investment grade: book leverage is ${fp(s.lev)}, but cash flow covers interest ${fx(s.intCover)}. Edit spreads and leverage bands in the rate sheet.` : `The highlighted row is the execution its leverage (${fp(s.lev)}) points to. Edit spreads and leverage bands in the rate sheet.`)));
+
+  const fl = s.flags.slice().sort((a, b) => b.sev - a.sev);
+  body.append(el('section', { class: 'card' }, el('h3', null, 'Risk flags'), fl.length ? el('ul', { class: 'flags' }, fl.map(f => el('li', null, el('i', { style: `background:${SEVC[f.sev]}` }), f.t))) : el('p', { class: 'note', style: 'margin:0' }, 'No flags.')));
+
+  body.append(el('section', { class: 'card' }, el('h3', null, 'Pitch notes'), autoBrief(x)));
+
+  const src = [];
+  src.push(el('li', null, el('i', { style: 'background:var(--line)' }), el('span', null, `10-K for the year ended ${fd(r.fyEnd)} (filed ${fd(r.filed10K)}): `, el('a', { href: edgar(r.cik, r.acc10K, r.doc10K), target: '_blank', rel: 'noopener' }, 'SEC EDGAR'), ' · maturity schedule, total debt')));
+  if (r.acc10Q) src.push(el('li', null, el('i', { style: 'background:var(--line)' }), el('span', null, `10-Q for the period ended ${fd(r.asOf)} (filed ${fd(r.filed10Q)}): `, el('a', { href: edgar(r.cik, r.acc10Q, r.doc10Q), target: '_blank', rel: 'noopener' }, 'SEC EDGAR'), ' · cash, revolver, year-to-date cash flow')));
+  body.append(el('section', { class: 'card' }, el('h3', null, 'Sources'), el('ul', { class: 'flags' }, src)));
+
+  $('#scrim').hidden = false; d.hidden = false; document.body.style.overflow = 'hidden';
+  if (keep) d.scrollTop = prev; else d.querySelector('.x').focus();
+}
+function closeCo() { $('#drawer').hidden = true; $('#scrim').hidden = true; document.body.style.overflow = ''; selected = null; renderList(); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+$('#scrim').onclick = closeCo;
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#drawer').hidden) closeCo(); });
+
+function autoBrief(x) {
+  const { r, s } = x;
+  const box = el('div', { class: 'brief' });
+  const lad = r.ladder || {};
+  // the biggest maturity year still ahead (this year counts only for the months left)
+  const big = Object.entries(lad).filter(([y]) => y !== 'later').map(([y, v]) => [y, v * rwOverlap(+y, RW_TODAY, winEnd())]).filter(e => e[1] > 0).sort((a, b) => b[1] - a[1])[0];
+  box.append(el('h4', null, 'Why now'));
+  box.append(el('p', null, s.due > 0
+    ? `${r.name} has ${fm(s.due)} of debt due by ${fmy(winEnd())}, ${fp(s.dueShare)} of its ${fm(s.debt)} total${big ? `, with the biggest share (${fm(big[1])}) in ${big[0]}` : ''}. ${s.rate != null ? `It pays about ${fr(s.rate)} today; the same debt refinances near ${fr(s.newRate)}${s.addedInterest > 0 ? `, adding roughly ${fm(s.addedInterest)} a year in interest` : ''}.` : ''}`
+    : `${r.name} has little or nothing due in the window, so the conversation is about growth capital rather than maturities.`));
+  const angle = {
+    'Self-funded': 'Cash and retained cash flow cover what comes due. This isn’t a rescue: pitch acquisition financing, a development JV or a programmatic partnership.',
+    'Revolver covers it': 'It can bridge the maturities on its credit line, but that uses up liquidity. Pitch terming out the revolver with a bond or term loan, or secured debt on unencumbered assets.',
+    'Routine refinance': `It should be able to refinance in the market. Bankers: pitch a bond or term loan ahead of the ${big ? big[0] : 'next'} maturities. Lenders: offer secured debt as a cheaper alternative if spreads widen.`,
+    'Needs new capital': 'Leverage is near the top of the range, so new debt alone is a stretch. Pitch JV equity on stabilized assets, asset sales, or preferred equity to fund part of the wall.',
+    'Stretched': 'Cash flow, coverage or leverage is under strain. Pitch preferred equity or a JV recap, and expect it to sell assets. Lenders should expect tighter terms and structure.',
+    'Insufficient data': 'The filings don’t give enough to size the need. Start from the 10-K debt footnote.',
+  }[s.bucket];
+  box.append(el('h4', null, 'The angle'), el('p', null, angle));
+  const pts = [];
+  if (s.lev != null) pts.push(`Leverage is ${fp(s.lev)} of ${s.levBasis} at book value${s.strongCover ? `, but cash flow covers interest ${fx(s.intCover)}, so it should price as investment grade` : `; the pricing band it falls in is ${s.tier.name.toLowerCase()}`}.`);
+  if (s.divCover != null) pts.push(s.divCover < 1 ? `Dividends exceed operating cash flow (${fx(s.divCover)}), so there’s pressure to cut or sell assets.` : `Operating cash flow covers dividends ${fx(s.divCover)}.`);
+  if (s.revolver != null) pts.push(`About ${fm(s.revolver)} is undrawn on the revolver.`);
+  if (s.need > 0) pts.push(`After cash, retained cash flow${s.revolver != null ? ' and the revolver' : ''}, about ${fm(s.need)} has to come from outside.`);
+  box.append(el('h4', null, 'Talking points for the first call'), el('ul', null, pts.map(p => el('li', null, p))));
+  box.append(el('h4', null, 'Verify before calling'), el('ul', null,
+    el('li', null, `Any refinancing, bond deal or asset sale since ${fd(r.asOf || r.fyEnd)}: check 8-Ks and the latest earnings release.`),
+    el('li', null, 'Extension options on the maturing loans, which can push dates out a year or two.'),
+    s.revolver == null ? el('li', null, 'Undrawn revolver capacity, from the liquidity section of the latest 10-Q.') : null));
+  box.append(el('p', { class: 'note', style: 'margin-top:8px' }, 'Generated from the filing data above; numbers update with the rate sheet.'));
+  return box;
+}
+
+// ---------- csv ----------
+function csv() {
+  const rows = sorted(R.filter(passes));
+  const head = ['Ticker', 'Company', 'Sector', 'Score', 'Outcome', 'Total debt', `Due by ${fmy(winEnd())}`, 'Due next 12 months', 'Cash', 'Undrawn revolver', 'Retained cash flow (12 mo)', 'Outside capital needed', 'Leverage', 'Dividend coverage', 'Interest coverage', 'Average rate', 'Refinance rate', 'Financials as of', 'Schedule source', '10-K link'];
+  const q = v => v == null ? '' : /[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v);
+  const lines = [head.join(',')].concat(rows.map(({ r, s }) => [r.ticker, r.name, r.sector, s.score, s.bucket, Math.round(s.debt), Math.round(s.due), Math.round(s.due12), Math.round(s.cash), s.revolver == null ? '' : Math.round(s.revolver),
+    s.rcf == null ? '' : Math.round(s.rcf), Math.round(s.need), s.lev == null ? '' : s.lev.toFixed(3), s.divCover == null ? '' : s.divCover.toFixed(2), s.intCover == null ? '' : s.intCover.toFixed(2),
+    s.rate == null ? '' : s.rate.toFixed(2), s.newRate.toFixed(2), r.asOf, r.ladderSrc || '', edgar(r.cik, r.acc10K, r.doc10K)].map(q).join(',')));
+  const a = el('a', { href: URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/csv' })), download: `reit-runway-${RW_DEFAULTS.asOf}.csv` });
+  document.body.append(a); a.click(); a.remove();
+}
+
+// ---------- wire up ----------
+function clearFilters(render = true) {
+  Object.assign(F, { q: '', sector: '', bucket: '', min: 0, flag: '', levMin: null }); quickTest = null;
+  $('#fQ').value = ''; $('#fSector').value = ''; $('#fBucket').value = ''; $('#fMin').value = '0'; $('#quickOut').textContent = '';
+  if (render) { renderSummary(); renderList(); }
+}
+function init() {
+  compute(); renderStamp(); renderRates(); renderAssumpEditor(); fillSelects(); renderSummary(); renderQuick(); renderList();
+  $('#fQ').oninput = e => { F.q = e.target.value.trim(); limit = 80; renderList(); };
+  $('#fSector').onchange = e => { F.sector = e.target.value; renderList(); };
+  $('#fBucket').onchange = e => { F.bucket = e.target.value; renderSummary(); renderList(); };
+  $('#fMin').onchange = e => { F.min = +e.target.value; renderList(); };
+  $('#fSort').onchange = e => { sortKey = e.target.value; sortDir = (SORTS[sortKey] || [0, -1])[1]; renderList(); };
+  $('#vCos').onclick = () => { view = 'cos'; setView(); renderList(); };
+  $('#vSec').onclick = () => { view = 'sec'; setView(); renderList(); };
+  $('#moreBtn').onclick = () => { limit += 80; renderList(); };
+  $('#clearBtn').onclick = () => clearFilters();
+  $('#csvBtn').onclick = csv;
+  $('#editBtn').onclick = () => { const a = $('#assump'); a.hidden = !a.hidden; $('#editBtn').setAttribute('aria-expanded', String(!a.hidden)); };
+  $('#aboutBtn').onclick = () => { const a = $('#about'); a.hidden = !a.hidden; $('#aboutBtn').setAttribute('aria-expanded', String(!a.hidden)); };
+  $('#resetBtn').onclick = () => { A = clone(RW_DEFAULTS); try { localStorage.removeItem('rw-assump-v1'); } catch (e) {} renderAssumpEditor(); changed(); };
+}
+init();
+})();
+
+</script>
+
+<script>
+(function () {
+  var done = false;
+  function run(live) {
+    if (done) return; done = true;
+    var ok = live && live.rates && live.rates.today >= '2026-10-27' && Array.isArray(live.reits) && live.reits.length > 0;
+    window.RR_LIVE = ok ? live : null;
+    document.querySelectorAll('script[type="text/rr-deferred"]').forEach(function (old) {
+      var s = document.createElement('script'); s.text = old.text; old.parentNode.replaceChild(s, old);
+    });
+    document.documentElement.classList.remove('rr-wait');
+  }
+  setTimeout(function () { run(null); }, 4000);
+  try {
+    fetch('https://raw.githubusercontent.com/campbellphelan/refiradar/main/data/reits_live.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(run, function () { run(null); });
+  } catch (e) { run(null); }
+})();
+</script>
+<noscript><style>html.rr-wait body{visibility:visible}</style></noscript>
+</body>
+</html>
