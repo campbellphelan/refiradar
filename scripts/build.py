@@ -16,6 +16,7 @@ ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
         "%3Ccircle cx='20' cy='20' r='11' fill='none' stroke='%23556' stroke-width='2'/%3E%3Cline x1='20' y1='20' x2='35' y2='12' stroke='%237C9BFF' "
         "stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='28' cy='10' r='3' fill='%23E6A24B'/%3E%3C/svg%3E")
 LIVE_URL = 'https://raw.githubusercontent.com/campbellphelan/refiradar/main/data/live.json'
+REITS_LIVE_URL = 'https://raw.githubusercontent.com/campbellphelan/refiradar/main/data/reits_live.json'
 TOOL_ARTIFACT = 'https://claude.ai/artifact/TPJcjwUwE8AEpJvmUMqexS'
 SITE_ARTIFACT = 'https://claude.ai/artifact/91qMe7uCZyfN8FPf5HwzxL'
 SITE_KEEP = ['id', 'name', 'city', 'st', 'msa', 'type', 'sf', 'mat', 'rate', 'io', 'amort', 'trustBal', 'wholeBal', 'wholeEst', 'pay', 'ssXfer',
@@ -32,10 +33,11 @@ def wrap(src, extra_head=''):
             f'{extra_head}{head}\n</head>\n<body>{body}\n</body>\n</html>\n')
 
 
-def og(title, desc):
-    return (f'<meta property="og:type" content="website">\n<meta property="og:url" content="{SITE_URL}/">\n'
-            f'<meta property="og:title" content="{title}">\n<meta property="og:description" content="{desc}">\n'
-            f'<meta property="og:image" content="{SITE_URL}/og.png">\n<meta name="twitter:card" content="summary_large_image">\n')
+def og(title, desc, path='/', image=True):
+    pic = (f'<meta property="og:image" content="{SITE_URL}/og.png">\n<meta name="twitter:card" content="summary_large_image">\n' if image
+           else '<meta name="twitter:card" content="summary">\n')  # og.png shows the CMBS chart, so other tools share without it
+    return (f'<meta property="og:type" content="website">\n<meta property="og:url" content="{SITE_URL}{path}">\n'
+            f'<meta property="og:title" content="{title}">\n<meta property="og:description" content="{desc}">\n' + pic)
 
 
 LOADER = """<script>
@@ -43,7 +45,7 @@ LOADER = """<script>
   var done = false;
   function run(live) {
     if (done) return; done = true;
-    var ok = live && live.rates && live.rates.today >= '__BUILT__' && Array.isArray(live.loans) && live.loans.length > 0;
+    var ok = live && live.rates && live.rates.today >= '__BUILT__' && Array.isArray(live.__KEY__) && live.__KEY__.length > 0;
     window.RR_LIVE = ok ? live : null;
     document.querySelectorAll('script[type="text/rr-deferred"]').forEach(function (old) {
       var s = document.createElement('script'); s.text = old.text; old.parentNode.replaceChild(s, old);
@@ -61,11 +63,11 @@ LOADER = """<script>
 <noscript><style>html.rr-wait body{visibility:visible}</style></noscript>"""
 
 
-def defer(template, today):
+def defer(template, today, url=LIVE_URL, key='loans'):
     """Hold the template's scripts until the day's data arrives, and add the loader that fetches it.
     If GitHub can't be reached within 4 seconds, the scripts run with the copy of the data built into the page."""
     template = template.replace('<script>\n', '<script type="text/rr-deferred">\n')
-    return template + '\n' + LOADER.replace('__BUILT__', today).replace('__LIVE_URL__', LIVE_URL)
+    return template + '\n' + LOADER.replace('__BUILT__', today).replace('__LIVE_URL__', url).replace('__KEY__', key)
 
 
 def live_data():
@@ -84,10 +86,26 @@ def live_data():
     return loans, rates, briefs
 
 
+REIT_KEEP = ['cik', 'ticker', 'name', 'sector', 'fyEnd', 'asOf', 'filed10K', 'acc10K', 'doc10K', 'filed10Q', 'acc10Q', 'doc10Q', 'debt', 'debtEst',
+             'ladder', 'ladderSrc', 'ladderNote', 'ladderCheck', 'ladderTotal', 'cash', 'revolverLeft', 'ocf', 'dividends', 'interest', 'rate',
+             'realEstate', 'assets']
+
+
+def reits_data():
+    f = DATA / 'reits.json'
+    if not f.exists():
+        return []
+    return [{k: r[k] for k in REIT_KEEP if r.get(k) is not None} for r in json.loads(f.read_text()) if not r.get('error')]
+
+
 def write_live():
     loans, rates, briefs = live_data()
     (DATA / 'live.json').write_text(json.dumps({'rates': rates, 'loans': loans, 'briefs': briefs},
                                                separators=(',', ':'), ensure_ascii=False) + '\n')
+    reits = reits_data()
+    if reits:
+        (DATA / 'reits_live.json').write_text(json.dumps({'rates': rates, 'reits': reits}, separators=(',', ':'), ensure_ascii=False) + '\n')
+        print(f'Wrote data/reits_live.json with {len(reits)} REITs')
     print(f"Wrote data/live.json with {len(loans)} loans, {len(briefs)} briefs, 10-yr {rates.get('ust10')}% "
           f"({rates.get('ust10Date')}), SOFR {rates.get('sofr')}% ({rates.get('sofrDate')}), loan filings through {rates['loansFiled']}")
 
@@ -114,6 +132,16 @@ def main():
     site = site.replace(' target="_blank" rel="noopener">Open Refi Radar', '>Open Refi Radar')
     (OUT / 'index.html').write_text(wrap(site, og('The 2017 Maturity Wall · Campbell Phelan',
         'A deal-sourcing tool for CRE lenders and debt brokers, built from SEC data on CMBS loans that come due by the end of 2027.')))
+    reits = reits_data()
+    if reits and (SRC / 'reits_template.html').exists():
+        rw = defer((SRC / 'reits_template.html').read_text(), rates['today'], REITS_LIVE_URL, 'reits')
+        rw_engine = 'const RW_RATES = ' + live.format('rates') + json.dumps(rates) + ';\n' + (SRC / 'reits_engine.js').read_text()
+        rw = (rw.replace('/*__ENGINE__*/', rw_engine).replace('/*__DATA__*/', live.format('reits') + json.dumps(reits, separators=(',', ':')))
+                .replace('/*__APP__*/', (SRC / 'reits_app.js').read_text()))
+        (OUT / 'reits').mkdir(parents=True, exist_ok=True)
+        (OUT / 'reits' / 'index.html').write_text(wrap(rw, og('REIT Runway · Campbell Phelan',
+            'Which public REITs need capital in the next 24 months, read from their SEC filings.', '/reits/', image=False)))
+        print(f'Rebuilt public/reits/ with {len(reits)} REITs')
     print(f"Rebuilt public/ with {len(loans)} loans, {len(briefs)} briefs, 10-yr {rates.get('ust10')}% ({rates.get('ust10Date')}), "
           f"SOFR {rates.get('sofr')}% ({rates.get('sofrDate')}), loan filings through {rates['loansFiled']}")
 
