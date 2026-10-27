@@ -1,0 +1,6 @@
+# REIT Runway (reitrunway.netlify.app). In Netlify this site's base directory is reits-site.
+[build]
+  publish = "public"
+  # Deploy only when the REIT Runway pages or this file change. Daily data updates don't touch them,
+  # because the pages load data/reits_live.json from GitHub when they open.
+  ignore = "git diff --quiet HEAD^ HEAD -- ."
