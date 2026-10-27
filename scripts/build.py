@@ -7,14 +7,20 @@ main() also rebuilds public/index.html (website) and public/radar/index.html (to
 data from the day it was built, used only if GitHub can't be reached. Netlify deploys only when public/ changes.
 """
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC, DATA, OUT = ROOT / 'src', ROOT / 'data', ROOT / 'public'
 SITE_URL = 'https://refiradar.netlify.app'
+REITS_SITE_URL = 'https://reitrunway.netlify.app'
+ROUT = ROOT / 'reits-site' / 'public'  # REIT Runway is its own Netlify site, deployed from reits-site/
 ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230C1220'/%3E"
         "%3Ccircle cx='20' cy='20' r='11' fill='none' stroke='%23556' stroke-width='2'/%3E%3Cline x1='20' y1='20' x2='35' y2='12' stroke='%237C9BFF' "
         "stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='28' cy='10' r='3' fill='%23E6A24B'/%3E%3C/svg%3E")
+REIT_ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%230C1220'/%3E"
+             "%3Crect x='11' y='21' width='4' height='8' rx='1' fill='%237C9BFF'/%3E%3Crect x='16.5' y='15' width='4' height='14' rx='1' fill='%23E6A24B'/%3E"
+             "%3Crect x='22' y='18' width='4' height='11' rx='1' fill='%237C9BFF'/%3E%3Crect x='27.5' y='23' width='2.5' height='6' rx='1' fill='%237C9BFF'/%3E%3C/svg%3E")
 LIVE_URL = 'https://raw.githubusercontent.com/campbellphelan/refiradar/main/data/live.json'
 REITS_LIVE_URL = 'https://raw.githubusercontent.com/campbellphelan/refiradar/main/data/reits_live.json'
 TOOL_ARTIFACT = 'https://claude.ai/artifact/TPJcjwUwE8AEpJvmUMqexS'
@@ -23,20 +29,20 @@ SITE_KEEP = ['id', 'name', 'city', 'st', 'msa', 'type', 'sf', 'mat', 'rate', 'io
              'msReturn', 'mod', 'occSec', 'occRec', 'noiRec', 'ncfSec', 'ncfRec', 'dsRec', 'finEnd', 'topExp', 'topSf', 'partialDef', 'valSec']
 
 
-def wrap(src, extra_head=''):
+def wrap(src, extra_head='', icon=ICON):
     i = src.index('</style>') + len('</style>')
     head, body = src[:i], src[i:]
     head += '\n<style>html{background:var(--bg)}html.rr-wait body{visibility:hidden}</style>'
     return ('<!doctype html>\n<html lang="en" class="rr-wait">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
-            f'<link rel="icon" href="{ICON}">\n<style>[hidden]{{display:none!important}}img{{max-width:100%}}</style>\n'
+            f'<link rel="icon" href="{icon}">\n<style>[hidden]{{display:none!important}}img{{max-width:100%}}</style>\n'
             f'{extra_head}{head}\n</head>\n<body>{body}\n</body>\n</html>\n')
 
 
-def og(title, desc, path='/', image=True):
-    pic = (f'<meta property="og:image" content="{SITE_URL}/og.png">\n<meta name="twitter:card" content="summary_large_image">\n' if image
+def og(title, desc, path='/', image=True, site=SITE_URL):
+    pic = (f'<meta property="og:image" content="{site}/og.png">\n<meta name="twitter:card" content="summary_large_image">\n' if image
            else '<meta name="twitter:card" content="summary">\n')  # og.png shows the CMBS chart, so other tools share without it
-    return (f'<meta property="og:type" content="website">\n<meta property="og:url" content="{SITE_URL}{path}">\n'
+    return (f'<meta property="og:type" content="website">\n<meta property="og:url" content="{site}{path}">\n'
             f'<meta property="og:title" content="{title}">\n<meta property="og:description" content="{desc}">\n' + pic)
 
 
@@ -110,8 +116,15 @@ def write_live():
           f"({rates.get('ust10Date')}), SOFR {rates.get('sofr')}% ({rates.get('sofrDate')}), loan filings through {rates['loansFiled']}")
 
 
-def main():
+def main(only=None):
+    """Rebuild the pages. only='reits' rebuilds just REIT Runway, so a REIT change doesn't redeploy Refi Radar."""
     write_live()
+    if only != 'reits':
+        build_radar()
+    build_reits()
+
+
+def build_radar():
     loans, rates, briefs = live_data()
     live = '(window.RR_LIVE && window.RR_LIVE.{}) || '
     rates_js = 'const RR_RATES = ' + live.format('rates') + json.dumps(rates) + ';\n'
@@ -132,19 +145,32 @@ def main():
     site = site.replace(' target="_blank" rel="noopener">Open Refi Radar', '>Open Refi Radar')
     (OUT / 'index.html').write_text(wrap(site, og('The 2017 Maturity Wall · Campbell Phelan',
         'A deal-sourcing tool for CRE lenders and debt brokers, built from SEC data on CMBS loans that come due by the end of 2027.')))
-    reits = reits_data()
-    if reits and (SRC / 'reits_template.html').exists():
-        rw = defer((SRC / 'reits_template.html').read_text(), rates['today'], REITS_LIVE_URL, 'reits')
-        rw_engine = 'const RW_RATES = ' + live.format('rates') + json.dumps(rates) + ';\n' + (SRC / 'reits_engine.js').read_text()
-        rw = (rw.replace('/*__ENGINE__*/', rw_engine).replace('/*__DATA__*/', live.format('reits') + json.dumps(reits, separators=(',', ':')))
-                .replace('/*__APP__*/', (SRC / 'reits_app.js').read_text()))
-        (OUT / 'reits').mkdir(parents=True, exist_ok=True)
-        (OUT / 'reits' / 'index.html').write_text(wrap(rw, og('REIT Runway · Campbell Phelan',
-            'Which public REITs need capital in the next 24 months, read from their SEC filings.', '/reits/', image=False)))
-        print(f'Rebuilt public/reits/ with {len(reits)} REITs')
     print(f"Rebuilt public/ with {len(loans)} loans, {len(briefs)} briefs, 10-yr {rates.get('ust10')}% ({rates.get('ust10Date')}), "
           f"SOFR {rates.get('sofr')}% ({rates.get('sofrDate')}), loan filings through {rates['loansFiled']}")
 
 
+
+def build_reits():
+    """REIT Runway: the write-up at reits-site/public/ and the tool at reits-site/public/runway/."""
+    reits = reits_data()
+    if not reits:
+        return
+    rates = live_data()[1]
+    live = '(window.RR_LIVE && window.RR_LIVE.{}) || '
+    engine = 'const RW_RATES = ' + live.format('rates') + json.dumps(rates) + ';\n' + (SRC / 'reits_engine.js').read_text()
+    data = live.format('reits') + json.dumps(reits, separators=(',', ':'))
+    tool = defer((SRC / 'reits_template.html').read_text(), rates['today'], REITS_LIVE_URL, 'reits')
+    tool = tool.replace('/*__ENGINE__*/', engine).replace('/*__DATA__*/', data).replace('/*__APP__*/', (SRC / 'reits_app.js').read_text())
+    (ROUT / 'runway').mkdir(parents=True, exist_ok=True)
+    (ROUT / 'runway' / 'index.html').write_text(wrap(tool, og('REIT Runway · Campbell Phelan',
+        'Which public REITs need capital in the next 24 months, read from their SEC filings.', '/runway/', False, REITS_SITE_URL), REIT_ICON))
+    home = defer((SRC / 'reits_site_template.html').read_text(), rates['today'], REITS_LIVE_URL, 'reits')
+    home = home.replace('/*__ENGINE__*/', engine).replace('/*__DATA__*/', data).replace('/*__SITEJS__*/', (SRC / 'reits_site.js').read_text())
+    (ROUT / 'index.html').write_text(wrap(home, og('REIT Runway · Campbell Phelan',
+        'A capital-sourcing tool built from the SEC filings of every listed U.S. equity REIT: who has debt due in the next 24 months, and how much they can’t cover.',
+        '/', False, REITS_SITE_URL), REIT_ICON))
+    print(f'Rebuilt reits-site/public/ with {len(reits)} REITs')
+
+
 if __name__ == '__main__':
-    main()
+    main('reits' if '--reits-only' in sys.argv else None)
