@@ -1,0 +1,341 @@
+<title>REIT Runway</title>
+<meta name="description" content="Which public REITs need capital in the next 24 months: debt maturities, liquidity, cash flow and refinancing costs for every listed equity REIT, read from their SEC filings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F6F8FB; --ink:#0E1626; --ink-2:#33405A; --muted:#63708A; --line:#D7DDE6; --line-2:#E6EAF0;
+  --accent:#1D4ED8; --accent-ink:#FFFFFF; --accent-soft:#E3EAFD; --focus:#1D4ED8;
+  --b-cash:#0F7B55; --b-ready:#2F7FA8; --b-mezz:#3654D1; --b-pref:#7443C2; --b-gap:#B8690B; --b-work:#BE3027; --b-na:#8791A3;
+  --b-cash-bg:#E2F3EC; --b-ready-bg:#E2EFF6; --b-mezz-bg:#E5E9FB; --b-pref-bg:#EFE7FA; --b-gap-bg:#FAEEDC; --b-work-bg:#FAE3E1; --b-na-bg:#ECEEF2;
+  --sev3:#BE3027; --sev2:#B8690B; --sev1:#63708A;
+  --shadow:0 1px 2px rgba(14,22,38,.06),0 8px 24px rgba(14,22,38,.06);
+  --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0B1020; --surface:#121A2C; --surface-2:#172136; --ink:#E8ECF4; --ink-2:#C2CAD9; --muted:#8E99B0; --line:#26314A; --line-2:#1E2840;
+  --accent:#7C9BFF; --accent-ink:#0B1020; --accent-soft:#1C2A52; --focus:#9DB4FF;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+  --b-cash-bg:#123326; --b-ready-bg:#12293A; --b-mezz-bg:#1A2550; --b-pref-bg:#2A1D45; --b-gap-bg:#3A2911; --b-work-bg:#3F1C1A; --b-na-bg:#1F283B;
+  --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B1020; --surface:#121A2C; --surface-2:#172136; --ink:#E8ECF4; --ink-2:#C2CAD9; --muted:#8E99B0; --line:#26314A; --line-2:#1E2840;
+  --accent:#7C9BFF; --accent-ink:#0B1020; --accent-soft:#1C2A52; --focus:#9DB4FF;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+  --b-cash-bg:#123326; --b-ready-bg:#12293A; --b-mezz-bg:#1A2550; --b-pref-bg:#2A1D45; --b-gap-bg:#3A2911; --b-work-bg:#3F1C1A; --b-na-bg:#1F283B;
+  --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+:root,:root[data-theme="light"]{ /* always dark, whatever the viewer's system setting */
+  color-scheme:dark;
+  --bg:#0B1020; --surface:#121A2C; --surface-2:#172136; --ink:#E8ECF4; --ink-2:#C2CAD9; --muted:#8E99B0; --line:#26314A; --line-2:#1E2840;
+  --accent:#7C9BFF; --accent-ink:#0B1020; --accent-soft:#1C2A52; --focus:#9DB4FF;
+  --b-cash:#4FC999; --b-ready:#6DB7DD; --b-mezz:#8CA2FF; --b-pref:#B894F2; --b-gap:#E6A24B; --b-work:#F07A6F; --b-na:#8E99B0;
+  --b-cash-bg:#123326; --b-ready-bg:#12293A; --b-mezz-bg:#1A2550; --b-pref-bg:#2A1D45; --b-gap-bg:#3A2911; --b-work-bg:#3F1C1A; --b-na-bg:#1F283B;
+  --sev3:#F07A6F; --sev2:#E6A24B; --sev1:#8E99B0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;margin:0}
+.wrap{max-width:1360px;margin:0 auto;padding-inline:20px;padding-block:18px 60px}
+a{color:var(--accent)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:var(--cond);margin:0;text-wrap:balance}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.brand{display:flex;gap:14px;align-items:center}
+.mark{width:38px;height:38px;flex:none}
+.brand h1{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.stamp{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--muted);font-size:12px}
+.stamp b{color:var(--ink-2);font-weight:500}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px;font-size:12px}
+
+/* section labels */
+.eyebrow{font-family:var(--cond);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sec{margin-top:18px}
+.sec-h{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+
+/* rate sheet */
+.rates{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.rate{flex:1 1 150px;background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.rate.idx{background:var(--surface-2)}
+.rate .nm{font-weight:600;font-size:13px;display:flex;justify-content:space-between;gap:6px}
+.rate .nm small{font-weight:400;color:var(--muted);font-size:11px;white-space:nowrap}
+.rate .big{font-family:var(--mono);font-size:22px;font-weight:500;letter-spacing:-.02em}
+.rate .sp{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.rate .con{font-size:11.5px;color:var(--muted)}
+.shockline{margin-top:8px;font-size:13px;color:var(--ink-2)}
+.shockline b{font-family:var(--mono);font-weight:600;color:var(--ink)}
+
+/* assumptions */
+.assump{margin-top:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.assump h3{font-size:15px;margin-bottom:8px}
+.agrid{overflow-x:auto}
+.agrid table{border-collapse:collapse;width:100%;min-width:720px}
+.agrid th,.agrid td{padding:5px 8px;border-bottom:1px solid var(--line-2);text-align:right;font-size:12.5px}
+.agrid th:first-child,.agrid td:first-child{text-align:left}
+.agrid th{font-weight:600;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+.agrid input{width:74px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);text-align:right;font-family:var(--mono);font-size:12.5px}
+.arow{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:12px}
+.arow label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.arow input{width:92px;padding:4px 7px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);font-family:var(--mono)}
+.capgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px 14px;margin-top:10px}
+.capgrid label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px}
+.capgrid input{width:70px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);text-align:right;font-family:var(--mono)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn:disabled{opacity:.55;cursor:default}
+
+/* KPIs + mix */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.kpi .v{font-family:var(--mono);font-size:21px;font-weight:500;letter-spacing:-.02em}
+.kpi .l{font-size:12px;color:var(--muted)}
+.mix{margin-top:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.bar{display:flex;height:16px;border-radius:5px;overflow:hidden;background:var(--line-2)}
+.bar span{display:block;height:100%;min-width:2px;cursor:pointer;transition:opacity .15s}
+.bar span:hover{opacity:.8}
+.legend{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:10px}
+.lg{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 8px;background:var(--surface);cursor:pointer;font-size:12.5px}
+.lg[aria-pressed="true"]{border-color:var(--ink-2);background:var(--surface-2)}
+.lg i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.lg .c{font-family:var(--mono);color:var(--muted);font-size:11.5px}
+
+/* ask */
+.ask{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.askrow{display:flex;gap:8px;flex-wrap:wrap}
+.askrow input{flex:1 1 320px;min-width:0;border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:var(--surface-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{border:1px dashed var(--line);background:none;border-radius:999px;padding:3px 10px;font-size:12px;color:var(--ink-2);cursor:pointer}
+.chip:hover{border-style:solid;border-color:var(--muted)}
+.askout{margin-top:9px;font-size:13px;color:var(--ink-2)}
+.askout.err{color:var(--sev3)}
+.ai-tag{display:inline-flex;align-items:center;gap:5px;font-family:var(--cond);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:2px 6px}
+
+/* toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:14px}
+.fld{display:flex;flex-direction:column;gap:3px;min-width:0}
+.fld span{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.02em}
+.fld select,.fld input{border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:var(--surface);max-width:100%}
+.fld.grow{flex:1 1 200px}
+.fld.grow input{width:100%}
+#fMsa{max-width:260px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:7px 12px;cursor:pointer;font-weight:500;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.resultline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin:12px 2px 6px;font-size:12.5px;color:var(--muted)}
+.resultline b{color:var(--ink);font-family:var(--mono);font-weight:500}
+.clear{margin-left:6px}
+
+/* table */
+.tblwrap{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+table.loans{border-collapse:collapse;width:100%;min-width:1200px}
+.loans th{position:sticky;top:0;background:var(--surface-2);text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+.loans th.r,.loans td.r{text-align:right}
+.loans th[aria-sort] ::after{content:""}
+.loans th .ar{display:inline-block;width:10px;color:var(--accent)}
+.loans td{padding:9px 9px;border-bottom:1px solid var(--line-2);vertical-align:middle;font-size:13px}
+.loans tbody tr{cursor:pointer}
+.loans tbody tr:hover{background:var(--surface-2)}
+.loans tbody tr.sel{background:var(--accent-soft)}
+.pname{font-weight:600;line-height:1.25}
+.psub{font-size:11.5px;color:var(--muted)}
+.score{display:inline-flex;align-items:center;justify-content:center;width:34px;height:24px;border-radius:6px;font-family:var(--mono);font-weight:600;font-size:12.5px;background:var(--surface-2);border:1px solid var(--line)}
+.score.hi{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.pill i{width:7px;height:7px;border-radius:50%}
+.featured{font-family:var(--cond);font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-left:6px}
+.flagdots{display:inline-flex;gap:3px}
+.flagdots i{width:8px;height:8px;border-radius:50%}
+.delta-up{color:var(--sev3)}
+.delta-dn{color:var(--b-cash)}
+.more{display:flex;justify-content:center;padding:12px}
+.msabar{display:flex;height:10px;border-radius:3px;overflow:hidden;background:var(--line-2);min-width:140px}
+.msabar span{display:block;height:100%}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(8,12,22,.38);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);background:var(--bg);z-index:41;overflow-y:auto;box-shadow:var(--shadow);border-left:1px solid var(--line);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.dhead{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--line);padding:14px 18px;display:flex;justify-content:space-between;gap:12px;z-index:2}
+.dhead h2{font-size:22px;line-height:1.15}
+.dhead .sub{color:var(--muted);font-size:12.5px;margin-top:3px}
+.x{border:1px solid var(--line);background:var(--surface);border-radius:8px;width:34px;height:34px;cursor:pointer;flex:none;font-size:18px;line-height:1}
+.dbody{padding:16px 18px 40px;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px 16px}
+.fact .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.fact .v{font-family:var(--mono);font-size:14px}
+.fact .v small{color:var(--muted);font-size:11.5px}
+.cmp{overflow-x:auto}
+.cmp table{border-collapse:collapse;width:100%;min-width:600px}
+.cmp th,.cmp td{padding:7px 8px;border-bottom:1px solid var(--line-2);text-align:right;font-size:12.5px;white-space:nowrap}
+.cmp th:first-child,.cmp td:first-child{text-align:left}
+.cmp th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.cmp tr.best td{background:var(--accent-soft)}
+.cmp tr.ineligible td{color:var(--muted)}
+.cmp .bind{font-size:11px;color:var(--muted)}
+.cover{display:inline-block;width:64px;height:6px;background:var(--line-2);border-radius:3px;vertical-align:middle;margin-right:6px;overflow:hidden}
+.cover i{display:block;height:100%;background:var(--accent)}
+.stack{display:flex;flex-direction:column;gap:6px}
+.stackbar{position:relative;display:flex;height:30px;border-radius:6px;overflow:hidden;background:var(--line-2)}
+.stackbar span{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.payoff{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.stackleg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-2)}
+.stackleg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.flags{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.flags li{display:flex;gap:8px;align-items:flex-start;font-size:13px}
+.flags li i{width:8px;height:8px;border-radius:50%;margin-top:6px;flex:none}
+.brief{font-size:13.5px;line-height:1.55}
+.brief h4{font-family:var(--cond);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:12px 0 4px}
+.brief h4:first-child{margin-top:0}
+.brief p{margin:0 0 6px}
+.brief ul{margin:0 0 6px;padding-left:18px}
+.brief .src{font-size:12px;color:var(--muted)}
+.gen{white-space:pre-wrap;font-size:13.5px;line-height:1.55;background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:12px;margin-top:10px;max-height:520px;overflow:auto}
+.note{font-size:12px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* about */
+.about{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:10px;font-size:13px;color:var(--ink-2)}
+.about p{margin:0 0 8px;max-width:95ch}
+.about ul{margin:0 0 8px;padding-left:18px;max-width:95ch}
+.foot{margin-top:28px;font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px}
+
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .brand h1{font-size:22px}
+  .rate .big{font-size:19px}
+  #fMsa{max-width:100%}
+  .fld{flex:1 1 44%}
+  .dhead h2{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* REIT Runway additions */
+.ladder svg{width:100%;height:auto;display:block}
+.ladder .lab{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.ladder .val{font-family:var(--mono);font-size:10.5px;fill:var(--ink-2)}
+.tk{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-left:6px;font-weight:500}
+.cmp tr.mine td{background:var(--accent-soft)}
+.srcline{font-size:12px;color:var(--muted);margin:8px 0 0}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="var(--line)" stroke-width="2"/><line x1="9" y1="29" x2="31" y2="29" stroke="var(--line)" stroke-width="2" stroke-linecap="round"/><rect x="11" y="21" width="4" height="8" rx="1" fill="var(--accent)" opacity=".45"/><rect x="16.5" y="15" width="4" height="14" rx="1" fill="var(--b-gap)"/><rect x="22" y="18" width="4" height="11" rx="1" fill="var(--accent)" opacity=".7"/><rect x="27.5" y="23" width="2.5" height="6" rx="1" fill="var(--accent)" opacity=".45"/><circle cx="20" cy="9.5" r="2.2" fill="var(--b-mezz)"/></svg>
+      <div>
+        <h1>REIT Runway</h1>
+        <p>Capital sourcing for JV equity, lenders and bankers: which public REITs need capital in the next 24 months, read from their SEC filings.</p>
+      </div>
+    </div>
+    <div class="stamp">
+      <span>Filings: <b id="filAsOf">SEC 10-K and 10-Q</b></span>
+      <span>Rates: <b id="asOf">—</b></span>
+      <button class="linkbtn" id="aboutBtn" aria-expanded="false" aria-controls="about">How this works</button><a class="linkbtn" href="/radar/">Refi Radar</a><a class="linkbtn" href="/">Research write-up</a>
+    </div>
+  </header>
+
+  <section class="about" id="about" hidden>
+    <p><b>What this is.</b> REIT Runway reads the latest 10-K and 10-Q of every listed U.S. equity REIT (<span id="nAbout">146</span> companies) from SEC EDGAR and asks one question: how much debt comes due in the next 24 months, and can the company pay it from cash, retained cash flow and its credit line? Whatever is left has to come from outside, through a bond deal, a secured loan, preferred or JV equity, or asset sales.</p>
+    <p><b>Where the maturity schedule comes from.</b> Companies report it three ways, so each 10-K is read in this order: the standard XBRL maturity tags, the same tags split by debt type, and finally the maturity table printed in the debt footnote. Each result is checked against the company's reported total debt, and the closest match is kept. When no table parses cleanly, the schedule was read by hand from the same 10-K. Every company shows which source was used, with a link to the filing.</p>
+    <ul>
+      <li><b>Funding sources:</b> cash on the latest balance sheet, retained cash flow (operating cash flow less dividends over the last 12 months, scaled to the window) and undrawn revolver capacity where the filing tags it.</li>
+      <li><b>Outcomes:</b> Self-funded (cash and retained cash flow cover what's due) · Revolver covers it · Routine refinance (leverage at or under 50% of book assets, or interest covered 3.5× or more) · Needs new capital · Stretched (dividend not covered by cash flow, interest covered less than 1.75×, or very high leverage) · Insufficient data.</li>
+      <li><b>Capital need score</b> (0 to 100) weights the size of what's due at 35%, the share that has to come from outside at 35%, and stress at 30% (leverage, dividend coverage and the rate increase on refinancing).</li>
+      <li><b>Limits:</b> leverage is debt over book value (real estate at cost, or total assets). For REITs that bought their properties long ago, book value is well below market value, so leverage can look higher than it is. The schedule is as of the last 10-K, so some of this year's maturities may already be refinanced. Revolver availability is often stated only in MD&A text, which isn't in the XBRL data; those companies are flagged.</li>
+    </ul>
+    <p class="note">Built by Campbell Phelan as an independent demo from public SEC filings. Not investment advice.</p>
+  </section>
+
+  <section class="sec" aria-labelledby="rsH">
+    <div class="sec-h">
+      <h2 class="eyebrow" id="rsH">Refinance rate sheet · what maturing REIT debt costs today</h2>
+      <div class="row"><button class="btn" id="editBtn" aria-expanded="false" aria-controls="assump">Edit assumptions</button></div>
+    </div>
+    <div class="rates" id="rates"></div>
+    <div class="shockline" id="shockline"></div>
+    <div class="assump" id="assump" hidden>
+      <h3>Refinance pricing by leverage</h3>
+      <div class="agrid"><table>
+        <thead><tr><th>Execution</th><th>Index</th><th>Spread (bps)</th><th>Up to leverage %</th></tr></thead>
+        <tbody id="tierEdit"></tbody>
+      </table></div>
+      <div class="arow">
+        <label for="aUst">10-yr Treasury %<input id="aUst" type="number" step="0.01"></label>
+        <label for="aSofr">SOFR %<input id="aSofr" type="number" step="0.01"></label>
+        <label for="aBank">Bank term loan spread (bps)<input id="aBank" type="number" step="5"></label>
+        <label for="aPref">Pref / JV equity return %<input id="aPref" type="number" step="0.25"></label>
+        <label for="aWin">Window (months)<input id="aWin" type="number" step="3"></label>
+        <label for="aLevR">Routine refinance up to leverage %<input id="aLevR" type="number" step="1"></label>
+        <label for="aLevH">Stretched above leverage %<input id="aLevH" type="number" step="1"></label>
+      </div>
+      <div class="row" style="margin-top:12px"><button class="btn" id="resetBtn">Reset to defaults</button><span class="note">Changes recompute every REIT instantly and stay in this browser only.</span></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-label="Summary">
+    <div class="kpis" id="kpis"></div>
+    <div class="mix">
+      <div class="sec-h" style="margin-bottom:8px"><span class="eyebrow" id="mixH">Outcome · share of debt due in the next 24 months</span><span class="note">Click a segment to filter</span></div>
+      <div class="bar" id="mixbar"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </section>
+
+  <section class="sec ask" aria-labelledby="quickH">
+    <div class="sec-h" style="margin-bottom:4px"><h2 class="eyebrow" id="quickH">Quick screens</h2></div>
+    <div class="chips" id="quickChips"></div>
+    <div class="askout" id="quickOut" aria-live="polite"></div>
+  </section>
+
+  <section class="sec" aria-label="REITs">
+    <div class="toolbar">
+      <div class="fld grow"><span>Search</span><input id="fQ" type="search" placeholder="Company or ticker"></div>
+      <div class="fld"><span>Sector</span><select id="fSector"></select></div>
+      <div class="fld"><span>Outcome</span><select id="fBucket"></select></div>
+      <div class="fld"><span>Due in window</span><select id="fMin">
+        <option value="0">Any</option><option value="100">$100M+</option><option value="250">$250M+</option><option value="500">$500M+</option><option value="1000">$1B+</option><option value="2500">$2.5B+</option></select></div>
+      <div class="fld"><span>Sort</span><select id="fSort">
+        <option value="score">Capital need score</option><option value="due">Due in window (largest)</option><option value="need">Outside capital (largest)</option>
+        <option value="dueShare">Due as % of debt</option><option value="lev">Leverage (highest)</option><option value="divc">Dividend coverage (lowest)</option>
+        <option value="shock">Rate increase (largest)</option><option value="sector">Sector (A to Z)</option></select></div>
+      <div class="fld"><span>View</span><div class="seg" role="group" aria-label="View"><button type="button" id="vCos" aria-pressed="true">Companies</button><button type="button" id="vSec" aria-pressed="false">By sector</button></div></div>
+    </div>
+    <div class="resultline"><span id="resCount"></span><span class="row"><button class="linkbtn" id="clearBtn">Clear filters</button><button class="btn" id="csvBtn">Export CSV</button></span></div>
+    <div class="tblwrap" id="tblCos"><table class="loans"><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table><div class="more" id="moreWrap" hidden><button class="btn" id="moreBtn">Show more</button></div></div>
+    <div class="tblwrap" id="tblSec" hidden><table class="loans"><thead><tr id="shead"></tr></thead><tbody id="sbody"></tbody></table></div>
+  </section>
+
+  <footer class="foot">
+    <span>Sources: SEC EDGAR 10-K and 10-Q filings (XBRL financial data and debt footnotes) for each company listed; 10-yr Treasury from the U.S. Treasury and SOFR from the New York Fed, updated each business day.</span>
+    <span>Built by Campbell Phelan · independent demo, not investment advice</span>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="dTitle"></aside>
+
+<script>
+/*__ENGINE__*/
+</script>
+<script>
+const REITS = /*__DATA__*/;
+</script>
+<script>
+/*__APP__*/
+</script>
