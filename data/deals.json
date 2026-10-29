@@ -66,10 +66,10 @@
  {
   "deal": "CSAIL 2017-C8",
   "cik": "1708131",
-  "accession": "0001888524-26-017404",
-  "filed": "2026-09-28",
-  "base": "https://www.sec.gov/Archives/edgar/data/1708131/000188852426017404/",
-  "xml": "https://www.sec.gov/Archives/edgar/data/1708131/000188852426017404/exh_102.xml"
+  "accession": "0001888524-26-019773",
+  "filed": "2026-10-28",
+  "base": "https://www.sec.gov/Archives/edgar/data/1708131/000188852426019773/",
+  "xml": "https://www.sec.gov/Archives/edgar/data/1708131/000188852426019773/exh_102.xml"
  },
  {
   "deal": "WFCM 2017-C38",
@@ -82,10 +82,10 @@
  {
   "deal": "BANK 2017-BNK6",
   "cik": "1710261",
-  "accession": "0001888524-26-017781",
-  "filed": "2026-09-29",
-  "base": "https://www.sec.gov/Archives/edgar/data/1710261/000188852426017781/",
-  "xml": "https://www.sec.gov/Archives/edgar/data/1710261/000188852426017781/exh_102.xml"
+  "accession": "0001888524-26-019753",
+  "filed": "2026-10-28",
+  "base": "https://www.sec.gov/Archives/edgar/data/1710261/000188852426019753/",
+  "xml": "https://www.sec.gov/Archives/edgar/data/1710261/000188852426019753/exh_102.xml"
  },
  {
   "deal": "GSMS 2017-GS7",
@@ -114,9 +114,9 @@
  {
   "deal": "BANK 2017-BNK9",
   "cik": "1721373",
-  "accession": "0001888524-26-017879",
-  "filed": "2026-09-29",
-  "base": "https://www.sec.gov/Archives/edgar/data/1721373/000188852426017879/",
-  "xml": "https://www.sec.gov/Archives/edgar/data/1721373/000188852426017879/exh_102.xml"
+  "accession": "0001888524-26-019624",
+  "filed": "2026-10-28",
+  "base": "https://www.sec.gov/Archives/edgar/data/1721373/000188852426019624/",
+  "xml": "https://www.sec.gov/Archives/edgar/data/1721373/000188852426019624/exh_102.xml"
  }
 ]
