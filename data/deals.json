@@ -50,18 +50,18 @@
  {
   "deal": "CGCMT 2017-P7",
   "cik": "1700668",
-  "accession": "0001628297-26-000778",
-  "filed": "2026-09-30",
-  "base": "https://www.sec.gov/Archives/edgar/data/1700668/000162829726000778/",
-  "xml": "https://www.sec.gov/Archives/edgar/data/1700668/000162829726000778/ex102.xml"
+  "accession": "0001628297-26-000956",
+  "filed": "2026-10-30",
+  "base": "https://www.sec.gov/Archives/edgar/data/1700668/000162829726000956/",
+  "xml": "https://www.sec.gov/Archives/edgar/data/1700668/000162829726000956/ex102.xml"
  },
  {
   "deal": "MSC 2017-H1",
   "cik": "1705163",
-  "accession": "0001888524-26-018466",
-  "filed": "2026-10-02",
-  "base": "https://www.sec.gov/Archives/edgar/data/1705163/000188852426018466/",
-  "xml": "https://www.sec.gov/Archives/edgar/data/1705163/000188852426018466/exh_102.xml"
+  "accession": "0001888524-26-020132",
+  "filed": "2026-10-30",
+  "base": "https://www.sec.gov/Archives/edgar/data/1705163/000188852426020132/",
+  "xml": "https://www.sec.gov/Archives/edgar/data/1705163/000188852426020132/exh_102.xml"
  },
  {
   "deal": "CSAIL 2017-C8",
@@ -98,10 +98,10 @@
  {
   "deal": "CGCMT 2017-P8",
   "cik": "1715824",
-  "accession": "0001628297-26-000776",
-  "filed": "2026-09-30",
-  "base": "https://www.sec.gov/Archives/edgar/data/1715824/000162829726000776/",
-  "xml": "https://www.sec.gov/Archives/edgar/data/1715824/000162829726000776/ex102.xml"
+  "accession": "0001628297-26-000954",
+  "filed": "2026-10-30",
+  "base": "https://www.sec.gov/Archives/edgar/data/1715824/000162829726000954/",
+  "xml": "https://www.sec.gov/Archives/edgar/data/1715824/000162829726000954/ex102.xml"
  },
  {
   "deal": "WFCM 2017-C41",
